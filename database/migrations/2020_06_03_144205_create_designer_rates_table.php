@@ -17,7 +17,6 @@ class CreateDesignerRatesTable extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->bigInteger('likes');
             $table->unsignedBigInteger('designer_id');
             $table->unsignedBigInteger('liker_id');
 

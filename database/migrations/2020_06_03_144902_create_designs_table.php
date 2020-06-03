@@ -22,7 +22,7 @@ class CreateDesignsTable extends Migration
             $table->unsignedBigInteger('company_id');
             $table->string('description');
             $table->string('title');
-            $table->string('price');
+            $table->float('price', 8, 2);
             $table->enum('state', ['sketch','sold','processing','produced']);	
             $table->enum('category', ['men','women','kids','teenagers']);	
             $table->string('source_file');
