@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddFieldsToUsers extends Migration
+class AddLoginFieldsToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,11 +14,9 @@ class AddFieldsToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
-            $table->string('address')->default('');
-            $table->string('phone')->default('');
-            $table->string('image')->default('');
-            $table->enum('role', ['admin','user','designer','company']);	
+            $table->string('provider', 20)->nullable();
+            $table->string('provider_id')->nullable();
+            $table->string('access_token')->nullable();      
         });
     }
 
@@ -30,11 +28,7 @@ class AddFieldsToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
-            $table->dropColumn('address');
-            $table->dropColumn('phone');
-            $table->dropColumn('image');
-            $table->dropColumn('role');
+            $table->dropColumn(['provider', 'provider_id', 'access_token']);
         });
     }
 }

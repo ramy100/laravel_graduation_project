@@ -56,12 +56,23 @@
                                 <button type="submit" class="btn btn-primary">
                                     {{ __('Login') }}
                                 </button>
-
+                                
                                 @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
-                                        {{ __('Forgot Your Password?') }}
-                                    </a>
+                                <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    {{ __('Forgot Your Password?') }}
+                                </a>
                                 @endif
+                            </div>
+                            <div >
+                                <a href="{{ route('social.oauth', 'facebook') }}" class="btn btn-primary btn-block">
+                                    Login with Facebook
+                                </a>
+                                {{-- <a href="{{ route('social.oauth', 'twitter') }}" class="btn btn-info btn-block">
+                                    Login with Twitter
+                                </a> --}}
+                                <a href="{{ route('social.oauth', 'google') }}" class="btn btn-danger btn-block">
+                                        Login with Google
+                                </a>
                             </div>
                         </div>
                     </form>
