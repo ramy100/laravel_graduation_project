@@ -19,7 +19,7 @@ class CreateDesignsTable extends Migration
 
             $table->unsignedBigInteger('tag_id');
             $table->unsignedBigInteger('designer_id');
-            $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('company_id')->nullable();
             $table->string('description');
             $table->string('title');
             $table->float('price', 8, 2);
