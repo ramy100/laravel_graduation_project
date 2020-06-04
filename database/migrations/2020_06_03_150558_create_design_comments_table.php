@@ -17,7 +17,7 @@ class CreateDesignCommentsTable extends Migration
             $table->id();
             $table->timestamps();
 
-            $table->string('body');
+            $table->text('body');
 
             $table->unsignedBigInteger('design_id');
             $table->unsignedBigInteger('user_id');
