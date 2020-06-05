@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTagsTable extends Migration
+class AddNullableToCompanyIdInDesigns extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateTagsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tags', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-
-            $table->string('name');
-
+        Schema::table('designs', function (Blueprint $table) {
+            $table->string('company_id')->nullable()->change();
+            //
         });
     }
 
@@ -29,6 +26,9 @@ class CreateTagsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tags');
+        Schema::table('designs', function (Blueprint $table) {
+            $table->string('company_id')->nullable(false)->change();
+            //
+        });
     }
 }

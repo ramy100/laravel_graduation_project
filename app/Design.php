@@ -4,8 +4,20 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+
 class Design extends Model
 {
+     use \Spatie\Tags\HasTags;
+     
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'description', 'title', 'price','category','source_file','designer_id'
+    ];
+
     //
     public function tag()
     {
@@ -33,7 +45,7 @@ class Design extends Model
 
     public function materials()
     {
-        return $this->hasMany(DesignMaterial::class,'design_id');
+        return $this->belongsToMany(Material::class,'design_materials');
     }
 
     public function votes()
