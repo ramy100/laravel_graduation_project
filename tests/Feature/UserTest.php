@@ -24,6 +24,31 @@ class UserTest extends TestCase
         $response->assertRedirect('/home');
     }
 
+    public function test_logged_in_users_cant_see_admin_register_page()
+    {
+        $this->actingAs(factory(User::class)->create());
+        $response = $this->get('admin/create');
+        $response->assertRedirect('/home');
+    }
+    public function test_logged_in_users_cant_see_user_register_page()
+    {
+        $this->actingAs(factory(User::class)->create());
+        $response = $this->get('user/create');
+        $response->assertRedirect('/home');
+    }
+    public function test_logged_in_users_cant_see_designer_register_page()
+    {
+        $this->actingAs(factory(User::class)->create());
+        $response = $this->get('designer/create');
+        $response->assertRedirect('/home');
+    }
+    public function test_logged_in_users_cant_see_company_register_page()
+    {
+        $this->actingAs(factory(User::class)->create());
+        $response = $this->get('company/create');
+        $response->assertRedirect('/home');
+    }
+
     public function test_logged_in_users_cant_see_login_page()
     {
         $this->actingAs(factory(User::class)->create());
@@ -49,6 +74,26 @@ class UserTest extends TestCase
 
     }
 
+    public function test_user_form_validation()
+    {
+        $response = $this->post("user/register",[]);
+        $response->assertSessionHasErrors(['name','password','email']);
+    }
+    public function test_admin_form_validation()
+    {
+        $response = $this->post("admin/register",[]);
+        $response->assertSessionHasErrors(['name','password','email']);
+    }
+    public function test_designer_form_validation()
+    {
+        $response = $this->post("designer/register",[]);
+        $response->assertSessionHasErrors(['name','password','email']);
+    }
+    public function test_company_form_validation()
+    {
+        $response = $this->post("company/register",[]);
+        $response->assertSessionHasErrors(['name','password','email']);
+    }
 
     public function test_user_can_be_created_through_form_with_wrong_phone_format()
     {
