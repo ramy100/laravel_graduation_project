@@ -44,12 +44,9 @@ class UserTest extends TestCase
         
         $this->withoutExceptionHandling();
         $response = $this->post("/register",$this->get_valid_data());
-        $users = User::first();
-        $this->assertEquals('ramy',$users->name);
-        $this->assertEquals('r@r.com',$users->email);
-        $this->assertEquals('addresssssss',$users->address);
-        $this->assertEquals('user',$users->role);
-        $this->assertEquals('01111287447',$users->phone);
+        $user = User::first();
+        $this->my_asserts($user,$this->get_valid_data());
+
     }
 
 
@@ -64,12 +61,9 @@ class UserTest extends TestCase
         $this->withoutExceptionHandling();
 
         $response = $this->post("/register",array_merge($this->get_valid_data(),['phone'=>null]));
-        $users = User::first();
-        $this->assertEquals('ramy',$users->name);
-        $this->assertEquals('r@r.com',$users->email);
-        $this->assertEquals('addresssssss',$users->address);
-        $this->assertEquals('user',$users->role);
-        $this->assertEquals(null,$users->phone);
+        $user = User::first();
+        $this->my_asserts($user,array_merge($this->get_valid_data(),['phone'=>null]));
+
     }
 
     public function test_user_can_be_created_through_form_without_address()
@@ -77,15 +71,30 @@ class UserTest extends TestCase
         $this->withoutExceptionHandling();
 
         $response = $this->post("/register",array_merge($this->get_valid_data(),['address'=>null]));
-        $users = User::first();
-        $this->assertEquals('ramy',$users->name);
-        $this->assertEquals('r@r.com',$users->email);
-        $this->assertEquals(null,$users->address);
-        $this->assertEquals('user',$users->role);
-        $this->assertEquals('01111287447',$users->phone);
+        $user = User::first();
+        $this->my_asserts($user,array_merge($this->get_valid_data(),['address'=>null]));
+
+    }
+
+    public function test_admin_can_be_created_from_create_admin_form()
+    {
+        $this->withoutExceptionHandling();
+
+        $response = $this->post("/admin/register",$this->get_valid_data());
+        $user = User::first();
+        $this->my_asserts($user,array_merge($this->get_valid_data(),['role'=>'admin']));
+        
     }
 
 
+    private function my_asserts($user,$data)
+    {
+        $this->assertEquals($data['name'],$user->name);
+        $this->assertEquals($data['email'],$user->email);
+        $this->assertEquals($data['address'],$user->address);
+        $this->assertEquals($data['role'],$user->role);
+        $this->assertEquals($data['phone'],$user->phone);
+    }
 
     private function get_valid_data()
     {
