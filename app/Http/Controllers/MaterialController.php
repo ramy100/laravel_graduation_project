@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Material;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class MaterialController extends Controller
@@ -75,7 +76,8 @@ class MaterialController extends Controller
     public function update(Request $request, Material $material)
     {
         $material->update($request->validate([
-            'name'=>'required|min:3|unique:materials,name,Null,id,deleted_at,NULL'.$material->id,
+            'name'=>['required', 'min:3',
+            Rule::unique('materials')->where(function ($query) { return $query->where('deleted_at', null); })]
         ]));
         return redirect('admin/material')->with('message','material has been updated successfully ^_^');
     }

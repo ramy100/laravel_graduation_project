@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Tag;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
@@ -75,7 +76,8 @@ class TagController extends Controller
     public function update(Request $request, Tag $tag)
     {
         $tag->update($request->validate([
-            'name'=>'required|min:3|unique:tags,name,Null,id,deleted_at,NULL'.$tag->id,
+            'name'=>['required', 'min:3',
+            Rule::unique('tags')->where(function ($query) { return $query->where('deleted_at', null); })]
         ]));
         return redirect('admin/tag')->with('message','tag has been updated successfully ^_^');
     }
