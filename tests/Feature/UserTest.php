@@ -38,20 +38,12 @@ class UserTest extends TestCase
         $response = $this->get('/home');
         $response->assertOk();
     }
-
+    
     public function test_user_can_be_created_through_form()
     {
         
         $this->withoutExceptionHandling();
-        $response = $this->post("/register",[
-            "name"=>"ramy",
-            "email"=>"r@r.com",
-            "address" => "addresssssss",
-            "phone" => "01111287447",
-            "role" => "user",
-            "password"=>'123456789',
-            "password_confirmation"=>'123456789'
-        ]);
+        $response = $this->post("/register",$this->get_valid_data());
         $users = User::first();
         $this->assertEquals('ramy',$users->name);
         $this->assertEquals('r@r.com',$users->email);
@@ -63,15 +55,7 @@ class UserTest extends TestCase
 
     public function test_user_can_be_created_through_form_with_wrong_phone_format()
     {
-        $response = $this->post("/register",[
-            "name"=>"ramy",
-            "email"=>"r@r.com",
-            "address" => "address",
-            "phone" => "00111287447",
-            "role" => "user",
-            "password"=>'123456789',
-            "password_confirmation"=>'123456789'
-            ]);
+        $response = $this->post("/register",array_merge($this->get_valid_data(),['phone'=>'00111287447']));
         $response->assertSessionHasErrors('phone');
     }
 
@@ -79,19 +63,11 @@ class UserTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $response = $this->post("/register",[
-            "name"=>"ramy",
-            "email"=>"r@r.com",
-            "address" => "addresssssssssssssss",
-            "role" => "user",
-            'phone'=>null,
-            "password"=>'123456789',
-            "password_confirmation"=>'123456789'
-        ]);
+        $response = $this->post("/register",array_merge($this->get_valid_data(),['phone'=>null]));
         $users = User::first();
         $this->assertEquals('ramy',$users->name);
         $this->assertEquals('r@r.com',$users->email);
-        $this->assertEquals('addresssssssssssssss',$users->address);
+        $this->assertEquals('addresssssss',$users->address);
         $this->assertEquals('user',$users->role);
         $this->assertEquals(null,$users->phone);
     }
@@ -100,21 +76,28 @@ class UserTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $response = $this->post("/register",[
-            "name"=>"ramy",
-            "email"=>"r@r.com",
-            "address" => null,
-            "role" => "user",
-            'phone'=>'01111287447',
-            "password"=>'123456789',
-            "password_confirmation"=>'123456789'
-        ]);
+        $response = $this->post("/register",array_merge($this->get_valid_data(),['address'=>null]));
         $users = User::first();
         $this->assertEquals('ramy',$users->name);
         $this->assertEquals('r@r.com',$users->email);
         $this->assertEquals(null,$users->address);
         $this->assertEquals('user',$users->role);
         $this->assertEquals('01111287447',$users->phone);
+    }
+
+
+
+    private function get_valid_data()
+    {
+        return [
+            "name"=>"ramy",
+            "email"=>"r@r.com",
+            "address" => "addresssssss",
+            "phone" => "01111287447",
+            "role" => "user",
+            "password"=>'123456789',
+            "password_confirmation"=>'123456789'
+        ];
     }
     
 }
