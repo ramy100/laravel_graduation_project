@@ -10,7 +10,8 @@ use App\User;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 use Laravel\Socialite\Facades\Socialite;
-
+use Hash;
+use Str;
 class LoginController extends Controller
 {
     /*
@@ -62,8 +63,8 @@ class LoginController extends Controller
         try {
             return Socialite::driver($driver)->redirect();
         } catch (Exception $e) {
-            // You should show something simple fail message
-            return $this->sendFailedResponse($e->getMessage());
+            return redirect('home')->with('error','Unable to login');
+            // return $this->sendFailedResponse($e->getMessage());
         }
     }
 
@@ -73,7 +74,8 @@ class LoginController extends Controller
         try {
             $user = Socialite::driver($driver)->user();
         } catch (Exception $e) {
-            return $this->sendFailedResponse($e->getMessage());
+            return redirect('home')->with('error','Unable to login');
+            // return $this->sendFailedResponse($e->getMessage());
         }
 
         // check for email in returned user
@@ -98,38 +100,39 @@ class LoginController extends Controller
         // check for already has account
         $user = User::where('email', $providerUser->getEmail())->first();
     
-    // if user already found
-            if( $user ) {
-                // update the image and provider that might have changed
-                $user->update([
-                    'image' => $providerUser->avatar,
+        // if user already found
+        if( $user ) {
+            // update the image and provider that might have changed
+            $user->update([
+                'image' => $providerUser->avatar,
+                'provider' => $driver,
+                'provider_id' => $providerUser->id,
+                'access_token' => $providerUser->token
+            ]);
+        } else {
+                if($providerUser->getEmail()){ //Check email exists or not. If exists create a new user
+                $user = User::create([
+                    'name' => $providerUser->getName(),
+                    'email' => $providerUser->getEmail(),
+                    'image' => $providerUser->getAvatar(),
                     'provider' => $driver,
-                    'provider_id' => $providerUser->id,
-                    'access_token' => $providerUser->token
-                ]);
-            } else {
-                  if($providerUser->getEmail()){ //Check email exists or not. If exists create a new user
-                   $user = User::create([
-                      'name' => $providerUser->getName(),
-                      'email' => $providerUser->getEmail(),
-                      'image' => $providerUser->getAvatar(),
-                      'provider' => $driver,
-                      'provider_id' => $providerUser->getId(),
-                      'access_token' => $providerUser->token,
-                      'password' => '' // user can use reset password to create a password
-                ]);
-    
-                 }else{
-                
-                //Show message here what you want to show
-                
-               }
-          }
+                    'provider_id' => $providerUser->getId(),
+                    'access_token' => $providerUser->token,
+                    'password' => Hash::make(Str::random(24)), // generating random password for loged in user
+                    'role' => 'user'
+            ]);
+
+                }else{
+            
+            //Show message here what you want to show
+            
+            }
+        }
     
           // login the user
             Auth::login($user, true);
             return $this->sendSuccessResponse();
-      }
+        }
 
     private function isProviderAllowed($driver)
     {
