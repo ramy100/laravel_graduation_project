@@ -15,10 +15,10 @@ class AddFieldsToUsers extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->string('address')->default('');
-            $table->string('phone')->default('');
+            $table->string('address')->nullable();
+            $table->string('phone')->nullable();
             $table->string('image')->default('');
-            $table->enum('role', ['admin','user','designer','company']);	
+            $table->enum('role', ['admin','user','designer','company'])->default('user');	
         });
     }
 
