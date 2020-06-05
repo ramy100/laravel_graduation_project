@@ -77,7 +77,7 @@ class TagController extends Controller
     {
         $tag->update($request->validate([
             'name'=>['required', 'min:3',
-            Rule::unique('tags')->where(function ($query) { return $query->where('deleted_at', null); })]
+            Rule::unique('tags', 'name')->ignore($tag->id)->where(function ($query) { return $query->where('deleted_at', null); })]
         ]));
         return redirect('admin/tag')->with('message','tag has been updated successfully ^_^');
     }

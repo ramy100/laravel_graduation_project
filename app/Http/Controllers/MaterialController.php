@@ -77,7 +77,7 @@ class MaterialController extends Controller
     {
         $material->update($request->validate([
             'name'=>['required', 'min:3',
-            Rule::unique('materials')->where(function ($query) { return $query->where('deleted_at', null); })]
+            Rule::unique('materials', 'name')->ignore($material->id)->where(function ($query) { return $query->where('deleted_at', null); })]
         ]));
         return redirect('admin/material')->with('message','material has been updated successfully ^_^');
     }
