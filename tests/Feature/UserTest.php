@@ -85,6 +85,33 @@ class UserTest extends TestCase
         $this->my_asserts($user,array_merge($this->get_valid_data(),['role'=>'admin']));
         
     }
+    public function test_user_can_be_created_from_create_user_form()
+    {
+        $this->withoutExceptionHandling();
+
+        $response = $this->post("/user/register",$this->get_valid_data());
+        $user = User::first();
+        $this->my_asserts($user,array_merge($this->get_valid_data(),['role'=>'user']));
+        
+    }
+    public function test_company_can_be_created_from_create_company_form()
+    {
+        $this->withoutExceptionHandling();
+
+        $response = $this->post("/company/register",$this->get_valid_data());
+        $user = User::first();
+        $this->my_asserts($user,array_merge($this->get_valid_data(),['role'=>'company']));
+        
+    }
+    public function test_designer_can_be_created_from_create_designer_form()
+    {
+        $this->withoutExceptionHandling();
+
+        $response = $this->post("/designer/register",$this->get_valid_data());
+        $user = User::first();
+        $this->my_asserts($user,array_merge($this->get_valid_data(),['role'=>'designer']));
+        
+    }
 
 
     private function my_asserts($user,$data)
