@@ -28,7 +28,7 @@ class UserTest extends TestCase
     {
         $this->actingAs(factory(User::class)->create());
         $response = $this->get('admin/create');
-        $response->assertRedirect('/home');
+        $response->assertRedirect('/');
     }
     public function test_logged_in_users_cant_see_user_register_page()
     {
@@ -81,6 +81,7 @@ class UserTest extends TestCase
     }
     public function test_admin_form_validation()
     {
+        $this->actingAs(factory(User::class)->create(['role'=>'admin']));
         $response = $this->post("admin/register",[]);
         $response->assertSessionHasErrors(['name','password','email']);
     }
@@ -125,10 +126,11 @@ class UserTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
+        $this->actingAs(factory(User::class)->create(['role'=>'admin']));
         $response = $this->post("/admin/register",$this->get_valid_data());
-        $user = User::first();
+        $user=User::find(2);
         $this->my_asserts($user,array_merge($this->get_valid_data(),['role'=>'admin']));
-        
+        $this->assertCount(2,User::all());
     }
     public function test_user_can_be_created_from_create_user_form()
     {
