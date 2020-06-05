@@ -21,6 +21,12 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+// socialite login routes
 Route::get('auth/social', 'Auth\LoginController@show')->name('social.login');
 Route::get('oauth/{driver}', 'Auth\LoginController@redirectToProvider')->name('social.oauth');
 Route::get('oauth/{driver}/callback', 'Auth\LoginController@handleProviderCallback')->name('social.callback');
+
+// Routes for both tags and material resources
+Route::resource('admin/tag', 'TagController');
+Route::resource('admin/material', 'MaterialController');
