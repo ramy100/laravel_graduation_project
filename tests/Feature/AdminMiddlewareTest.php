@@ -20,18 +20,18 @@ class AdminMiddlewareTest extends TestCase
     {
         $this->actingAs(factory(User::class)->create(['role'=>'user']));
         $response = $this->get('/admin/create');
-        $response->assertRedirect('/');
+        $response->assertRedirect('/403');
     }
     public function test_company_cant_view_register_admin_page()
     {
         $this->actingAs(factory(User::class)->create(['role'=>'company']));
         $response = $this->get('/admin/create');
-        $response->assertRedirect('/');
+        $response->assertRedirect('/403');
     }
     public function test_designer_cant_view_register_admin_page()
     {
         $this->actingAs(factory(User::class)->create(['role'=>'designer']));
         $response = $this->get('/admin/create');
-        $response->assertRedirect('/');
+        $response->assertRedirect('/403');
     }
 }

@@ -36,6 +36,9 @@ Route::post('/designer/register','DesignerController@register')->name('designer.
 Route::post('/user/register','UserController@register')->name('user.register');
 Route::post('/company/register','CompanyController@register')->name('company.register');
 Route::post('/admin/register','AdminController@register')->name('admin.register');
+Route::get('/403', function () {
+    return view('auth.403');
+});
 // Routes for both tags and material resources
 Route::resource('admin/tag', 'TagController');
 Route::resource('admin/material', 'MaterialController');
