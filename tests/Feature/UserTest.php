@@ -28,7 +28,7 @@ class UserTest extends TestCase
     {
         $this->actingAs(factory(User::class)->create());
         $response = $this->get('admin/create');
-        $response->assertRedirect('/');
+        $response->assertRedirect('/403');
     }
     public function test_logged_in_users_cant_see_user_register_page()
     {

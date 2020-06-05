@@ -21,6 +21,6 @@ class CheckRole
                 return $next($request);
             }
         }
-        return redirect('/');
+        return redirect('/403')->with('error','You are not authorised to access admin pages.');
     }
 }
