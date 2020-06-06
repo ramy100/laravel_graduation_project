@@ -15,6 +15,7 @@
                     @endif
 
                     You are logged in!
+                    <img src="{{asset('storage/'.Auth::User()->image)}}" alt="">
                 </div>
             </div>
         </div>

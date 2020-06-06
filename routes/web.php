@@ -28,14 +28,13 @@ Route::get('oauth/{driver}', 'Auth\LoginController@redirectToProvider')->name('s
 Route::get('oauth/{driver}/callback', 'Auth\LoginController@handleProviderCallback')->name('social.callback');
 
 
-Route::get('/designer/create','DesignerController@showRegistrationForm')->name('designer.create');
-Route::get('/user/create','UserController@showRegistrationForm')->name('user.create');
-Route::get('/company/create','CompanyController@showRegistrationForm')->name('company.create');
-Route::get('/admin/create','AdminController@showRegistrationForm')->name('admin.create');
-Route::post('/designer/register','DesignerController@register')->name('designer.register');
-Route::post('/user/register','UserController@register')->name('user.register');
-Route::post('/company/register','CompanyController@register')->name('company.register');
-Route::post('/admin/register','AdminController@register')->name('admin.register');
+Route::get('/make/{role}','AllUsersRegisterController@RegistrationForm')
+->where('role','admin|user|designer|company')->name('registeration.form');
+Route::post('/make/user','AllUsersRegisterController@register')->name('user.registeration');
+Route::post('/make/admin','AllUsersRegisterController@register')->middleware('check-role:admin')->name('admin.registeration');
+Route::post('/make/company','AllUsersRegisterController@register')->name('company.registeration');
+Route::post('/make/designer','AllUsersRegisterController@register')->name('designer.registeration');
+
 Route::get('/403', function () {
     return view('auth.403');
 });

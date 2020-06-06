@@ -67,10 +67,10 @@
                                           </a>
                                           <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                             <a href="{{ route('register') }}" class="items">Register</a>
-                                            <a href="{{ route('admin.create') }}" class="items">Register Admin</a>
-                                            <a href="{{ route('user.create') }}" class="items">Register User</a>
-                                            <a href="{{ route('company.create') }}" class="items">Register Company</a>
-                                            <a href="{{ route('designer.create') }}" class="items">Register Designer</a>
+                                            <a href="{{ route('registeration.form','admin') }}" class="items">Register Admin</a>
+                                            <a href="{{ route('registeration.form','user') }}" class="items">Register User</a>
+                                            <a href="{{ route('registeration.form','company') }}" class="items">Register Company</a>
+                                            <a href="{{ route('registeration.form','designer') }}" class="items">Register Designer</a>
                                           </div>
                                         </div>                                          
                                     @endif
