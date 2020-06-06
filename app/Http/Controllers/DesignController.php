@@ -53,7 +53,7 @@ class DesignController extends Controller
      */
     public function store(StoreDesignsRequest $request)
     {
-        echo "hi";
+        // dd($request);
         $validated = $request->validated();
         // dd($request);
         if($request->hasFile('images') && $request->hasFile('sourceFile') )

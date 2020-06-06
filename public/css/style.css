@@ -1909,12 +1909,14 @@ ol {
 	font-weight: 700;
 	color: #fff;
 	line-height: 1;
-	
+	border-radius: 50px;
 	background: #3b3b3b;
 	padding: 21px 29px 20px;
 	margin-bottom: 20px;
 }
-
+.checkout-form {
+	padding:15px;
+}
 .checkout-form p {
 	font-size: 16px;
 	color: #414141;
@@ -2123,6 +2125,8 @@ ol {
 
 .design{
 margin:0 auto;
+border-radius: 5%;
+box-shadow: 5px 10px 18px #888888;
 }
 
 .contact-social a {
