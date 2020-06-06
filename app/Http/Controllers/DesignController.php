@@ -44,6 +44,10 @@ class DesignController extends Controller
         return view('designs.create',compact('designMaterial','design','tags'));
         
     }
+    public function checkImageExtension($files)
+    {
+        
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -53,19 +57,17 @@ class DesignController extends Controller
      */
     public function store(StoreDesignsRequest $request)
     {
-        // dd($request);
         $validated = $request->validated();
-        // dd($request);
         if($request->hasFile('images') && $request->hasFile('sourceFile') )
         {
-            $allowedfileExtension=['jpg','png','jpeg'];
             $files = $request->file('images');
+            $allowedfileExtension=['jpg','png','jpeg'];
             foreach($files as $file){
                 $extension = $file->getClientOriginalExtension();
                 $check=in_array($extension,$allowedfileExtension);
                 if(! $check)
                 {
-                    return Redirect::back()->with('error','Sorry Only Upload png , jpg ,jpeg Images');
+                        return Redirect::back()->with('error','Sorry Only Upload png , jpg ,jpeg Images');
                 }
             }
             $file=$request->file('sourceFile');
@@ -90,7 +92,7 @@ class DesignController extends Controller
                         'image' => $filename
                         ]);
                     }
-                return Redirect::back()->with('success','Design added successuly');
+                return Redirect::back()->with('success','Design added successfuly');
             }
             else
             {
@@ -114,6 +116,9 @@ class DesignController extends Controller
     public function show($id)
     {
         //
+        $design = Design::findOrFail($id);
+        $designImages=DesignImage::all()->where('design_id','=',$id);
+        return view('designs.show',compact('design','designImages'));
     }
 
     /**
@@ -126,7 +131,9 @@ class DesignController extends Controller
     {
         $design = Design::find($id)->where('designer_id' , '=',Auth::id())->get()->first();
         $designMaterial=Material::all();
-        return view('designs.edit',compact('design','designMaterial'));
+        $tags=Tag::all();
+        $designImages=DesignImage::all()->where('design_id','=',$id);
+        return view('designs.edit',compact('design','designMaterial','tags','designImages'));
         //
     }
 
@@ -137,9 +144,41 @@ class DesignController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(StoreDesignsRequest $request,Design $design)
     {
-        //
+        // dd($request);
+        $design=Design::find($design->id);
+        $design->update($request->all());
+        if ( $request->hasFile('sourceFile') ) 
+        {
+            $file=$request->file('sourceFile');
+            $filePath = $file->store('Files','public');
+            $design ->source_file=$filePath ;   
+        }
+        $design->materials()->sync($request->Material, false);
+        // Images
+        if($request->hasFile('images'))
+        {
+            $allowedfileExtension=['jpg','png','jpeg'];
+            $files = $request->file('images');
+            foreach($files as $file){
+                $extension = $file->getClientOriginalExtension();
+                $check=in_array($extension,$allowedfileExtension);
+                if(! $check)
+                {
+                    return Redirect::back()->with('error','Sorry Only Upload png , jpg ,jpeg Images');
+                }
+            }
+            foreach ($request->images as $image) {
+                        $filename = $image->store('Designs','public');
+                        DesignImage::create([
+                        'design_id' => $design->id,
+                        'image' => $filename
+                        ]);
+                    }              
+        }
+
+        return Redirect::back()->with('success','Design Upadated Successfuly');
     }
 
     /**
@@ -151,5 +190,8 @@ class DesignController extends Controller
     public function destroy($id)
     {
         //
+        $design = Design::findOrFail($id);
+        $design->delete();
+        return redirect('home')->with('success','Design deleted successfully ');
     }
 }

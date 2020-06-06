@@ -26,35 +26,53 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6 order-2 order-lg-1 design">
-					<form class="checkout-form" enctype="multipart/form-data" method="POST" action="{{route('design.store')}}">
-						<div class="cf-title">Add New Design</div>
+					<form class="checkout-form" enctype="multipart/form-data" method="POST" action="{{ route('design.update', ['design'=> $design]) }}">
+						<div class="cf-title">Edit Design</div>
 						<div class="row address-inputs">
 							<div class="col-md-12">
-								{{ csrf_field() }}
+								@method('PATCH')
+								 {{csrf_field()}}
+								<!-- Title -->
 								<input type="text" placeholder="Title" name="title" value="{{ $design->title}}" >
 								@if($errors->first('title'))
-								<div class="alert alert-danger">{{$errors->first('title') }}</div>
+								<p class="alert alert-danger">{{$errors->first('title') }}</p>
 								@endif
 
+								<!-- Price -->
 								<input type="text" placeholder="Price" name="price" value="{{ $design->price}}">
 								@if($errors->first('price'))
-								<div class="alert alert-danger">{{$errors->first('price') }}</div>
+								<p class="alert alert-danger">{{$errors->first('price') }}</p>
 								@endif
 
-								<input type="text" data-role="tagsinput" class="form-control" name="tags" placeholder="Tags" value="{{ $design->tags}}">
+								<!-- Description -->
+								<textarea  name="description" placeholder="Description" class="form-control mb-2 mt-2" rows="4" cols="50" >{{ $design->description}}</textarea>
+								@if($errors->first('description'))
+								<p class="alert alert-danger">{{$errors->first('description') }}</p>@endif	
+
+								<!-- Tags -->
+								<div>
+									<select id="tags" name="tag_id" class="form-control mb-2 js-example-basic-single">
+									  <option value="" disabled >Tags</option>
+									  @foreach ($tags as $tag) 
+									  	<option value="{{ $tag ->id}}" {{ ($design->tag->id == $tag->id) ?? 'selected'}}>{{ $tag ->name}}</option>
+									  @endforeach
+									</select>
+								</div>
 								@if($errors->first('tags'))
 								<div class="alert alert-danger">{{$errors->first('tags') }}</div>
 								@endif
 
-								<textarea  name="description" placeholder="Description" class="form-control mb-2 mt-2" rows="4" cols="50" value="{{ $design->description}}"></textarea>
-								@if($errors->first('description'))
-								<div class="alert alert-danger">{{$errors->first('description') }}</div>@endif	
-
-								<div>
-									<select id="Material" name="Material" class=" form-control">
-									  <option value="" disabled selected>Material</option>
+								<!-- Material -->
+								<div class="mt-2">
+									<select id="Material" name="Material[]" class=" form-control js-example-placeholder-multiple" multiple="multiple">
+									  
 									  @foreach ($designMaterial as $material) 
-									  	<option value="{{ $design->materials()->first()->id}}" >{{ $design->$materials()->first()->name}}</option>
+									  	@foreach($design->materials as $selectMaterial) 
+									  		<option value="{{ $material ->id}}" 
+									  		{{ ($selectMaterial->id == $material->id)? 'selected':''  }} >
+									  			{{ $material ->name}}</option>
+									  	@endforeach
+									  	
 									  @endforeach
 									</select>
 								</div>
@@ -62,25 +80,43 @@
 								<div class="alert alert-danger">{{$errors->first('Material') }}</div>
 								@endif
 
+								<!-- category -->
 								<div style="margin: 10px 0;">
-									<select id="cars" name="category" class=" form-control">
-									  <option value="" disabled selected>Category</option>
-									  <option value="men" {{ $design->category =="men" ?? selected }}>Men</option>
-									  <option value="women" {{ $design->category =="women" ?? selected }}>Women</option>
-									  <option value="kids" {{ $design->category =="kids" ?? selected }}>Kids</option>
-									  <option value="teenagers" {{ $design->category =="teenagers" ?? selected }}>Teenagers</option>
+									<select id="cars" name="category" class="form-control js-example-basic-single">
+									  <option value="" disabled >Category</option>
+									  <option value="men" {{ $design->category =="men" ?? 'selected' }}>Men</option>
+									  <option value="women" {{ $design->category =="women" ?? 'selected' }}>Women</option>
+									  <option value="kids" {{ $design->category =="kids" ?? 'selected' }}>Kids</option>
+									  <option value="teenagers" {{ $design->category =="teenagers" ?? 'selected' }}>Teenagers</option>
 									</select>
 								</div>
 								@if($errors->first('category'))
 								<div class="alert alert-danger">{{$errors->first('category') }}</div>
 								@endif
 
-								
+								<!-- source file -->
+								<div class="form-group">
+								    <label for="link">Upload another source pattron file</label>
+								    <input type="file" name="link" class="form-control"  >
+								</div>
+
+								<!-- Images -->
+								<div class="form-group">
+										<label for="imgeFile">Add Another Design Images  (can attach more than one) </label>
+										<input type="file" id="imgeFile" name="images[]" class="form-control" multiple >
+									</div>
+								<!-- <div class="row">
+									@foreach($designImages as $Image)
+										<input id="image-upload"  style="display: none;" name="image" type="file" onchange="displayImage(this,{{ $Image->id }});">
+										<input type="hidden" name="ImageId" value="{{ $Image->id }}">
+										<a href=""><img src="{{asset ('storage/'. $Image->image) }}" id="{{ $Image->id }}" class="DesignImage" height="200" width="200" class="ml-2 col-5 mb-2"></a>
+									@endforeach
+								</div> -->
 
 							</div>
 							
 						</div>
-						<button class="site-btn submit-order-btn">Add Design</button>
+						<button class="site-btn submit-order-btn">Edit Design</button>
 					</form>
 				</div>
 			</div>
@@ -88,3 +124,33 @@
 	</section>
 	
 @endsection
+@push('scripts')
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+	<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+	<script type="text/javascript">
+		 $('.js-example-basic-single').select2();
+		 $(".js-example-placeholder-multiple").select2({
+		    placeholder: "Material"
+		});
+		 $('.DesignImage').on('click', function(event) {
+		 	event.preventDefault();
+		    $('#image-upload').click();
+		});
+		 function displayImage(input,ImageId)
+		 {
+		 	var image= $('#'+ImageId);
+		 	if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                image
+                    .attr('src', e.target.result)
+                    .width(150)
+                    .height(200);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+		 }
+	</script>
+@endpush
