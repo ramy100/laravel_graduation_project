@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class DesignerRate extends Model
 {
+    protected $guraded = ['id'];
     //
     public function voter()
     {

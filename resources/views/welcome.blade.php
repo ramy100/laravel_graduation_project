@@ -91,75 +91,26 @@
                 <h2>LATEST PRODUCTS</h2>
             </div>
             <div class="product-slider owl-carousel">
-                <div class="product-item">
-                    <div class="pi-pic">
-                        <img src="{{ asset('images/product/1.jpg') }}" alt="">
-                        <div class="pi-links">
-                            <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                            <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+               
+                @foreach ($latestDesigns as $item)
+                    <div class="product-item">
+                        <div class="pi-pic">
+                            <img src="{{ asset('images/product/1.jpg') }}" alt="">
+                            <div class="pi-links">
+                            <a href="javascript:void(0)" data-id="{{ $item->id }}" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
+                                <a href="javascript:void(0)" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+                            </div>
                         </div>
+                        <div class="pi-text">
+                            <h6>${{ $item->price }}</h6>
+                            <p>{{ $item->title}}</p>
+                        </div>
+                
                     </div>
-                    <div class="pi-text">
-                        <h6>$35,00</h6>
-                        <p>Flamboyant Pink Top </p>
-                    </div>
-
        
-                <div class="product-item">
-                    <div class="pi-pic">
-                        <div class="tag-new">New</div>
-                        <img src="{{ asset('images/product/2.jpg') }}" alt="">
-                        <div class="pi-links">
-                            <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                            <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                        </div>
-                    </div>
-                    <div class="pi-text">
-                        <h6>$35,00</h6>
-                        <p>Black and White Stripes Dress</p>
-                    </div>
-                </div>
-                <div class="product-item">
-                    <div class="pi-pic">
-                        <img src="{{ asset('images/product/3.jpg') }}" alt="">
-                        <div class="pi-links">
-                            <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                            <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                        </div>
-                    </div>
-                    <div class="pi-text">
-                        <h6>$35,00</h6>
-                        <p>Flamboyant Pink Top </p>
-                    </div>
-                </div>
-                <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="{{ asset('images/product/4.jpg') }}" alt="">
-                            <div class="pi-links">
-                                <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                            </div>
-                        </div>
-                        <div class="pi-text">
-                            <h6>$35,00</h6>
-                            <p>Flamboyant Pink Top </p>
-                        </div>
-                    </div>
-                <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="{{ asset('images/product/6.jpg') }}" alt="">
-                            <div class="pi-links">
-                                <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                            </div>
-                        </div>
-                        <div class="pi-text">
-                            <h6>$35,00</h6>
-                            <p>Flamboyant Pink Top </p>
-                        </div>
-                    </div>
+                @endforeach
+               
             </div>
-        </div>
     </section>
     <!-- letest product section end -->
 

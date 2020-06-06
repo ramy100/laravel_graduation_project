@@ -13,9 +13,18 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'IndexController@index')->name('website.index');
+
+
+Route::get('/checkout', 'IndexController@checkout')->name('website.checkout');
+
+// cart routes
+Route::get('/cart', 'CartController@cart')->name('website.cart');
+Route::post('add-to-cart', 'CartController@addToCart')->name('add-to-cart');
+Route::post('remove-from-cart', 'CartController@removeFromCart')->name('remove-from-cart');
+Route::get('load-cart-data', 'CartController@loadCartData')->name('load-cart');
+Route::get('empty-cart', 'CartController@emptyCart')->name('empty-cart');
+
 
 Auth::routes();
 
