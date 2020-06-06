@@ -62,7 +62,9 @@ p {
 img {
 	max-width: 100%;
 }
-
+.items{
+	display: block;
+}
 input:focus,
 select:focus,
 button:focus,
@@ -368,7 +370,9 @@ ol {
 	cursor: pointer;
 	background-color: transparent;
 }
-
+.show{
+	display: inline;
+}
 .user-panel .up-item {
 	display: inline-block;
 	font-size: 14px;
@@ -384,7 +388,7 @@ ol {
 }
 
 .user-panel .up-item:first-child {
-	margin-right: 29px;
+	margin-right: 10px;
 }
 
 .shopping-card {

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Design extends Model
 {
-     use \Spatie\Tags\HasTags;
+
      
     /**
      * The attributes that are mass assignable.
@@ -15,7 +15,7 @@ class Design extends Model
      * @var array
      */
     protected $fillable = [
-        'description', 'title', 'price','category','source_file','designer_id'
+        'description', 'title', 'price','category','source_file','designer_id','tag_id'
     ];
 
     //

@@ -31,7 +31,7 @@ class StoreDesignsRequest extends FormRequest
             'category' => 'required',
             'sourceFile'  => 'required',
             'images' => 'required',
-            'tags' => 'required',
+            'tag_id' => 'required',
             'Material' => 'required'
             //
         ];

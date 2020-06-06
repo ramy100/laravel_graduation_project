@@ -4,13 +4,7 @@
 	
 	<link href="{{ asset('css/tagsinput.css') }}" rel="stylesheet" type="text/css">
 <!-- JavaScript -->
-	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"> </script>
-
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
-        integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
-        crossorigin="anonymous"></script>
+	
 	<script src="{{ asset('js/tagsinput.js') }}"></script>
 
 	@if (session('success'))
@@ -41,7 +35,7 @@
 								<div class="alert alert-danger">{{$errors->first('price') }}</div>
 								@endif
 
-								<input type="text" data-role="tagsinput" class="form-control" name="tags" placeholder="Tags" value="{{ old('tags') ?? $design->tags}}" >
+								<!-- <input type="text" data-role="tagsinput" class="form-control" name="tags" placeholder="Tags" value="{{ old('tags') ?? $design->tags}}" > -->
 								@if($errors->first('tags'))
 								<div class="alert alert-danger">{{$errors->first('tags') }}</div>
 								@endif
@@ -49,6 +43,17 @@
 								<textarea  name="description" placeholder="Description" class="form-control mb-2 mt-2" rows="4" cols="50" value="{{ old('description') ?? $design->description}}"></textarea>
 								@if($errors->first('description'))
 								<div class="alert alert-danger">{{$errors->first('description') }}</div>@endif	
+
+
+								<div>
+									<select id="tags" name="tag_id" class="form-control mb-2">
+									  <option value="" disabled selected>Tags</option>
+									  @foreach ($tags as $tag) 
+									  	<option value="{{ $tag ->id}}" >{{ $tag ->name}}</option>
+									  @endforeach
+									</select>
+								</div>
+
 
 								<div>
 									<select id="Material" name="Material" class=" form-control">

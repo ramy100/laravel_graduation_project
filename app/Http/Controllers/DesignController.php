@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Material;
-use Spatie\Tags\Tag;
+use App\Tag;
 use Auth;
 use App\Design;
 use App\DesignImage;
@@ -40,7 +40,8 @@ class DesignController extends Controller
     {
         $design = new Design();
         $designMaterial=Material::all();
-        return view('designs.create',compact('designMaterial','design'));
+        $tags=Tag::all();
+        return view('designs.create',compact('designMaterial','design','tags'));
         
     }
 
@@ -77,10 +78,11 @@ class DesignController extends Controller
                         'category'=>$request->category,
                         'designer_id'=>Auth::id(),
                         'source_file'=> $filePath,
+                        'tag_id'=>$request->tag_id
                     ]);
                     $design->materials()->attach($request->Material);
-                    $tags = explode(",", $request->tags);
-                    $design->attachTags($tags);
+                    // $tags = explode(",", $request->tags);
+                    // $design->attachTags($tags);
                     foreach ($request->images as $image) {
                         $filename = $image->store('Designs','public');
                         DesignImage::create([

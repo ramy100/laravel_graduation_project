@@ -31,6 +31,9 @@
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
 
+
+
+
 </head>
 <body>
     <div id="app">
@@ -57,7 +60,19 @@
                                 <div class="up-item">
                                     <i class="flaticon-profile"></i>
                                     @if (Route::has('register'))
-                                        <a href="{{ route('login') }}">Sign</a> In or <a href="{{ route('register') }}">Create Account</a>
+                                        <a href="{{ route('login') }}">Sign</a> In or 
+                                        <div class="dropdown show">
+                                          <a class=" dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                           Create Account
+                                          </a>
+                                          <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                            <a href="{{ route('register') }}" class="items">Register</a>
+                                            <a href="{{ route('admin.create') }}" class="items">Register Admin</a>
+                                            <a href="{{ route('user.create') }}" class="items">Register User</a>
+                                            <a href="{{ route('company.create') }}" class="items">Register Company</a>
+                                            <a href="{{ route('designer.create') }}" class="items">Register Designer</a>
+                                          </div>
+                                        </div>                                          
                                     @endif
                                 </div>
                             @else
@@ -133,13 +148,21 @@
 
     <!--====== Javascripts & Jquery ======-->
     <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    
     <script src="{{ asset('js/jquery.slicknav.min.js') }}"></script>
     <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/jquery.nicescroll.min.js') }}"></script>
     <script src="{{ asset('js/jquery.zoom.min.js') }}"></script>
     <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+
+     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"> </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+        integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+        crossorigin="anonymous"></script>
 
     
 

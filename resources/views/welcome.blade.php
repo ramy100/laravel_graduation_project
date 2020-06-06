@@ -1,3 +1,4 @@
+
 @extends('layouts.app')
 
 @section('content')
@@ -102,7 +103,8 @@
                         <h6>$35,00</h6>
                         <p>Flamboyant Pink Top </p>
                     </div>
-                </div>
+
+       
                 <div class="product-item">
                     <div class="pi-pic">
                         <div class="tag-new">New</div>
