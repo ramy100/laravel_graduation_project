@@ -16,47 +16,47 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6 order-2 order-lg-1 design">
-					<form class="checkout-form" enctype="multipart/form-data" method="POST" action="{{route('design.store')}}">
+					<form class="checkout-form " enctype="multipart/form-data" method="POST" action="{{route('design.store')}}" >
 						<div class="cf-title">Add New Design</div>
 						<div class="row address-inputs">
 							<div class="col-md-12">
 								{{ csrf_field() }}
 
 								<!-- title -->
-								<input type="text" placeholder="Title" name="title" value="{{ old('title') ?? $design->title}}" >
+								<input type="text" placeholder="Title" name="title" value="{{ old('title') ?? $design->title}}" class="form-control  {{ $errors->first('title') ? 'is-invalid':''}}" autofocus>
 								@if($errors->first('title'))
-								<div class="alert alert-danger">{{$errors->first('title') }}</div>
+								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('title') }}</span>
 								@endif
 
 								<!-- price -->
-								<input type="text" placeholder="Price" name="price" value="{{ old('price') ?? $design->price}}">
+								<input type="text" placeholder="Price" name="price" autofocus value="{{ old('price') ? $design->price:''}}" class="form-control {{ $errors->first('price') ? 'is-invalid':''}}">
 								@if($errors->first('price'))
-								<div class="alert alert-danger">{{$errors->first('price') }}</div>
+								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('price') }}</span>
 								@endif
 
 								<!-- <input type="text" data-role="tagsinput" class="form-control" name="tags" placeholder="Tags" value="{{ old('tags') ?? $design->tags}}" > -->
 								
 								<!-- description -->
-								<textarea  name="description" placeholder="Description" class="form-control mb-2 mt-2" rows="4" cols="50" value="{{ old('description') ?? $design->description}}"></textarea>
+								<textarea  name="description" placeholder="Description" class="form-control mb-2 mt-2 {{ $errors->first('description') ? 'is-invalid':''}}" rows="4" cols="50" autofocus>{{ old('description') ?? $design->description}}</textarea>
 								@if($errors->first('description'))
-								<div class="alert alert-danger">{{$errors->first('description') }}</div>@endif	
+								<span class="invalid-feedback  d-block " role="alert">{{$errors->first('description') }}</span>@endif	
 
 								<!-- tags -->
-								<div>
-									<select id="tags" name="tag_id" class="form-control mb-2 js-example-basic-single">
+								<div  >
+									<select id="tags" name="tag_id" class="form-control mb-2 js-example-basic-single {{ $errors->first('tags') ? 'is-invalid':''}}" autofocus>
 									  <option value="" disabled selected>Tags</option>
 									  @foreach ($tags as $tag) 
-									  	<option value="{{ $tag ->id}}" >{{ $tag ->name}}</option>
+									  	<option value="{{ $tag ->id}}" {{  old('tag_id') && $tag->id ==old('tag_id') ?? 'selected' }} >{{ $tag ->name}}</option>
 									  @endforeach
 									</select>
 								</div>
 								@if($errors->first('tags'))
-								<div class="alert alert-danger">{{$errors->first('tags') }}</div>
+								<span class="invalid-feedback  d-block " role="alert">{{$errors->first('tags') }}</span>
 								@endif
 
 								<!-- material -->
 								<div class="mt-2">
-									<select id="Material" name="Material[]" class=" form-control js-example-placeholder-multiple" multiple="multiple">
+									<select id="Material" name="Material[]" class=" form-control js-example-placeholder-multiple" multiple="multiple" autofocus>
 									  
 									  @foreach ($designMaterial as $material) 
 									  	<option value="{{ $material ->id}}" >{{ $material ->name}}</option>
@@ -64,12 +64,12 @@
 									</select>
 								</div>
 								@if($errors->first('Material'))
-								<div class="alert alert-danger">{{$errors->first('Material') }}</div>
+								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('Material') }}</span>
 								@endif
 
 								<!-- category -->
 								<div style="margin: 10px 0;">
-									<select id="cars" name="category" class="form-control js-example-basic-single">
+									<select id="cars" name="category" class="form-control js-example-basic-single" autofocus>
 									  <option value="" disabled selected >Category</option>
 									  <option value="men">Men</option>
 									  <option value="women">Women</option>
@@ -78,25 +78,25 @@
 									</select>
 								</div>
 								@if($errors->first('category'))
-								<div class="alert alert-danger">{{$errors->first('category') }}</div>
+								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('category') }}</span>
 								@endif
 
 								<!-- source file pattron -->
 								<div class="form-group">
 									<label for="Pattern">Source Design Pattron</label>
-									<input type="file" name="sourceFile" id="Pattern" class="form-control"  >
+									<input type="file" name="sourceFile" id="Pattern" class="form-control"  autofocus {{ $errors->first('sourceFile') ? 'is-invalid':''}}>
 								</div>
 								@if($errors->first('sourceFile'))
-								<div class="alert alert-danger">{{$errors->first('sourceFile') }}</div>
+								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('sourceFile') }}</span>
 								@endif
 
 								<!-- images -->
 								<div class="form-group">
 									<label for="imgeFile">Design Images  (can attach more than one) </label>
-									<input type="file" id="imgeFile" name="images[]" class="form-control" multiple >
+									<input type="file" id="imgeFile" name="images[]" class="form-control" multiple autofocus {{ $errors->first('images') ? 'is-invalid':''}}>
 								</div>
 								@if($errors->first('images'))
-								<div class="alert alert-danger">{{$errors->first('images') }}</div>
+								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('images') }}</span>
 								@endif
 
 							</div>
