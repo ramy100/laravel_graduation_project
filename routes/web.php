@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Auth;
 
 Route::get('/', 'IndexController@index')->name('website.index');
 
-
-Route::get('/checkout', 'IndexController@checkout')->name('website.checkout');
+// payement
+// Route::get('/checkout', 'IndexController@checkout')->name('website.checkout');
 
 // cart routes
 Route::get('/cart', 'CartController@cart')->name('website.cart');
@@ -48,6 +48,8 @@ Route::post('/admin/register','AdminController@register')->name('admin.register'
 Route::get('/403', function () {
     return view('auth.403');
 });
+
+
 // Routes for both tags and material resources
 Route::resource('admin/tag', 'TagController');
 Route::resource('admin/material', 'MaterialController');

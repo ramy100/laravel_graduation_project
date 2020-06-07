@@ -67,7 +67,7 @@
                         <div class="feature-icon">
                             <img src="{{ asset('images/icons/2.png') }}" alt="#">
                         </div>
-                        <h2>Premium Products</h2>
+                        <h2>Premium Designs</h2>
                     </div>
                 </div>
                 <div class="col-md-4 p-0 feature">
@@ -75,7 +75,7 @@
                         <div class="feature-icon">
                             <img src="{{ asset('images/icons/3.png') }}" alt="#">
                         </div>
-                        <h2>Free & fast Delivery</h2>
+                        <h2>One Click Delivery</h2>
                     </div>
                 </div>
             </div>
@@ -84,11 +84,11 @@
     <!-- Features section end -->
 
 
-    <!-- letest product section -->
+    <!-- letest design section -->
     <section class="top-letest-product-section">
         <div class="container">
             <div class="section-title">
-                <h2>LATEST PRODUCTS</h2>
+                <h2>LATEST DESIGNS</h2>
             </div>
             <div class="product-slider owl-carousel">
                
@@ -105,155 +105,44 @@
                             <h6>${{ $item->price }}</h6>
                             <p>{{ $item->title}}</p>
                         </div>
-                
                     </div>
-       
                 @endforeach
                
             </div>
     </section>
-    <!-- letest product section end -->
-
+    <!-- letest design section end -->
 
 
     <!-- Product filter section -->
     <section class="product-filter-section">
         <div class="container">
             <div class="section-title">
-                <h2>BROWSE TOP SELLING PRODUCTS</h2>
+                <h2>BROWSE TOP LIKED DESIGNS</h2>
             </div>
             <ul class="product-filter-menu">
-                <li><a href="#">TOPS</a></li>
-                <li><a href="#">JUMPSUITS</a></li>
-                <li><a href="#">LINGERIE</a></li>
-                <li><a href="#">JEANS</a></li>
-                <li><a href="#">DRESSES</a></li>
-                <li><a href="#">COATS</a></li>
-                <li><a href="#">JUMPERS</a></li>
-                <li><a href="#">LEGGINGS</a></li>
+                <h4 class="mb-1">Our Tags</h4>
+                @foreach ($tags as $tag)
+                    <li><a href="#">{{$tag->name}}</a></li>
+                @endforeach
             </ul>
             <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="{{ asset('images/product/1.jpg') }}" alt="">
-                            <div class="pi-links">
-                                <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+                @foreach ($topDesigns as $design)
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="product-item">
+                            <div class="pi-pic">
+                                <img src="{{ asset('images/product/9.jpg') }}" alt="">
+                                <div class="pi-links">
+                                <a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
+                                    <a href="javascript:void(0)" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+                                </div>
+                            </div>
+                            <div class="pi-text">
+                                <h6>${{ $design->price }}</h6>
+                                <p>{{ $design->title}}</p>
                             </div>
                         </div>
-                        <div class="pi-text">
-                            <h6>$35,00</h6>
-                            <p>Flamboyant Pink Top </p>
-                        </div>
                     </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <div class="tag-sale">ON SALE</div>
-                            <img src="{{ asset('images/product/6.jpg') }}" alt="">
-                            <div class="pi-links">
-                                <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                            </div>
-                        </div>
-                        <div class="pi-text">
-                            <h6>$35,00</h6>
-                            <p>Black and White Stripes Dress</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="{{ asset('images/product/7.jpg') }}" alt="">
-                            <div class="pi-links">
-                                <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                            </div>
-                        </div>
-                        <div class="pi-text">
-                            <h6>$35,00</h6>
-                            <p>Flamboyant Pink Top </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="{{ asset('images/product/8.jpg') }}" alt="">
-                            <div class="pi-links">
-                                <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                            </div>
-                        </div>
-                        <div class="pi-text">
-                            <h6>$35,00</h6>
-                            <p>Flamboyant Pink Top </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="{{ asset('images/product/9.jpg') }}" alt="">
-                            <div class="pi-links">
-                                <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                            </div>
-                        </div>
-                        <div class="pi-text">
-                            <h6>$35,00</h6>
-                            <p>Flamboyant Pink Top </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="{{ asset('images/product/10.jpg') }}" alt="">
-                            <div class="pi-links">
-                                <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                            </div>
-                        </div>
-                        <div class="pi-text">
-                            <h6>$35,00</h6>
-                            <p>Black and White Stripes Dress</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="{{ asset('images/product/11.jpg') }}" alt="">
-                            <div class="pi-links">
-                                <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                            </div>
-                        </div>
-                        <div class="pi-text">
-                            <h6>$35,00</h6>
-                            <p>Flamboyant Pink Top </p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="product-item">
-                        <div class="pi-pic">
-                            <img src="{{ asset('images/product/12.jpg') }}" alt="">
-                            <div class="pi-links">
-                                <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                            </div>
-                        </div>
-                        <div class="pi-text">
-                            <h6>$35,00</h6>
-                            <p>Flamboyant Pink Top </p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <div class="text-center pt-5">
                 <button class="site-btn sb-line sb-dark">LOAD MORE</button>
@@ -262,15 +151,14 @@
     </section>
     <!-- Product filter section end -->
 
-
     <!-- Banner section -->
     <section class="banner-section">
         <div class="container">
             <div class="banner set-bg" data-setbg="{{ asset('images/banner-bg.jpg') }}">
                 <div class="tag-new">NEW</div>
-                <span>New Arrivals</span>
-                <h2>STRIPED SHIRTS</h2>
-                <a href="#" class="site-btn">SHOP NOW</a>
+                <span>New DESIGNS</span>
+                <h2>EVERY DAY</h2>
+                <a href="#" class="site-btn">VOTE NOW</a>
             </div>
         </div>
     </section>

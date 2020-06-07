@@ -5,7 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Cart;
-
+use Auth;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -29,12 +29,17 @@ class AppServiceProvider extends ServiceProvider
         
 
         view()->composer('*', function($v){
-            if(Cart::isEmpty()){
+            if(Auth::user()){
+                $userID = Auth::user()->id;
+                if(Cart::session($userID)->isEmpty()){
+                    $count = 0;
+                }
+                else{
+                    $count = count(Cart::session($userID)->getContent());
+                }            
+            }else{
                 $count = 0;
             }
-            else{
-                $count = count(Cart::getContent());
-            }            
             $v->with(['cart_count' => $count]);
         });
 
