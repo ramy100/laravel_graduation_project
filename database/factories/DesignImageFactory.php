@@ -8,7 +8,7 @@ use Faker\Generator as Faker;
 $factory->define(DesignImage::class, function (Faker $faker) {
     return [
         //
-        'image' => 'uploads/'.Str::random(10),
+        'image' => 'uploads/'.$faker->name,
         'design_id' => $faker->numberBetween(1,10),
 
     ];

@@ -34,9 +34,8 @@ class AllUsersRegisterController extends RegisterController
             $role = 'user';
         }elseif ($request->is('register/designer')) {
             $role = 'designer';
-        }else{
-            $role='user';
         }
+        
         // validating request data
         $this->validator($request->all())->validate();
         // creating a new user   
@@ -46,7 +45,7 @@ class AllUsersRegisterController extends RegisterController
             return $response;
         }
         // login user immediatly after registertaion success
-        if ($role != 'admin'){
+        if (!Auth::check()) {
             $this->guard()->login($user);
         }
         

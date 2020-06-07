@@ -26,6 +26,7 @@ $factory->define(User::class, function (Faker $faker) {
         'remember_token' => Str::random(10),
         'address' => Str::random(10),
         'phone' => $faker->phoneNumber,
-        'image' => 'images/default.jpg',
+        'role' =>'company',
+        'image' => 'uploads/'.$faker->image('public/storage/uploads',100,100, null, false),
     ];
 });

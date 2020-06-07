@@ -4,30 +4,18 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
-
-class CompanyController extends Controller
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Response;
+use App\Http\Controllers\Auth\RegisterController;
+use App\Traits\UpdateUsers;
+class AllUsersUpdateController extends RegisterController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $companies=User::where('role','=','company')->get();
-        return view('companies.index',compact('companies'));
-    }
+    use UpdateUsers;
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function __construct()
     {
-        //
+        // $this->middleware('guest');
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -45,10 +33,9 @@ class CompanyController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $company)
+    public function show(User $user)
     {
-        $company=User::find($company->id);
-        return view('companies.show',compact('company'));
+        //
     }
 
     /**
@@ -57,9 +44,12 @@ class CompanyController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $company)
+    public function edit(User $user)
     {
-        //
+        $edit_user=User::find($user->id);
+        $role=$edit_user->role;
+        $route='user.update';
+        return view('auth.edit',compact('edit_user','role','route'));
     }
 
     /**
@@ -69,10 +59,22 @@ class CompanyController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request,User $user)
     {
-        //
+        $this->update_validator($request->all(),$user)->validate();
+
+        event(new Registered($is_updated = $this->update_user($request->all(),$user)));
+
+        if ($response = $this->updated($request, $is_updated,$user)) {
+            return $response;
+        }
+
+        return $request->wantsJson()
+                    ? new Response('', 201)
+                    : redirect($this->redirectPath());
     }
+
+    
 
     /**
      * Remove the specified resource from storage.
