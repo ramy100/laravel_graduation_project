@@ -50,7 +50,9 @@ Route::resource('company', 'CompanyController')->except([
 Route::resource('user','AllUsersUpdateController')->only([
     'update','edit'
 ]);
-
+Route::resource('designer', 'DesignerController')->except([
+    'create','store'
+]);
 Route::get('/403', function () {
     return view('auth.403');
 });
