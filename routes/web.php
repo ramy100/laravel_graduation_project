@@ -43,7 +43,7 @@ Route::post('/register/user','AllUsersRegisterController@register')->name('user.
 Route::post('/register/admin','AllUsersRegisterController@register')->middleware('check-role:admin')->name('admin.registeration');
 Route::post('/register/company','AllUsersRegisterController@register')->name('company.registeration');
 Route::post('/register/designer','AllUsersRegisterController@register')->name('designer.registeration');
-
+Route::get('company/{user}/shop','CompanyController@shop')->name('company.shop');
 Route::resource('company', 'CompanyController')->except([
     'create', 'store','update','edit'
 ]);
