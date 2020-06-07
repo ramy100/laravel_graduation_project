@@ -87,7 +87,7 @@
 							</div>
 						</div>
 						@empty
-							<div class="alert alert-danger">No Companies Yet!</div>
+						<div class="alert alert-danger">No Companies Yet!</div>
 						@endforelse
 						
 				</div>
