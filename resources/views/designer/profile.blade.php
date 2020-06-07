@@ -12,7 +12,7 @@
                         </br>
                         <div class="col-lg-3" >
                         <a style="display:block;" href="{{ route('user.edit',$designer) }}" class="btn btn-info">Edit Profile</a>
-                        </div>
+                        </div> 
 						</br>
 						<div class="col-lg-3" >
 						{!! Form::open(['route'=>['designer.destroy',$designer],'method'=>'delete']) !!} 
