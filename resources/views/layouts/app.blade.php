@@ -44,13 +44,13 @@
                 <div class="row">
                     <div class="col-lg-2 text-center text-lg-left">
                         <!-- logo -->
-                        <a href="./index.html" class="site-logo">
+                        <a href="/" class="site-logo">
                             <img src="{{ asset('images/logo.png') }}" alt="">
                         </a>
                     </div>
                     <div class="col-xl-6 col-lg-5">
                         <form class="header-search-form">
-                            <input type="text" placeholder="Search on divisima ....">
+                            <input type="text" placeholder="Search on My Design ....">
                             <button><i class="flaticon-search"></i></button>
                         </form>
                     </div>
@@ -97,9 +97,9 @@
                             <div class="up-item">
                                 <div class="shopping-card">
                                     <i class="flaticon-bag"></i>
-                                    <span>0</span>
+                                <span id="cart-count">{{ $cart_count }}</span>
                                 </div>
-                                <a href="#">Shopping Cart</a>
+                            <a href="{{ route('website.cart') }}">Shopping Cart</a>
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
             <div class="container">
                 <!-- menu -->
                 <ul class="main-menu">
-                    <li><a href="#">Home</a></li>
+                    <li><a href="/">Home</a></li>
                     <li><a href="#">Women</a></li>
                     <li><a href="#">Men</a></li>
                     <li><a href="#">Jewelry
@@ -265,6 +265,30 @@
         integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
         crossorigin="anonymous"></script>
     
+
+
+<script>
+    $(document).ready(function(){
+
+        $(document).on('click', '.add-card', function(){
+            var design_id = $(this).data('id');
+            $.post('{{ route('add-to-cart') }}', {"_token": "{{ csrf_token() }}","id": design_id}, function(response){
+				
+                if(response.status == '1'){
+
+                    $(document).find('#cart-count').html(response.count);
+                    
+                }
+                    alert(response.msg);
+            }).fail(function(error){
+
+            })
+
+        })
+
+    });
+</script>
+
 
      @stack('scripts')
 

@@ -14,7 +14,7 @@ class AddRateToDesignerRatesTable extends Migration
     public function up()
     {
         Schema::table('designer_rates', function (Blueprint $table) {
-            $table->float('rate',2,1);
+            $table->integer('rate')->default(0);
         });
     }
 

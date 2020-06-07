@@ -13,9 +13,18 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'IndexController@index')->name('website.index');
+
+// payement
+// Route::get('/checkout', 'IndexController@checkout')->name('website.checkout');
+
+// cart routes
+Route::get('/cart', 'CartController@cart')->name('website.cart');
+Route::post('add-to-cart', 'CartController@addToCart')->name('add-to-cart');
+Route::post('remove-from-cart', 'CartController@removeFromCart')->name('remove-from-cart');
+Route::get('load-cart-data', 'CartController@loadCartData')->name('load-cart');
+Route::get('empty-cart', 'CartController@emptyCart')->name('empty-cart');
+
 
 Auth::routes();
 
@@ -45,6 +54,8 @@ Route::resource('user','AllUsersUpdateController')->only([
 Route::get('/403', function () {
     return view('auth.403');
 });
+
+
 // Routes for both tags and material resources
 Route::resource('admin/tag', 'TagController');
 Route::resource('admin/material', 'MaterialController');
