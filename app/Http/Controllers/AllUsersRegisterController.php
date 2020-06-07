@@ -12,8 +12,12 @@ use Illuminate\Support\Facades\Auth;
 
 class AllUsersRegisterController extends RegisterController
 {
-    public function __construct(){
-        // $this->middleware('check-role:admin');
+    public function __construct(Request $request){
+        if ($request->is('register/admin')){
+            $this->middleware('check-role:admin');
+        }else{
+            $this->middleware('guest');
+        }
     }
     // Showing Registeration form dynamically
     public function RegistrationForm(Request $request,$role){

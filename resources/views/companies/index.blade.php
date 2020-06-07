@@ -4,7 +4,7 @@
 	<!-- Page info -->
 	<div class="page-top-info">
 		<div class="container">
-			<h4>Designs PAge</h4>
+			<h4>Our Companies</h4>
 		</div>
 	</div>
 	<!-- Page info end -->
@@ -74,11 +74,11 @@
 						<div class="col-lg-4 col-sm-6">
 							<div class="product-item">
 								<div class="pi-pic">
-                                    <img src="{{asset('storage/'.$company->image)}}" alt="" class="img-thumbnail" style="width: 200px; height:100px">
-									<div class="pi-links">
+                                    <img src="{{asset('storage/'.$company->image)}}" alt="" class="img-thumbnail" style="width: 300px; height:200px">
+									<!-- <div class="pi-links">
 										<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 										<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-									</div>
+									</div> -->
 								</div>
 
 								<div class="pi-text">
