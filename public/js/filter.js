@@ -42,7 +42,7 @@
 		            		<div class="col-lg-4 col-sm-6">
 							<div class="product-item">
 								<div class="pi-pic">
-									<img src="{{asset ('storage/app/${element.image}') }} " alt="Design Image" id="designImage">
+									<img src="{{asset ('storage/${element.image}') }} " alt="Design Image" id="designImage">
 									<div class="pi-links">
 										<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 										<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
