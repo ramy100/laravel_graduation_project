@@ -23,18 +23,18 @@ class DesignController extends Controller
      */
     public function index()
     {
-        $designers=[];
-        $rates=DesignerRate::whereHas('designer', function($query){
-            $query->where('role','=','designer');
-        })->select('designer_id',DB::raw('AVG(rate) as rate'))->groupBy('designer_id')->orderBy('rate','desc')->limit(5)->get();
-        foreach ($rates as $rate) {
-            $designer=User::find($rate->designer_id);
-            array_push($designers,$designer); 
-        }
+        // $designers=[];
+        // $rates=DesignerRate::whereHas('designer', function($query){
+        //     $query->where('role','=','designer');
+        // })->select('designer_id',DB::raw('AVG(rate) as rate'))->groupBy('designer_id')->orderBy('rate','desc')->limit(5)->get();
+        // foreach ($rates as $rate) {
+        //     $designer=User::find($rate->designer_id);
+        //     array_push($designers,$designer); 
+        // }
         $desings=Design::paginate(9);
         $maxPrice=Design::all()->max('price');
         $minPrice=Design::all()->min('price');
-        return view('designs.index',compact('designers','desings','maxPrice','minPrice'));
+        return view('designs.index',compact('desings','maxPrice','minPrice'));
         //
     }
 
@@ -62,9 +62,6 @@ class DesignController extends Controller
             {
                 $designs=Design::all()->whereBetween('price',[$min,$max])->sortBy('created_at');
             }
-            // $designs=Design::whereHas('votes', function($query){
-            // $query->select('design_id',DB::raw('AVG(vote) as vote'))->groupBy('design_id')->orderBy('vote');
-            // })
         }
         else if(!$filterType && $category)
         {
@@ -87,11 +84,6 @@ class DesignController extends Controller
         {
             $designs=Design::all()->whereBetween('price',[$min,$max]);
         }
-        // foreach ($designs as $design) {
-        //     echo gettype($design);
-        //     $designImage=$design->images()->first()->image;
-        //     $designer=$design->designer->name;
-        // }
         foreach($designs as $design){ 
             $design->{'image'}=$design->images()->first()->image;
             $design->{'designer'}=$design->designer->name;
