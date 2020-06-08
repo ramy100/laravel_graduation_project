@@ -5,6 +5,9 @@
 	<div class="page-top-info">
 		<div class="container">
 			<h4>Company Profile</h4>
+			@can('update', $company)
+			<a name="" id="" class="btn btn-primary" href="{{ route('user.edit',$company) }}" role="button">Edit Profile</a>
+			@endcan
 		</div>
 	</div>
 	<!-- Page info end -->

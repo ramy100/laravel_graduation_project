@@ -33,13 +33,19 @@ trait UpdateUsers
         else
             $image=$user->image;
 
-        return $user->update([
+        $user->profile->update([
+            'about' => $data['about'],
+            'website' => $data['website'],
+        ]);    
+
+        $updated =  $user->update([
             'name' => $data['name'],
             'email' => $data['email'],
             'address' => $data['address'],
             'phone' => $data['phone'],
             'image' => $image,
         ]);
+        return $updated;
     }
 
     protected function updated(Request $request, $is_updated,$user)

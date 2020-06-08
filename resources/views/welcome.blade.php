@@ -153,7 +153,7 @@
                                 <img src="{{ asset('images/product/9.jpg') }}" alt="">
                                 <div class="pi-links">
                                     @if ($role == 'company')
-                                        <a href="javascript:void(0)" data-id="{{ $item->id }}" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
+                                        <a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
                                     @endif                                    
                                     <a href="javascript:void(0)" class="wishlist-btn"><i class="flaticon-heart"></i></a>
                                 </div>
