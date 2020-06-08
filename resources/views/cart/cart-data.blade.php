@@ -46,12 +46,8 @@
 				</div>
 			</div>
 			<div class="col-lg-4 card-right">
-				<form class="promo-code-form">
-					<input type="text" placeholder="Enter promo code">
-					<button>Submit</button>
-				</form>
-				{{-- <a href="{{ route('checkout') }}" class="site-btn">Proceed to checkout</a>
-				<a href="{{ route('website.index') }}" class="site-btn sb-dark">Continue shopping</a> --}}
+				<a href="{{ route('checkout') }}" class="site-btn">Proceed to checkout</a>
+				<a href="{{ route('website.index') }}" class="site-btn sb-dark">Continue shopping</a>
 				<a href="{{ route('empty-cart') }}" class="site-btn">Empty your cart</a>
 			</div>
 		</div>

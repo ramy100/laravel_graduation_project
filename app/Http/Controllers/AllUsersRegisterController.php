@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Profile;
 use Illuminate\Http\Response;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -13,14 +14,13 @@ use Illuminate\Support\Facades\Auth;
 class AllUsersRegisterController extends RegisterController
 {
     public function __construct(Request $request){
-        if ($request->is('register/admin')){
-            $this->middleware('check-role:admin');
-        }else{
-            $this->middleware('guest');
+        if (!$request->is('register/admin')){
+            $this->middleware('admin-or-guest');
         }
     }
     // Showing Registeration form dynamically
     public function RegistrationForm(Request $request,$role){
+        $this->authorize_registeration_forms($request);
         return view('auth.allregister',[
             'route'=>$role.'.registeration',
             'role'=>$role
@@ -30,6 +30,7 @@ class AllUsersRegisterController extends RegisterController
     // registeration method
     public function register(Request $request)
     {
+        $this->authorize_registeration_forms($request);
         if ($request->is('register/admin')){
             $role = 'admin';
         }elseif ($request->is('register/company')) {
@@ -68,7 +69,7 @@ class AllUsersRegisterController extends RegisterController
         else
             $image=null;
 
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'address' => $data['address'],
@@ -77,6 +78,13 @@ class AllUsersRegisterController extends RegisterController
             'role' => $role,
             'password' => Hash::make($data['password']),
         ]);
+        
+        Profile::create([
+            'user_id'=>$user->id,
+            'about'=>'empty',
+            'website'=>'empty'
+            ]);
+        return $user;
     }
     
     
@@ -100,5 +108,13 @@ class AllUsersRegisterController extends RegisterController
     protected function registered(Request $request, $user)
     {
         //
+    }
+
+    protected function authorize_registeration_forms(Request $request)
+    {
+        $user=Auth::user();
+        if ($request->is('register/admin')){
+            $this->authorize('create',$user);
+        }
     }
 }
