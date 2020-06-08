@@ -51,6 +51,12 @@ class CompanyController extends Controller
         return view('companies.show',compact('company'));
     }
 
+    public function shop(User $user)
+    {
+        $company=$user;
+        return view('companies.shop',compact('company'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
