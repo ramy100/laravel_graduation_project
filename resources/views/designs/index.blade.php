@@ -53,16 +53,7 @@
 					</div>
 					
 					
-					<div class="filter-widget">
-						<h2 class="fw-title">Top Rated Designers</h2>
-						<ul class="category-menu">
-							@forelse ($designers as $designer)
-							<li><a href="#">{{$designer->name}} </a></li>
-							@empty
-								<div>No Designers Yet!</div>
-							@endforelse
-						</ul>
-					</div>
+					
 				</div>
 <!-- filter end -->
 				<div class="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0">
