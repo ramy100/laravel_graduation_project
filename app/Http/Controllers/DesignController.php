@@ -60,7 +60,7 @@ class DesignController extends Controller
             }
             else if($filterType == 'Latest')
             {
-                $designs=Design::all()->whereBetween('price',[$min,$max])->sortBy('created_at');
+                $designs=Design::all()->whereBetween('price',[$min,$max])->sortByDesc('created_at');
             }
         }
         else if(!$filterType && $category)
@@ -77,7 +77,7 @@ class DesignController extends Controller
             }
             else if($filterType == 'Latest')
             {
-                $designs=Design::all()->whereBetween('price',[$min,$max])->where('category',$category)->sortBy('created_at')->toArray();
+                $designs=Design::all()->whereBetween('price',[$min,$max])->where('category',$category)->sortByDesc('created_at')->toArray();
             }
         }
         else if(!$filterType && !$category)
