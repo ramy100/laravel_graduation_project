@@ -6,6 +6,7 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Profile;
 use Illuminate\Http\Response;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
@@ -68,7 +69,7 @@ class AllUsersRegisterController extends RegisterController
         else
             $image=null;
 
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'address' => $data['address'],
@@ -77,6 +78,13 @@ class AllUsersRegisterController extends RegisterController
             'role' => $role,
             'password' => Hash::make($data['password']),
         ]);
+        
+        Profile::create([
+            'user_id'=>$user->id,
+            'about'=>'empty',
+            'website'=>'empty'
+            ]);
+        return $user;
     }
     
     
