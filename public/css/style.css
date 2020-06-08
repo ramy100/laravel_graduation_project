@@ -77,7 +77,10 @@ a:focus {
 	text-decoration: none;
 	outline: none;
 }
-
+#designImage{
+	width: 300px;
+	height: 300px;
+}
 ul,
 ol {
 	padding: 0;

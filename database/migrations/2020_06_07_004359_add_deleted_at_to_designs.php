@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddRateToDesignerRatesTable extends Migration
+class AddDeletedAtToDesigns extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddRateToDesignerRatesTable extends Migration
      */
     public function up()
     {
-        Schema::table('designer_rates', function (Blueprint $table) {
-            $table->integer('rate')->default(0);
+        Schema::table('designs', function (Blueprint $table) {
+            //
+            $table->softDeletes();
+
         });
     }
 
@@ -25,9 +27,9 @@ class AddRateToDesignerRatesTable extends Migration
      */
     public function down()
     {
-        Schema::table('designer_rates', function (Blueprint $table) {
-             $table->dropColumn('rate');
-
+        Schema::table('designs', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+            //
         });
     }
 }

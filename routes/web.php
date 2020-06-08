@@ -21,6 +21,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::post('design/filterBy', 'DesignController@filterBy');
 Route::resource('design', 'DesignController');
 // socialite login routes
 Route::get('auth/social', 'Auth\LoginController@show')->name('social.login');

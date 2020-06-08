@@ -102,7 +102,7 @@
 
 								<!-- Images -->
 								<div class="form-group">
-										<label for="imgeFile">Add Another Design Images  (can attach more than one) </label>
+										<label for="imgeFile">Add other Design Images  (can attach more than one) </label>
 										<input type="file" id="imgeFile" name="images[]" class="form-control" multiple >
 									</div>
 								<!-- <div class="row">
@@ -138,6 +138,7 @@
 		});
 		 function displayImage(input,ImageId)
 		 {
+		 	console.log(ImageId);
 		 	var image= $('#'+ImageId);
 		 	if (input.files && input.files[0]) {
             var reader = new FileReader();
