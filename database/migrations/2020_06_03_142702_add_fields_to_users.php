@@ -17,7 +17,7 @@ class AddFieldsToUsers extends Migration
             //
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
-            $table->string('image')->default('');
+            $table->string('image')->nullable();
             $table->enum('role', ['admin','user','designer','company'])->default('user');	
         });
     }

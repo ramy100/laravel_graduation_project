@@ -13,9 +13,18 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'IndexController@index')->name('website.index');
+
+// payement
+// Route::get('/checkout', 'IndexController@checkout')->name('website.checkout');
+
+// cart routes
+Route::get('/cart', 'CartController@cart')->name('website.cart');
+Route::post('add-to-cart', 'CartController@addToCart')->name('add-to-cart');
+Route::post('remove-from-cart', 'CartController@removeFromCart')->name('remove-from-cart');
+Route::get('load-cart-data', 'CartController@loadCartData')->name('load-cart');
+Route::get('empty-cart', 'CartController@emptyCart')->name('empty-cart');
+
 
 Auth::routes();
 
@@ -29,17 +38,27 @@ Route::get('oauth/{driver}', 'Auth\LoginController@redirectToProvider')->name('s
 Route::get('oauth/{driver}/callback', 'Auth\LoginController@handleProviderCallback')->name('social.callback');
 
 
-Route::get('/designer/create','DesignerController@showRegistrationForm')->name('designer.create');
-Route::get('/user/create','UserController@showRegistrationForm')->name('user.create');
-Route::get('/company/create','CompanyController@showRegistrationForm')->name('company.create');
-Route::get('/admin/create','AdminController@showRegistrationForm')->name('admin.create');
-Route::post('/designer/register','DesignerController@register')->name('designer.register');
-Route::post('/user/register','UserController@register')->name('user.register');
-Route::post('/company/register','CompanyController@register')->name('company.register');
-Route::post('/admin/register','AdminController@register')->name('admin.register');
+Route::get('/register/{role}','AllUsersRegisterController@RegistrationForm')
+->where('role','admin|user|designer|company')->name('registeration.form');
+Route::post('/register/user','AllUsersRegisterController@register')->name('user.registeration');
+Route::post('/register/admin','AllUsersRegisterController@register')->middleware('check-role:admin')->name('admin.registeration');
+Route::post('/register/company','AllUsersRegisterController@register')->name('company.registeration');
+Route::post('/register/designer','AllUsersRegisterController@register')->name('designer.registeration');
+Route::get('company/{user}/shop','CompanyController@shop')->name('company.shop');
+Route::resource('company', 'CompanyController')->except([
+    'create', 'store','update','edit'
+]);
+Route::resource('user','AllUsersUpdateController')->only([
+    'update','edit'
+]);
+Route::resource('designer', 'DesignerController')->except([
+    'create','store'
+]);
 Route::get('/403', function () {
     return view('auth.403');
 });
+
+
 // Routes for both tags and material resources
 Route::resource('admin/tag', 'TagController');
 Route::resource('admin/material', 'MaterialController');

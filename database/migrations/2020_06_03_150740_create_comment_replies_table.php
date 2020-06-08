@@ -18,7 +18,7 @@ class CreateCommentRepliesTable extends Migration
             $table->timestamps();
 
             
-            $table->string('body');
+            $table->string('body',255);
 
             $table->unsignedBigInteger('comment_id');
             $table->unsignedBigInteger('user_id');

@@ -23,10 +23,10 @@ class CreateCompanyDesignsTable extends Migration
             $table->string('image');
             $table->string('link');
 
-
             $table->foreign('design_id')->references('id')->on('designs');
             $table->foreign('company_id')->references('id')->on('users');
         });
+
     }
 
     /**

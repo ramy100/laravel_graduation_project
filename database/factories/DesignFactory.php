@@ -12,10 +12,10 @@ $factory->define(Design::class, function (Faker $faker) {
         'company_id' => $faker->numberBetween(1,10),
         'designer_id' => $faker->numberBetween(1,10),
         'description' => $faker->text,
-        'title' => $faker->text,
+        'title' => $faker->catchPhrase,
         'price' => $faker->randomFloat(2,10,100),
         'state' => "sketch",
         'category' => "men",
-        'source_file' => 'uploads/'.Str::random(10),
+        'source_file' => 'uploads/'.$faker->name,
     ];
 });

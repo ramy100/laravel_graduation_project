@@ -4,14 +4,12 @@
 
 use App\Profile;
 use Faker\Generator as Faker;
-
 $factory->define(Profile::class, function (Faker $faker) {
+    static $number = 1;
     return [
         //
-
-        'user_id' => $faker->numberBetween(1,10),
-        'website' => Str::random(10),
-        'about' => Str::random(10),
-
+        'user_id' => $number++,
+        'website' => $faker->domainName,
+        'about' => $faker->paragraph($nbSentences = 3, $variableNbSentences = true),
     ];
 });
