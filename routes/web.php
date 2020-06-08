@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', 'IndexController@index')->name('website.index');
 
 // payement
-// Route::get('/checkout', 'IndexController@checkout')->name('website.checkout');
+Route::get('/checkout', 'CheckoutController@checkout')->name('checkout');
 
 // cart routes
 Route::get('/cart', 'CartController@cart')->name('website.cart');
