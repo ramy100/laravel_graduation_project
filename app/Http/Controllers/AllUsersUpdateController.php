@@ -46,6 +46,7 @@ class AllUsersUpdateController extends RegisterController
      */
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
         $edit_user=User::find($user->id);
         $role=$edit_user->role;
         $route='user.update';
@@ -61,6 +62,7 @@ class AllUsersUpdateController extends RegisterController
      */
     public function update(Request $request,User $user)
     {
+        $this->authorize('update', $user);
         $this->update_validator($request->all(),$user)->validate();
 
         event(new Registered($is_updated = $this->update_user($request->all(),$user)));

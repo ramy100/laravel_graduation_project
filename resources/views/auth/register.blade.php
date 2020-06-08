@@ -54,25 +54,6 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="role" class="col-md-4 col-form-label text-md-right">{{ __('Role') }}</label>
-
-                            <div class="col-md-6">
-                                <select id="role" class="custom-select @error('role') is-invalid @enderror" name="role" value="{{ old('role') }}" required autocomplete="role">
-                                    <option value="" selected>Open this select menu</option>
-                                    <option value="admin">admin</option>
-                                    <option value="designer">designer</option>
-                                    <option value="user">user</option>
-                                    <option value="company">company</option>
-                                </select>
-                                @error('role')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
                             <label for="image" class="col-md-4 col-form-label text-md-right">{{ __('Image') }}</label>
 
                             <div class="col-md-6">
