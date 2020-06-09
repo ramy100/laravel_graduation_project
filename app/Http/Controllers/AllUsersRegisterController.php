@@ -84,8 +84,8 @@ class AllUsersRegisterController extends RegisterController
             if($role === 'company'){
                 Profile::create([
                     'user_id'=>$user->id,
-                    'about'=>'empty',
-                    'website'=>'empty'
+                    'about'=>$data['about'],
+                    'website'=>$data['website'],
                     ]);
                 $user->createAsStripeCustomer();
             }
