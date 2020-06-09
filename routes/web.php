@@ -17,6 +17,7 @@ Route::get('/', 'IndexController@index')->name('website.index');
 
 // payement
 Route::get('/checkout', 'CheckoutController@checkout')->name('checkoutPage');
+Route::post('/checkout', 'CompanyPaymentController@credit_card_checkout')->name('pay.credit.card');
 
 // cart routes
 Route::get('/cart', 'CartController@cart')->name('website.cart');
@@ -30,6 +31,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::post('design/filterBy', 'DesignController@filterBy');
 Route::resource('design', 'DesignController');
 // socialite login routes
 Route::get('auth/social', 'Auth\LoginController@show')->name('social.login');

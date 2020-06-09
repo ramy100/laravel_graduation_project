@@ -76,10 +76,11 @@ class PayPalController extends Controller
         $order = new Order();
         $order->company_id = auth()->user()->id;
         $order->total = Cart::session(auth()->user()->id)->getTotal();
+        $order->payment_method = 'paypal';
         if (!strcasecmp($status, 'Completed') || !strcasecmp($status, 'Processed')) {
             $order->state = 'success';
         } else {
-            $invoice->paid = 'failed';
+            $order->state = 'failed';
         }
         $order->save();
 

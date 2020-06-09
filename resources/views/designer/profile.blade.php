@@ -28,7 +28,7 @@
                     <h4 class="p-stock">Phone <span>{{$designer->phone}}</span></h4>
 					<h4 class="p-stock">Address <span>{{$designer->address}}</span></h4>
                     @if($user->role == "designer")
-					<a href="#" class="btn site-btn"style="margin-top:15px;">ADD NEW DESIGN</a>
+					<a href="{{route('design.create')}}" class="btn site-btn"style="margin-top:15px;">ADD NEW DESIGN</a>
                     @endif
 					<div id="accordion" class="accordion-area">
 						<div class="panel">
@@ -73,7 +73,7 @@
 			<div class="product-slider owl-carousel">
 				<div class="product-item">
 					<div class="pi-pic">
-						<img src="<?php echo asset("storage/$design->source_file")?>" alt="">
+						<a href="{{route('design.show', ['design' => $design->id])}}"><img src="{{asset ('storage/'.$design->images()->first()->image) }}" alt=""></a>
 						<div class="pi-links">
 							<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 							<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
@@ -100,7 +100,7 @@
             @foreach($current_designs as $design)
 				<div class="product-item">
 					<div class="pi-pic">
-						<img src="<?php echo asset("storage/$design->source_file")?>" alt="">
+						<a href="{{route('design.show', ['design' => $design->id])}}"><img src="{{asset ('storage/'.$design->images()->first()->image) }}" alt=""></a>
 						<div class="pi-links">
 							<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 							<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>

@@ -18,7 +18,9 @@ class CreateOrdersTable extends Migration
             $table->unsignedBigInteger('company_id');
             $table->string('total');
             $table->string('state');
-            $table->foreign('company_id')->references('id')->on('users');            $table->timestamps();
+            $table->enum('payment_method',['paypal','credit_card']);
+            $table->foreign('company_id')->references('id')->on('users');            
+            $table->timestamps();
         });
     }
 
