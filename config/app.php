@@ -177,7 +177,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
        
-
+        // paypal service provider
+        Srmklive\PayPal\Providers\PayPalServiceProvider::class,
     ],
 
     /*
@@ -233,6 +234,8 @@ return [
         //login using socialite
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
+        // paypal service provider
+        'PayPal' => Srmklive\PayPal\Facades\PayPal::class,
     ],
 
 ];

@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', 'IndexController@index')->name('website.index');
 
 // payement
-Route::get('/checkout', 'CheckoutController@checkout')->name('checkout');
+Route::get('/checkout', 'CheckoutController@checkout')->name('checkoutPage');
 Route::post('/checkout', 'CompanyPaymentController@credit_card_checkout')->name('pay.credit.card');
 
 // cart routes
@@ -62,4 +62,12 @@ Route::resource('designer', 'DesignerController')->except([
 // Routes for both tags and material resources
 Route::resource('admin/tag', 'TagController');
 Route::resource('admin/material', 'MaterialController');
+
+
+//paypal routes
+Route::get('paypal/ec-checkout', 'PayPalController@getExpressCheckout')->name('checkout');
+Route::get('paypal/ec-checkout-success', 'PayPalController@getExpressCheckoutSuccess')->name('paypal.success');
+Route::get('paypal/ec-checkout-cancel', 'PayPalController@getExpressCheckoutCancel')->name('paypal.cancel');
+
+
 

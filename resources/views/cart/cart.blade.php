@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    @if (session()->has("message"))
+    <div class="alert alert-success" role="alert">
+        <strong>Success</strong> {{session()->get("message")}}
+    </div>
+    @endif
     <section class="container">
         @if (session('status'))
         <div class="alert alert-{{ session('color') }}">

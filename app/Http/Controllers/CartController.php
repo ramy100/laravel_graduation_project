@@ -37,8 +37,7 @@ class CartController extends Controller
                 'name' => $design->title,
                 'price' => $design->price,
                 'quantity' => 1,
-                'attributes' => array(
-                )
+                'attributes' => array()
             ));
 
             $count = Count(Cart::session($userID)->getContent());

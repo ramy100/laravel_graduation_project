@@ -27,6 +27,6 @@ $factory->define(User::class, function (Faker $faker) {
         'address' => $faker->address,
         'phone' => $faker->phoneNumber,
         'role' =>'company',
-        'image' => 'uploads/'.$faker->image('public/storage/uploads',100,100, null, false),
+        'image' => 'uploads/',
     ];
 });

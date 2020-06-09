@@ -24,7 +24,7 @@
 					<form class="checkout-form">
 						<div class="cf-title">Payment</div>
 						<ul class="payment-list">
-						<li class="paypalBtn activeBtn">Paypal<a href="javascript:void(0)"><img src="{{ asset('images/paypal.png') }}" alt=""></a></li>
+						<li class="paypalBtn activeBtn">Paypal<a href="{{route('checkout')}}"><img src="{{ asset('images/paypal.png') }}" alt=""></a></li>
 						<li class="mastercardBtn">Credit / Debit card<a href='javascript:void(0)'><img src="{{ asset('images/mastercart.png') }}" alt=""></a></li>
 							{{-- <li>Pay when you get the package</li> --}}
 						</ul>
@@ -115,7 +115,9 @@ $(document).ready(function(){
 <script src="https://js.stripe.com/v3/"></script>
 
 <script>
+
     const stripe = Stripe('pk_test_51Gs6G0LFhLSiOB2Tl6v3PAnSACpYE3qNDEQMrw10uA3mLPsWMPUdnp0sIkN7cgEOhwMXcvJX5ex6UcJ3yTabOLQC00ajuDbj4w');
+
 
     const elements = stripe.elements();
     const cardElement = elements.create('card');

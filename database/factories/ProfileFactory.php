@@ -10,6 +10,6 @@ $factory->define(Profile::class, function (Faker $faker) {
         //
         'user_id' => $number++,
         'website' => $faker->domainName,
-        'about' => $faker->paragraph($nbSentences = 3, $variableNbSentences = true),
+        'about' => $faker->paragraph($nbSentences = 1, $variableNbSentences = true),
     ];
 });

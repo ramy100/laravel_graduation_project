@@ -26,9 +26,11 @@
 							
 							@if($company->profile)
 								<h5 class="text-dark"> About :</h5>
-								<p>
-									 {{$company->profile->about}}
-								</p>
+								@if($company->profile->about)
+									<p>{{$company->profile->about}}</p>
+								@else
+									<p>No About Yet</p>
+								@endif
 							@endif
 						</div>
 						<div class="col-4 border">
@@ -38,7 +40,11 @@
 							
 							@if($company->profile)
 							<h5>Website </h5>
-							<p>{{$company->profile->website}}</p>
+								@if($company->profile->website)
+									<p>{{$company->profile->website}}</p>
+								@else
+									<p>No Website Yes</p>
+								@endif
 							@endif
 							<h5>
 								Email

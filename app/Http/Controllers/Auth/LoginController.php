@@ -103,12 +103,24 @@ class LoginController extends Controller
         // if user already found
         if( $user ) {
             // update the image and provider that might have changed
-            $user->update([
-                'image' => $providerUser->avatar,
-                'provider' => $driver,
-                'provider_id' => $providerUser->id,
-                'access_token' => $providerUser->token
-            ]);
+            if(is_null($user->provider)){
+                return back()->with('error', 'your email is registered already');
+            }
+            if($user->provider == $driver){
+                $user->update([
+                    'image' => $providerUser->avatar,
+                    'provider' => $driver,
+                    'provider_id' => $providerUser->id,
+                    'access_token' => $providerUser->token
+                ]);
+            }else{
+                if($driver == 'facebook'){
+                    return back()->with('error', 'Try to login with google');
+                }else{
+                    return back()->with('error', 'Try to login with facebook');
+                }
+            }
+
         } else {
                 if($providerUser->getEmail()){ //Check email exists or not. If exists create a new user
                 $user = User::create([
