@@ -31,7 +31,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('/design/vote', 'DesignController@vote');
+Route::post('/design/vote', 'DesignController@vote')->middleware('check-role:user');
 Route::post('design/filterBy', 'DesignController@filterBy');
 Route::resource('design', 'DesignController');
 
