@@ -219,7 +219,39 @@ $(window).on('load', function() {
 
 
 	$('.product-pic-zoom').zoom();
+	/*------------------
+		click - heart
+	------------------ */
+	$(".flaticon-heart").on("click", function (event){
+		let designer_id = $(".flaticon-heart").attr("value");
+		$.ajaxSetup({
+			headers: {
+			  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		  });
 
+		$.ajax({
+			method : 'POST',
+			url : '/savelikes',
+			data : {id: designer_id},
+			success:function(data){
+				console.log("success");
+				console.log(data);
+				if(data.exist == 0)
+				{
+					$(event.target).removeClass("text-danger").addClass("text-dark");
+	
+				}
+				else{
+				$(event.target).removeClass("text-dark").addClass("text-danger");
+				}
+
+			},
+			error:function(data){
+				console.log("error");
+			}
+		});
+	});
 
 
 })(jQuery);

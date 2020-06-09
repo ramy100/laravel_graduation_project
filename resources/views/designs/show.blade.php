@@ -1,6 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
+	<style type="text/css">
+		.show{
+			color: #f51167;
+			
+		}
+		.hide{
+			color: gray;
+		}
+	</style>
 	@if (session('success'))
         <div class="alert alert-success" style="margin:0 auto;">
             {{ session('success') }}
@@ -29,20 +38,24 @@
 				</div>
 				<div class="col-lg-6 product-details">
 					<h2 class="p-title ">{{$design->title}}</h2>
-					<h3 class="p-price" style="display: inline;">&dollar;{{$design->price}} </h3><a href="#" class="wishlist-btn" style="font-size: 40px;margin-left: 10px;color: #f51167"><i class="flaticon-heart"></i></a>
+					<h3 class="p-price" style="display: inline;">&dollar;{{$design->price}} </h3>
+					<input type="hidden" name="designId" value="{{ $design->id }}" id="designId">
+
+					<!-- vote -->
+					<a href="#" class="wishlist-btn " style="font-size: 40px;margin-left: 10px;"><i class="fa fa-heart {{($voted == 'True') ? 'show':'hide' }}"></i>
+					</a>
+
 					<h4 class="p-stock">Available: <span>In Stock</span></h4>
 					<div class="pi-links">
 						<p>Designer : {{ $design->designer->name}}</p> 
 					</div>
 					<div class="pi-links">
-						<p>Total Votes : {{ $design->total_likes}}</p> 
+						<p class="votes">Total Votes : {{ $design->total_likes}}</p> 
 					</div>
-					<div class="p-review">
+					<!-- <div class="p-review">
 						<a href="">3 reviews</a>|<a href="">Add your review</a>
-					</div>
-					<div class="pi-links">
+					</div> -->
 					
-					</div>
 					@if(Auth::id() == $design->designer_id)
 					<form action="{{route('design.destroy',$design->id)}}" method="POST" style="display: inline;">
                             @method('DELETE')
@@ -64,7 +77,17 @@
 								</div>
 							</div>
 						</div>
-						
+						<div class="panel">
+							<div class="panel-header" id="headingTwo">
+								<button class="panel-link" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">Reviews </button>
+							</div>
+							<div id="collapse2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+								<div class="panel-body">
+
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integer bibendum sodales arcu id te mpus. Ut consectetur lacus leo, non scelerisque nulla euismod nec.</p>
+								</div>
+							</div>
+						</div>
 						
 					</div>
 					
@@ -101,3 +124,45 @@
 	<!-- RELATED PRODUCTS section end -->
 
 @endsection
+@push('scripts')
+	<script type="text/javascript">
+		$('.wishlist-btn').click(function(e) {
+			e.preventDefault();
+			let design_id = $('#designId').val();
+			let IconClasses=e.target.className;
+			let heartClass=	IconClasses.split(" ");
+			let vote="";
+			if (heartClass.includes("hide"))
+			{
+				vote="add";
+			}
+			else if (heartClass.includes("show")) {
+				vote="remove";
+			}
+			 console.log(vote);
+			 console.log(heartClass);
+			  $.ajaxSetup({
+			        headers: {
+			          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			        }
+			      });
+				$.ajax({
+		        type: 'POST',
+		        url: 'http://localhost:8000/design/vote',
+		        data: {
+		            'design_id':design_id,
+		            'vote':vote
+		        },
+		        success: function (data) {
+		        	console.log(data);
+		        	$( ".fa-heart" ).toggleClass( "show" );
+		        	$( ".fa-heart" ).toggleClass( "hide" );
+		        	$(".votes").html(`Total Votes : ${data}`);
+
+		        },
+		        error: function (XMLHttpRequest) {
+		        }
+		    });
+		});
+	</script>
+@endpush

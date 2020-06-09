@@ -31,8 +31,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::post('/design/vote', 'DesignController@vote');
 Route::post('design/filterBy', 'DesignController@filterBy');
 Route::resource('design', 'DesignController');
+
 // socialite login routes
 Route::get('auth/social', 'Auth\LoginController@show')->name('social.login');
 Route::get('oauth/{driver}', 'Auth\LoginController@redirectToProvider')->name('social.oauth');
@@ -52,6 +54,7 @@ Route::resource('company', 'CompanyController')->except([
 Route::resource('user','AllUsersUpdateController')->only([
     'update','edit'
 ]);
+Route::post('savelikes', 'DesignerController@savelikes')->name('savelikes');
 Route::resource('designer', 'DesignerController')->except([
     'create','store'
 ]);

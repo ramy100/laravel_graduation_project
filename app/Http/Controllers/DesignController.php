@@ -10,6 +10,7 @@ use App\Design;
 use App\DesignImage;
 use App\User;
 use App\DesignerRate;
+use App\DesignVote;
 use App\Http\Requests\StoreDesignsRequest;
 use Redirect;
 use DB;
@@ -38,6 +39,34 @@ class DesignController extends Controller
         //
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function vote(Request $request)
+    {
+        // echo $id;
+        $design=Design::find($request->design_id);
+        if($request->vote == "add")
+        {
+           DesignVote::create(['design_id'=>$design->id,
+            'user_id'=>Auth::id()]);
+            $design->total_likes =$design->total_likes +1;
+            $design->save(); 
+        }
+        else if($request->vote == "remove")
+        {
+            $vote=DesignVote::all()->where('design_id','=',$design->id)->first();
+            $vote->delete();
+            $design->total_likes =$design->total_likes -1;
+            $design->save(); 
+        }
+        
+        echo $design->total_likes;
+    }
     
     public function filterBy(Request $request)
     {
@@ -171,11 +200,18 @@ class DesignController extends Controller
         //
         $design = Design::findOrFail($id);
         $tag=$design->tag();
+        $voted="False";
         $designImages=DesignImage::all()->where('design_id','=',$id);
-        $RelatedDesigns=Design::whereHas('tag', function($query){
-            $query->where('name','=','dress');
-        })->get();
-        return view('designs.show',compact('RelatedDesigns','design','designImages'));
+        $RelatedDesigns=Design::whereHas('tag', function($query){$query->where('name','=','dress');})->get();
+        $votes=$design->votes;
+        foreach ($votes as $vote) {
+            if($vote->user_id == Auth::id())
+            {
+                $voted="True";
+                break;
+            }
+        }
+        return view('designs.show',compact('voted','RelatedDesigns','design','designImages'));
     }
 
     /**

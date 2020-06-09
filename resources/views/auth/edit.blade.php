@@ -4,7 +4,7 @@
 <section class="testimonial py-5" id="testimonial">
     <div class="container">
         <div class="row ">
-            <div class="col-md-4 py-5 bg-primary text-white text-center ">
+            <div class="col-md-4 py-5 bg-dark text-white text-center ">
                 <div class=" ">
                     <div class="card-body">
                         <img src="http://www.ansonika.com/mavia/img/registration_bg.svg" style="width:30%">
@@ -48,6 +48,14 @@
                         <div class="form-group col-md-9">
                             <input id="address" placeholder="Adress" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') ?? $edit_user->address }}" autocomplete="address">
                             @error('address')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                        </div>
+                        <div class="form-group col-md-12">
+                        <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}"  autocomplete="image"> 
+                            @error('image')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
