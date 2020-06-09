@@ -75,7 +75,7 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-12">
-                                <textarea id="about" name="about" placeholder="About Your Company" cols="40" rows="5" class="form-control @error('about') is-invalid @enderror" value="{{ old('about') }}" autocomplete="about"></textarea>
+                                <textarea id="about" name="about" placeholder="About Your Company" cols="40" rows="5" class="form-control @error('about') is-invalid @enderror" autocomplete="about">{{ old('about') }}</textarea>
                                 @error('about')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
