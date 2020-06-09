@@ -154,7 +154,7 @@ class DesignController extends Controller
                         'image' => $filename
                     ]);
             }
-            return Redirect::back()->with('success','Design added successfuly');
+            return redirect("design/".$design->id)->with('success','Design added successfuly');
             
         }
     }
@@ -170,8 +170,12 @@ class DesignController extends Controller
     {
         //
         $design = Design::findOrFail($id);
+        $tag=$design->tag();
         $designImages=DesignImage::all()->where('design_id','=',$id);
-        return view('designs.show',compact('design','designImages'));
+        $RelatedDesigns=Design::whereHas('tag', function($query){
+            $query->where('name','=','dress');
+        })->get();
+        return view('designs.show',compact('RelatedDesigns','design','designImages'));
     }
 
     /**
@@ -182,7 +186,7 @@ class DesignController extends Controller
      */
     public function edit($id)
     {
-        $design = Design::find($id)->where('designer_id' , '=',Auth::id())->get()->first();
+        $design = Design::find($id);
         $designMaterial=Material::all();
         $tags=Tag::all();
         $designImages=DesignImage::all()->where('design_id','=',$id);
@@ -197,8 +201,19 @@ class DesignController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreDesignsRequest $request,Design $design)
+    public function update(Request $request,Design $design)
     {
+         $validatedData = $request->validate([
+            'title' => 'required',
+            'price' => 'required',
+            'description' => 'required',
+            'category' => 'required',
+            'sourceFile'  => 'sometimes|mimes:pdf|max:10000',
+            'images' => 'sometimes',
+            'images.*' => 'mimes:jpg,jpeg,png',
+            'tag_id' => 'required',
+            'Material' => 'required'
+        ]);
         // dd($request);
         $design=Design::find($design->id);
         $design->update($request->all());
@@ -222,16 +237,22 @@ class DesignController extends Controller
                     return Redirect::back()->with('error','Sorry Only Upload png , jpg ,jpeg Images');
                 }
             }
+            foreach ($design->images as $image) {
+
+                        $image->delete();
+            }
+
             foreach ($request->images as $image) {
-                        $filename = $image->store('Designs','public');
+                 $filename = $image->store('Designs','public');
                         DesignImage::create([
                         'design_id' => $design->id,
                         'image' => $filename
                         ]);
-                    }              
+                        
+            }              
         }
 
-        return Redirect::back()->with('success','Design Upadated Successfuly');
+        return redirect("design/".$design->id)->with('success','Design Upadated Successfuly');
     }
 
     /**
@@ -245,6 +266,6 @@ class DesignController extends Controller
         //
         $design = Design::findOrFail($id);
         $design->delete();
-        return redirect('home')->with('success','Design deleted successfully ');
+        return redirect('designer/'.Auth::id())->with('success','Design deleted successfully ');
     }
 }

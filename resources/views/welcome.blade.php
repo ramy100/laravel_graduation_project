@@ -28,7 +28,9 @@
                             <span>Choose A Design</span>
                             <h2>Our brands</h2>
                             <p>we can help your business grow faster by get the feeling of the customer needs and taste in the clothes industry, as you can what's a trend and buy it from our designers list. </p>
-                            <a href="#" class="site-btn sb-white">REGISTER NOW</a>
+                            @guest
+                            <a href="{{ route('register') }}" class="site-btn sb-white">REGISTER NOW</a>
+                            @endguest
                         </div>
                     </div>
                     {{-- <div class="offer-card text-white">
@@ -45,7 +47,9 @@
                             <span>Chase Your Dream</span>
                             <h2>our designers</h2>
                             <p>We can help your ideas to see the light by turning them into a real products as the companies can see what is the trending designs and buy it </p>
-                            <a href="#" class="site-btn sb-white">REGISTER NOW</a>
+                            @guest
+                            <a href="{{ route('register') }}" class="site-btn sb-white">REGISTER NOW</a>
+                            @endguest
                         </div>
                     </div>
                     {{-- <div class="offer-card text-white">
@@ -109,8 +113,10 @@
                 @foreach ($latestDesigns as $design)
                     <div class="product-item">
                         <div class="pi-pic">
-                            <img src="{{ asset('images/product/1.jpg') }}" alt="">
-                            <div class="pi-links">
+                           <a href="{{route('design.show', ['design' => $design->id])}}"> 
+                                <img src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
+                            </a>
+                            <div class="pi-links"> 
                                 @if ($role == 'company')
                                     <a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
                                 @endif
@@ -150,7 +156,9 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="{{ asset('images/product/9.jpg') }}" alt="">
+                           <a href="{{route('design.show', ['design' => $design->id])}}">
+                                <img src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
+                           </a>
                                 <div class="pi-links">
                                     @if ($role == 'company')
                                         <a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
@@ -182,9 +190,10 @@
             <div class="product-slider owl-carousel">
                 
                 @foreach ($companies as $company)
+               
                     <div class="product-item">
                         <div class="pi-pic">
-                            <img src="{{ asset('images/product/1.jpg') }}" alt="">
+                            <img src="{{asset('storage/'.$company->image)}}" alt="">
                             <div class="pi-links">
                                 <a href="#" class="btn btn-info">KNOW MORE</a>
                             </div>

@@ -33,38 +33,38 @@
 								@method('PATCH')
 								 {{csrf_field()}}
 								<!-- Title -->
-								<input type="text" placeholder="Title" name="title" value="{{ $design->title}}" >
+								<input type="text" placeholder="Title" name="title" value="{{ $design->title}}" autofocus>
 								@if($errors->first('title'))
-								<p class="alert alert-danger">{{$errors->first('title') }}</p>
+								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('title') }}</span>
 								@endif
 
 								<!-- Price -->
-								<input type="text" placeholder="Price" name="price" value="{{ $design->price}}">
+								<input type="text" placeholder="Price" name="price" value="{{ $design->price}}" autofocus>
 								@if($errors->first('price'))
-								<p class="alert alert-danger">{{$errors->first('price') }}</p>
+								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('price') }}</span>
 								@endif
 
 								<!-- Description -->
-								<textarea  name="description" placeholder="Description" class="form-control mb-2 mt-2" rows="4" cols="50" >{{ $design->description}}</textarea>
+								<textarea  name="description" placeholder="Description" class="form-control mb-2 mt-2" rows="4" cols="50" autofocus>{{ $design->description}}</textarea>
 								@if($errors->first('description'))
-								<p class="alert alert-danger">{{$errors->first('description') }}</p>@endif	
+								<span class="invalid-feedback  d-block " role="alert">{{$errors->first('description') }}</span>@endif	
 
 								<!-- Tags -->
 								<div>
-									<select id="tags" name="tag_id" class="form-control mb-2 js-example-basic-single">
+									<select id="tags" name="tag_id" class="form-control mb-2 js-example-basic-single" autofocus>
 									  <option value="" disabled >Tags</option>
 									  @foreach ($tags as $tag) 
 									  	<option value="{{ $tag ->id}}" {{ ($design->tag->id == $tag->id) ?? 'selected'}}>{{ $tag ->name}}</option>
 									  @endforeach
 									</select>
 								</div>
-								@if($errors->first('tags'))
-								<div class="alert alert-danger">{{$errors->first('tags') }}</div>
+								@if($errors->first('tag_id'))
+								<span class="invalid-feedback  d-block " role="alert">{{$errors->first('tag_id') }}</span>
 								@endif
 
 								<!-- Material -->
 								<div class="mt-2">
-									<select id="Material" name="Material[]" class=" form-control js-example-placeholder-multiple" multiple="multiple">
+									<select id="Material" name="Material[]" class=" form-control js-example-placeholder-multiple" multiple="multiple" autofocus>
 									  
 									  @foreach ($designMaterial as $material) 
 									  	@foreach($design->materials as $selectMaterial) 
@@ -77,12 +77,12 @@
 									</select>
 								</div>
 								@if($errors->first('Material'))
-								<div class="alert alert-danger">{{$errors->first('Material') }}</div>
+								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('Material') }}</span>
 								@endif
 
 								<!-- category -->
 								<div style="margin: 10px 0;">
-									<select id="cars" name="category" class="form-control js-example-basic-single">
+									<select id="cars" name="category" class="form-control js-example-basic-single" autofocus>
 									  <option value="" disabled >Category</option>
 									  <option value="men" {{ $design->category =="men" ?? 'selected' }}>Men</option>
 									  <option value="women" {{ $design->category =="women" ?? 'selected' }}>Women</option>
@@ -91,20 +91,26 @@
 									</select>
 								</div>
 								@if($errors->first('category'))
-								<div class="alert alert-danger">{{$errors->first('category') }}</div>
+								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('category') }}</span>
 								@endif
 
 								<!-- source file -->
 								<div class="form-group">
 								    <label for="link">Upload another source pattron file</label>
-								    <input type="file" name="link" class="form-control"  >
+								    <input type="file" name="link" class="form-control" autofocus >
 								</div>
+								@if($errors->first('sourceFile'))
+								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('sourceFile') }}</span>
+								@endif
 
 								<!-- Images -->
 								<div class="form-group">
 										<label for="imgeFile">Add other Design Images  (can attach more than one) </label>
-										<input type="file" id="imgeFile" name="images[]" class="form-control" multiple >
-									</div>
+										<input type="file" id="imgeFile" name="images[]" class="form-control" multiple autofocus>
+								</div>
+								@if($errors->first('images'))
+								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('images') }}</span>
+								@endif
 								<!-- <div class="row">
 									@foreach($designImages as $Image)
 										<input id="image-upload"  style="display: none;" name="image" type="file" onchange="displayImage(this,{{ $Image->id }});">

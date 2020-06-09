@@ -1,20 +1,29 @@
 
 		$('.js-example-basic-single').select2();
-		
-		    // $( "#selectable" ).selectable({
-		    // 	 stop: function() {
-			   //      $( ".ui-selected", this ).each(function() {
-			   //        var index = $( "#selectable li" ).index( this );
-			   //        console.log(index);
-			   //      });
-			   //    }
-			    
-		    // });
-		    function getValues(){
-				var category = $('.filter1').val();
+		let domselected=0;
+		let filters="";
+		$( "#selectable" ).selectable({
+		    	 stop: function() {
+			        domselected = $("#selectable .ui-selected").map(function() {
+                        return $(this).text();
+
+                    });
+					console.log(domselected[0]);
+					getValues();
+			      }	    
+		});
+		$( ".filter" ).selectmenu({
+	      change: function( event, data ) {
+	      filters=data.item.value;
+	      getValues();
+	       console.log(data.item.value);
+	      }
+	    });
+		function getValues(){
+				var category = domselected[0];
 				var min=$('#minamount').val();
 				var max=$('#maxamount').val();
-				var filterType=$('.filter2').val();
+				var filterType=filters;
 				console.log(category);
 				console.log(min);
 				console.log(max);
@@ -42,15 +51,15 @@
 		            		<div class="col-lg-4 col-sm-6">
 							<div class="product-item">
 								<div class="pi-pic">
-									<img src="{{asset ('storage/${element.image}') }} " alt="Design Image" id="designImage">
-									<div class="pi-links">
+									<a href="design/${element.id}"><img src="/storage/${element.image}" alt="Design Image" id="designImage">
+									<div class="pi-links"></a>
 										<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 										<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
 									</div>
 								</div>
 
 								<div class="pi-text">
-									<h6>${element.price} &dollar;</h6>
+									<h6>&dollar;${element.price} </h6>
 									<h5>${element.title} </h5>
 									<p>By ${element.designer.name}</p>
 								</div>
@@ -59,13 +68,8 @@
 						</div>
 		            		`);
 		            });
-
-		            // $('.designs').html(`
-
-		            // 	`);
 		        },
 		        error: function (XMLHttpRequest) {
-		            // handle error
 		        }
 		    });
 
@@ -74,17 +78,14 @@
 
 		$( document ).ready(function() {		
 			
-			$('.filter').change(function(event){
-				event.preventDefault();
-				console.log('hi');
+			// $('.filter').change(function(event){
+			// 	event.preventDefault();
+			// 	console.log('hi');
 				
-				getValues();
-				// var f=$('.filter').options[$('filter'.selectedIndex)].value;
-			})
-		 //    $('.filter').click(function(event) {
-			//   console.log( event.target.innerText );
-			//   let filterType = event.target.innerText;
-		    
-
-			// });
+			// 	getValues();
+			// 	// var f=$('.filter').options[$('filter'.selectedIndex)].value;
+			// })
+			$("#selectable li").click(function() {
+			  $(this).addClass("selected");
+			});
 		});

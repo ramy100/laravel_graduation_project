@@ -1,14 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-	<!-- Page info -->
-	<div class="page-top-info">
-		<div class="container">
-			<h4>Designs PAge</h4>
-		</div>
-	</div>
-	<!-- Page info end -->
-
 
 	<!-- Category section -->
 	<section class="category-section spad">
@@ -18,19 +10,19 @@
 				<div class="col-lg-3 order-2 order-lg-1">
 					<div class="filter-widget">
 						<h2 class="fw-title">Categories</h2>
-						<!-- <ul class="category-menu" id = "selectable">
-							<li><a href="#">Woman wear</a></li>
-							<li><a href="#">Man Wear</a></li>
-							<li><a href="#">Children</a></li>
-							<li><a href="#">Teenagers</a></li>
-						</ul> -->
-						<select class="category-menu filter1 filter" >
+						<ul class="category-menu" id = "selectable">
+							<li><a href="#">women</a></li>
+							<li><a href="#">men</a></li>
+							<li><a href="#">kids</a></li>
+							<li><a href="#">teenagers</a></li>
+						</ul>
+						<!-- <select class="category-menu filter1 filter" >
 							<option value="" selected disabled>Category</option>
 							<option value="women" >Women wear</option>
 							<option value="men" >Men Wear</option>
 							<option value="kids" >Kids</option>
 							<option value="teenagers" >Teenagers</option>
-						</select>
+						</select> -->
 					</div>
 					<div class="filter-widget mb-0">
 						<h2 class="fw-title">refine by</h2>
@@ -45,8 +37,8 @@
 							</div>
 							<div class="range-slider">
                                 <div class="price-input">
-                                    <input type="text" id="minamount" class="filter">
-                                    <input type="text" id="maxamount" class="filter">
+                                    <input type="text" id="minamount" >
+                                    <input type="text" id="maxamount" >
                                 </div>
                             </div>
                         </div>
@@ -63,7 +55,7 @@
 								 <!-- <a class="btn dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="background-color: black;color: white;float: right;">
 								    Filter By
 								  </a> -->
-								 <select class="btn filter2 filter" role="menu" aria-labelledby="dropdownMenuLink" style="background-color: black;color: white;float: right;">
+								 <select class="btn filter2 filter" role="menu" aria-labelledby="dropdownMenuLink">
 								 	<option selected disabled> Filter By</option>
 								  	<option> <a class="dropdown-item " href="#" >Top Rated</a></option>
 								  	<option> <a class="dropdown-item " href="#" >Latest</a></option>
@@ -75,7 +67,7 @@
 						<div class="col-lg-4 col-sm-6">
 							<div class="product-item">
 								<div class="pi-pic">
-									<img src="{{asset ('storage/'.$design->images()->first()->image) }} " alt="Design Image" id="designImage">
+									<a href="{{route('design.show', ['design' => $design->id])}}"><img src="{{asset ('storage/'.$design->images()->first()->image) }} " alt="Design Image" id="designImage"></a>
 									<div class="pi-links">
 										<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 										<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
@@ -83,7 +75,7 @@
 								</div>
 
 								<div class="pi-text">
-									<h6>{{$design->price}} &dollar;</h6>
+									<h6>&dollar;{{$design->price}}</h6>
 									<h5>{{$design->title}}</h5>
 									<p>By {{$design->designer->name}}</p>
 								</div>

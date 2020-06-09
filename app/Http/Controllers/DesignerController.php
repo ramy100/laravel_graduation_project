@@ -80,7 +80,6 @@ class DesignerController extends Controller
     public function show($id)
     {
         $user = Auth::user();
-        print($user);
         $designer = User::findOrFail($id);
         $current_designs = Design::where('designer_id', $id)->get();
         return view('designer\profile',['designer'=>$designer,'user'=>$user,'current_designs'=>$current_designs]);

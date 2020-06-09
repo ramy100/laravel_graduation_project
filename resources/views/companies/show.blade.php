@@ -23,19 +23,23 @@
 							<h3 class="mb-5">
 								{{$company->name}}
 							</h3>
-							<h5 class="text-dark"> About :</h5>
-							<p>
-								 {{$company->profile->about}}
-							</p>
+							
+							@if($company->profile)
+								<h5 class="text-dark"> About :</h5>
+								<p>
+									 {{$company->profile->about}}
+								</p>
+							@endif
 						</div>
 						<div class="col-4 border">
 							<h4 class="text-center mb-5">
 								Contact Information 
 							</h4>
-							<h5>
-								Website 
-							</h5>
+							
+							@if($company->profile)
+							<h5>Website </h5>
 							<p>{{$company->profile->website}}</p>
+							@endif
 							<h5>
 								Email
 							</h5>
