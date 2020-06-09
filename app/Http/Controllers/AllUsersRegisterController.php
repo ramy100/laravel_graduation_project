@@ -10,6 +10,7 @@ use App\Profile;
 use Illuminate\Http\Response;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AllUsersRegisterController extends RegisterController
 {
@@ -64,26 +65,37 @@ class AllUsersRegisterController extends RegisterController
 
     protected function create_new_user(array $data,$role)
     {
-        if(array_key_exists("image",$data))
-            $image = $data['image']->store('uploads', 'public');
-        else
-            $image=null;
-
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'address' => $data['address'],
-            'phone' => $data['phone'],
-            'image' => $image,
-            'role' => $role,
-            'password' => Hash::make($data['password']),
-        ]);
-        
-        Profile::create([
-            'user_id'=>$user->id,
-            'about'=>'empty',
-            'website'=>'empty'
+        try {
+            DB::beginTransaction();
+            if(array_key_exists("image",$data))
+                $image = $data['image']->store('uploads', 'public');
+            else
+                $image=null;
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'address' => $data['address'],
+                'phone' => $data['phone'],
+                'image' => $image,
+                'role' => $role,
+                'password' => Hash::make($data['password']),
             ]);
+            // create profile if role is company
+            if($role === 'company'){
+                Profile::create([
+                    'user_id'=>$user->id,
+                    'about'=>'empty',
+                    'website'=>'empty'
+                    ]);
+                $user->createAsStripeCustomer();
+            }
+        } catch (\Throwable $th) {
+            // delete user if an error arises and return server error
+            DB::rollBack();
+            return abort(500);            ;
+        }
+        // commit changes if every thing goes ok
+        Db::commit();
         return $user;
     }
     
