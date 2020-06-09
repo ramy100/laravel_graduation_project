@@ -17,6 +17,7 @@ Route::get('/', 'IndexController@index')->name('website.index');
 
 // payement
 Route::get('/checkout', 'CheckoutController@checkout')->name('checkout');
+Route::post('/checkout', 'CompanyPaymentController@credit_card_checkout')->name('pay.credit.card');
 
 // cart routes
 Route::get('/cart', 'CartController@cart')->name('website.cart');

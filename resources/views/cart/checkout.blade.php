@@ -32,12 +32,30 @@
 						<div id="paypalform">
 							<button class="site-btn submit-order-btn">Place Order</button>
 						</div>
-
-						<div id="mastercardform" style="display: none;">
-								Pay with Here
-						</div>
-
 					</form>
+					<div id="mastercardform" style="display: none;">
+						<div class="container">
+							<div class="container">
+									<div class="form-group row">
+										<legend class="col-form-legend col-sm-1-12">Name On Card</legend>
+										<div class="col-sm-1-12">
+											<input id="card-holder-name" class="form-control" type="text">
+										</div>
+									</div>
+									<fieldset class="form-group row">
+										<legend class="col-form-legend col-sm-1-12">Card Details</legend>
+										<div class="col-sm-1-12">
+											<div id="card-element" class="form-control"></div>
+										</div>
+									</fieldset>
+									<div class="form-group row">
+										<div class="offset-sm-2 col-sm-10">
+										<button class="site-btn submit-order-btn" data-secret="{{ $intent->client_secret }}" id="card-button">Process Payment</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="col-lg-4 order-1 order-lg-2">
 					<div class="checkout-cart">
@@ -92,6 +110,39 @@ $(document).ready(function(){
 		$('#mastercardform').show();
 	})
 
+});
+</script>
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+    const stripe = Stripe('pk_test_51GrsV1LymTQ7NsPWaTS9k73M6VmRRiTFXdU48adSFfGyzx9LS17e3VhORhq5KqFq2G85qkCuUE9O7iItpuL8anex00vd84oO7K');
+
+    const elements = stripe.elements();
+    const cardElement = elements.create('card');
+
+    cardElement.mount('#card-element');
+</script>   
+<script>
+const cardHolderName = document.getElementById('card-holder-name');
+const cardButton = document.getElementById('card-button');
+
+cardButton.addEventListener('click', async (e) => {
+    const { paymentMethod, error } = await stripe.createPaymentMethod(
+        'card', cardElement, {
+            billing_details: { name: cardHolderName.value }
+        }
+    );
+
+    if (error) {
+        // Displaing error to user if form not complete to the user
+        alert(error.message)
+    } else {
+        axios.post('',{
+            payment_method:paymentMethod.id
+        }).then((data)=>{
+			location.replace(data.data.url)
+		})
+    }
 });
 </script>
 @endpush

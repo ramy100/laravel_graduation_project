@@ -5,10 +5,12 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Cashier\Billable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+    use Billable;
 
     /**
      * The attributes that are mass assignable.
@@ -64,7 +66,13 @@ class User extends Authenticatable
         return $this->hasOne(Profile::class,'user_id');
     }
     
+    public static function boot() {
+        parent::boot();
 
+        static::deleting(function($user) { // before delete() method call this
+             $user->profile()->delete();
+        });
+    }
     
 
 }
