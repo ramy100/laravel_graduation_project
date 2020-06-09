@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', 'IndexController@index')->name('website.index');
 
 // payement
-// Route::get('/checkout', 'IndexController@checkout')->name('website.checkout');
+Route::get('/checkout', 'CheckoutController@checkout')->name('checkoutPage');
+Route::post('/checkout', 'CompanyPaymentController@credit_card_checkout')->name('pay.credit.card');
 
 // cart routes
 Route::get('/cart', 'CartController@cart')->name('website.cart');
@@ -30,6 +31,7 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::post('design/filterBy', 'DesignController@filterBy');
 Route::resource('design', 'DesignController');
 // socialite login routes
 Route::get('auth/social', 'Auth\LoginController@show')->name('social.login');
@@ -40,10 +42,10 @@ Route::get('oauth/{driver}/callback', 'Auth\LoginController@handleProviderCallba
 Route::get('/register/{role}','AllUsersRegisterController@RegistrationForm')
 ->where('role','admin|user|designer|company')->name('registeration.form');
 Route::post('/register/user','AllUsersRegisterController@register')->name('user.registeration');
-Route::post('/register/admin','AllUsersRegisterController@register')->middleware('check-role:admin')->name('admin.registeration');
+Route::post('/register/admin','AllUsersRegisterController@register')->name('admin.registeration');
 Route::post('/register/company','AllUsersRegisterController@register')->name('company.registeration');
 Route::post('/register/designer','AllUsersRegisterController@register')->name('designer.registeration');
-
+Route::get('company/{user}/shop','CompanyController@shop')->name('company.shop');
 Route::resource('company', 'CompanyController')->except([
     'create', 'store','update','edit'
 ]);
@@ -55,12 +57,16 @@ Route::resource('designer', 'DesignerController')->except([
     'create','store'
 ]);
 
-Route::get('/403', function () {
-    return view('auth.403');
-});
-
 
 // Routes for both tags and material resources
 Route::resource('admin/tag', 'TagController');
 Route::resource('admin/material', 'MaterialController');
+
+
+//paypal routes
+Route::get('paypal/ec-checkout', 'PayPalController@getExpressCheckout')->name('checkout');
+Route::get('paypal/ec-checkout-success', 'PayPalController@getExpressCheckoutSuccess')->name('paypal.success');
+Route::get('paypal/ec-checkout-cancel', 'PayPalController@getExpressCheckoutCancel')->name('paypal.cancel');
+
+
 

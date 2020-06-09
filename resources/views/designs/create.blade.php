@@ -4,7 +4,7 @@
 	
 	
 	@if (session('success'))
-        <div class="alert alert-success" style="width:600px;margin:0 auto;">
+        <div class="alert alert-success" style="margin:0 auto;">
             {{ session('success') }}
         </div>
     @elseif (session('error'))
@@ -29,7 +29,7 @@
 								@endif
 
 								<!-- price -->
-								<input type="text" placeholder="Price" name="price" autofocus value="{{ old('price') ? $design->price:''}}" class="form-control {{ $errors->first('price') ? 'is-invalid':''}}">
+								<input type="text" placeholder="Price" name="price" autofocus value="{{ old('price') ? old('price'):''}}" class="form-control {{ $errors->first('price') ? 'is-invalid':''}}">
 								@if($errors->first('price'))
 								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('price') }}</span>
 								@endif
@@ -43,15 +43,15 @@
 
 								<!-- tags -->
 								<div  >
-									<select id="tags" name="tag_id" class="form-control mb-2 js-example-basic-single {{ $errors->first('tags') ? 'is-invalid':''}}" autofocus>
+									<select id="tags" name="tag_id" class="form-control mb-2 js-example-basic-single {{ $errors->first('tag_id') ? 'is-invalid':''}}" autofocus>
 									  <option value="" disabled selected>Tags</option>
 									  @foreach ($tags as $tag) 
-									  	<option value="{{ $tag ->id}}" {{  old('tag_id') && $tag->id ==old('tag_id') ?? 'selected' }} >{{ $tag ->name}}</option>
+									  	<option value="{{ $tag ->id}}" {{  old('tag_id') && $tag->id ==old('tag_id') ? 'selected':'' }} >{{ $tag ->name}}</option>
 									  @endforeach
 									</select>
 								</div>
-								@if($errors->first('tags'))
-								<span class="invalid-feedback  d-block " role="alert">{{$errors->first('tags') }}</span>
+								@if($errors->first('tag_id'))
+								<span class="invalid-feedback  d-block " role="alert">{{$errors->first('tag_id') }}</span>
 								@endif
 
 								<!-- material -->
@@ -59,7 +59,13 @@
 									<select id="Material" name="Material[]" class=" form-control js-example-placeholder-multiple" multiple="multiple" autofocus>
 									  
 									  @foreach ($designMaterial as $material) 
-									  	<option value="{{ $material ->id}}" >{{ $material ->name}}</option>
+									  	@if (old('Material'))
+										  	@foreach( old('Material') as $oldMaterial )
+										  	<option value="{{ $material ->id}}" {{ $oldMaterial == $material ->id ? 'selected':''}}>{{ $material ->name}}</option>
+										  	@endforeach
+									  	@else
+									  		<option value="{{ $material ->id}}" >{{ $material ->name}}</option>
+									  	@endif
 									  @endforeach
 									</select>
 								</div>
@@ -67,14 +73,15 @@
 								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('Material') }}</span>
 								@endif
 
+								
 								<!-- category -->
 								<div style="margin: 10px 0;">
 									<select id="cars" name="category" class="form-control js-example-basic-single" autofocus>
 									  <option value="" disabled selected >Category</option>
-									  <option value="men">Men</option>
-									  <option value="women">Women</option>
-									  <option value="kids">Kids</option>
-									  <option value="teenagers">Teenagers</option>
+									  <option value="men" {{ (old('category') &&  old('category')=="men") ? 'selected':'' }} >Men</option>
+									  <option value="women" {{  (old('category') &&  old('category')=="women") ? 'selected':'' }} >Women</option>
+									  <option value="kids" {{  (old('category') &&  old('category')=="kids") ? 'selected':'' }}>Kids</option>
+									  <option value="teenagers" {{  (old('category') &&  old('category')=="teenagers") ? 'selected':'' }} >Teenagers</option>
 									</select>
 								</div>
 								@if($errors->first('category'))

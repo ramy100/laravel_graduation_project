@@ -1,44 +1,62 @@
-
 @extends('layouts.app')
 
 @section('content')
-    <!-- Hero section -->
+    <!-- Hero section Done (just needs new images for the slider)-->
     <section class="hero-section">
         <div class="hero-slider owl-carousel">
             <div class="hs-item set-bg" data-setbg="{{ asset('images/bg.jpg') }}">
                 <div class="container">
                     <div class="row">
                         <div class="col-xl-6 col-lg-7 text-white">
-                            <span>New Arrivals</span>
-                            <h2>denim jackets</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
-                            <a href="#" class="site-btn sb-line">DISCOVER</a>
-                            <a href="#" class="site-btn sb-white">ADD TO CART</a>
+                            <span>Make A Change</span>
+                            <h2>our audiance</h2>
+                            <p>Are you trying to find a suitable clothes matches your taste, we can help you with than just click the vote button to see our designs gallary and vote for your favourite ones to put it under radar for fashion copmanies to make a production line for it. </p>
+                            <a href="#" class="site-btn sb-white">VOTE NOW</a>
                         </div>
                     </div>
-                    <div class="offer-card text-white">
+                    {{-- <div class="offer-card text-white">
                         <span>from</span>
                         <h2>$29</h2>
                         <p>SHOP NOW</p>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="hs-item set-bg" data-setbg="{{ asset('images/bg-2.jpg') }}">
                 <div class="container">
                     <div class="row">
                         <div class="col-xl-6 col-lg-7 text-white">
-                            <span>New Arrivals</span>
-                            <h2>denim jackets</h2>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
-                            <a href="#" class="site-btn sb-line">DISCOVER</a>
-                            <a href="#" class="site-btn sb-white">ADD TO CART</a>
+                            <span>Choose A Design</span>
+                            <h2>Our brands</h2>
+                            <p>we can help your business grow faster by get the feeling of the customer needs and taste in the clothes industry, as you can what's a trend and buy it from our designers list. </p>
+                            @guest
+                                <a href="{{ route('company.registeration') }}" class="site-btn sb-white">REGISTER NOW</a>
+                            @endguest
                         </div>
                     </div>
-                    <div class="offer-card text-white">
+                    {{-- <div class="offer-card text-white">
                         <span>from</span>
                         <h2>$29</h2>
                         <p>SHOP NOW</p>
+                    </div> --}}
+                </div>
+            </div>
+            <div class="hs-item set-bg" data-setbg="{{ asset('images/bg.jpg') }}">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-6 col-lg-7 text-white">
+                            <span>Chase Your Dream</span>
+                            <h2>our designers</h2>
+                            <p>We can help your ideas to see the light by turning them into a real products as the companies can see what is the trending designs and buy it </p>
+                            @guest
+                                <a href="{{ route('designer.registeration') }}" class="site-btn sb-white">REGISTER NOW</a>
+                            @endguest
+                        </div>
                     </div>
+                    {{-- <div class="offer-card text-white">
+                        <span>from</span>
+                        <h2>$29</h2>
+                        <p>SHOP NOW</p>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -50,7 +68,7 @@
 
 
 
-    <!-- Features section -->
+    <!-- Features section Done --> 
     <section class="features-section">
         <div class="container-fluid">
             <div class="row">
@@ -84,7 +102,7 @@
     <!-- Features section end -->
 
 
-    <!-- letest design section -->
+    <!-- letest design section (needs to make images dynamic)-->
     <section class="top-letest-product-section">
         <div class="container">
             <div class="section-title">
@@ -92,18 +110,28 @@
             </div>
             <div class="product-slider owl-carousel">
                
-                @foreach ($latestDesigns as $item)
+                @foreach ($latestDesigns as $design)
                     <div class="product-item">
                         <div class="pi-pic">
-                            <img src="{{ asset('images/product/1.jpg') }}" alt="">
-                            <div class="pi-links">
-                            <a href="javascript:void(0)" data-id="{{ $item->id }}" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                <a href="javascript:void(0)" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+                            <a href="{{route('design.show', ['design' => $design->id])}}">
+                                <img src="{{ asset('images/product/1.jpg') }}" alt="">
+                            </a>
+                            {{-- <div class="pi-links"> --}}
+                            {{--<a href="{{route('design.show', ['design' => $design->id])}}"> 
+                                <img src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
+                            </a>--}}
+                            <div class="pi-links"> 
+                                @if ($role == 'company')
+                                    <a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
+                                @endif
+                                @if ($role == 'user')
+                                    <a href="javascript:void(0)" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+                                @endif
                             </div>
                         </div>
                         <div class="pi-text">
-                            <h6>${{ $item->price }}</h6>
-                            <p>{{ $item->title}}</p>
+                            <h6>${{ $design->price }}</h6>
+                            <p>{{ $design->title}}</p>
                         </div>
                     </div>
                 @endforeach
@@ -112,6 +140,16 @@
     </section>
     <!-- letest design section end -->
 
+    {{-- tags sction --}}
+    <div class="container">
+        <ul class="product-filter-menu">
+            <h4 class="mb-1">Our Tags</h4>
+            @foreach ($tags as $tag)
+                <li><a href="#">{{$tag->name}}</a></li>
+            @endforeach
+        </ul>
+    </div>
+    {{-- End of tags section  --}}
 
     <!-- Product filter section -->
     <section class="product-filter-section">
@@ -119,22 +157,26 @@
             <div class="section-title">
                 <h2>BROWSE TOP LIKED DESIGNS</h2>
             </div>
-            <ul class="product-filter-menu">
-                <h4 class="mb-1">Our Tags</h4>
-                @foreach ($tags as $tag)
-                    <li><a href="#">{{$tag->name}}</a></li>
-                @endforeach
-            </ul>
             <div class="row">
                 @foreach ($topDesigns as $design)
                     <div class="col-lg-3 col-sm-6">
                         <div class="product-item">
                             <div class="pi-pic">
-                                <img src="{{ asset('images/product/9.jpg') }}" alt="">
+                                <a href="{{route('design.show', ['design' => $design->id])}}">
+                                    <img src="{{ asset('images/product/9.jpg') }}" alt="">
+                                </a>
+                                {{--
+                                    <a href="{{route('design.show', ['design' => $design->id])}}">
+                                            <img src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
+                                    </a>
+                                --}}
                                 <div class="pi-links">
-                                <a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                    <a href="javascript:void(0)" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                </div>
+                                    @if ($role == 'company')
+                                        <a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
+                                    @endif                                    
+                                    @if ($role == 'user')
+                                        <a href="javascript:void(0)" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+                                    @endif                                </div>
                             </div>
                             <div class="pi-text">
                                 <h6>${{ $design->price }}</h6>
@@ -145,13 +187,41 @@
                 @endforeach
             </div>
             <div class="text-center pt-5">
-                <button class="site-btn sb-line sb-dark">LOAD MORE</button>
+                <a href='#' class="site-btn sb-line sb-dark">SEE MORE</a>
             </div>
         </div>
     </section>
     <!-- Product filter section end -->
 
-    <!-- Banner section -->
+    <!-- latest Brands section (needs to make images dynamic)-->
+    <section class="top-letest-product-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>OUR BRANDS</h2>
+            </div>
+            <div class="product-slider owl-carousel">
+                @foreach ($companies as $company)
+               
+                    <div class="product-item">
+                        <div class="pi-pic">
+                            <a href="">
+                                <img src="{{ asset('images/product/1.jpg') }}" alt="">
+                            </a>
+                            {{--<img src="{{asset('storage/'.$company->image)}}" alt="">--}}
+                            <div class="pi-links">
+                                <a href="#" class="btn btn-info">KNOW MORE</a>
+                            </div>
+                        </div>
+                        <div class="pi-text">
+                            <h6>${{ $company->name }}</h6>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+    </section>
+    <!-- letest design section end -->
+
+    <!-- Banner section (votes link) -->
     <section class="banner-section">
         <div class="container">
             <div class="banner set-bg" data-setbg="{{ asset('images/banner-bg.jpg') }}">
@@ -163,108 +233,4 @@
         </div>
     </section>
     <!-- Banner section end  -->
-
-
-    <!-- Footer section -->
-    <section class="footer-section">
-        <div class="container">
-            <div class="footer-logo text-center">
-                <a href="index.html"><img src="{{ asset('images/logo-light.png') }}" alt=""></a>
-            </div>
-            <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="footer-widget about-widget">
-                        <h2>About</h2>
-                        <p>Donec vitae purus nunc. Morbi faucibus erat sit amet congue mattis. Nullam frin-gilla faucibus urna, id dapibus erat iaculis ut. Integer ac sem.</p>
-                        <img src="{{ asset('images/cards.png') }}" alt="">
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="footer-widget about-widget">
-                        <h2>Questions</h2>
-                        <ul>
-                            <li><a href="">About Us</a></li>
-                            <li><a href="">Track Orders</a></li>
-                            <li><a href="">Returns</a></li>
-                            <li><a href="">Jobs</a></li>
-                            <li><a href="">Shipping</a></li>
-                            <li><a href="">Blog</a></li>
-                        </ul>
-                        <ul>
-                            <li><a href="">Partners</a></li>
-                            <li><a href="">Bloggers</a></li>
-                            <li><a href="">Support</a></li>
-                            <li><a href="">Terms of Use</a></li>
-                            <li><a href="">Press</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="footer-widget about-widget">
-                        <h2>Questions</h2>
-                        <div class="fw-latest-post-widget">
-                            <div class="lp-item">
-                                <div class="lp-thumb set-bg" data-setbg="{{ asset('images/blog-thumbs/1.jpg') }}"></div>
-                                <div class="lp-content">
-                                    <h6>what shoes to wear</h6>
-                                    <span>Oct 21, 2018</span>
-                                    <a href="#" class="readmore">Read More</a>
-                                </div>
-                            </div>
-                            <div class="lp-item">
-                                <div class="lp-thumb set-bg" data-setbg="{{ asset('images/blog-thumbs/2.jpg') }}"></div>
-                                <div class="lp-content">
-                                    <h6>trends this year</h6>
-                                    <span>Oct 21, 2018</span>
-                                    <a href="#" class="readmore">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="footer-widget contact-widget">
-                        <h2>Questions</h2>
-                        <div class="con-info">
-                            <span>C.</span>
-                            <p>Your Company Ltd </p>
-                        </div>
-                        <div class="con-info">
-                            <span>B.</span>
-                            <p>1481 Creekside Lane  Avila Beach, CA 93424, P.O. BOX 68 </p>
-                        </div>
-                        <div class="con-info">
-                            <span>T.</span>
-                            <p>+53 345 7953 32453</p>
-                        </div>
-                        <div class="con-info">
-                            <span>E.</span>
-                            <p>office@youremail.com</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="social-links-warp">
-            <div class="container">
-                <div class="social-links">
-                    <a href="" class="instagram"><i class="fa fa-instagram"></i><span>instagram</span></a>
-                    <a href="" class="google-plus"><i class="fa fa-google-plus"></i><span>g+plus</span></a>
-                    <a href="" class="pinterest"><i class="fa fa-pinterest"></i><span>pinterest</span></a>
-                    <a href="" class="facebook"><i class="fa fa-facebook"></i><span>facebook</span></a>
-                    <a href="" class="twitter"><i class="fa fa-twitter"></i><span>twitter</span></a>
-                    <a href="" class="youtube"><i class="fa fa-youtube"></i><span>youtube</span></a>
-                    <a href="" class="tumblr"><i class="fa fa-tumblr-square"></i><span>tumblr</span></a>
-                </div>
-
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --> 
-<p class="text-white text-center mt-5">Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
-<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-
-            </div>
-        </div>
-    </section>
-    <!-- Footer section end -->
-
-
 @endsection

@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+    @if (session()->has("message"))
+    <div class="alert alert-success" role="alert">
+        <strong>Success</strong> {{session()->get("message")}}
+    </div>
+    @endif
+    <section class="container">
+        @if (session('status'))
+        <div class="alert alert-{{ session('color') }}">
+            {{ session('status') }}
+        </div>
+        @endif
+    </section>
 	<section class="cart-section spad" id='cart-data'>
 		<h1 class="text-center"><span class="fa fa-spinner fa-spin fa-3x" ></span></h1>
 	</section>

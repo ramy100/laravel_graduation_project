@@ -77,7 +77,7 @@
 			<div class="product-slider owl-carousel">
 				<div class="product-item">
 					<div class="pi-pic">
-						<img src="<?php echo asset("storage/$design->source_file")?>" alt="">
+						<a href="{{route('design.show', ['design' => $design->id])}}"><img src="{{asset ('storage/'.$design->images()->first()->image) }}" alt=""></a>
 						<div class="pi-links">
 							<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 							<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>

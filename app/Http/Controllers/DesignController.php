@@ -9,7 +9,7 @@ use Auth;
 use App\Design;
 use App\DesignImage;
 use App\User;
-
+use App\DesignerRate;
 use App\Http\Requests\StoreDesignsRequest;
 use Redirect;
 use DB;
@@ -23,12 +23,76 @@ class DesignController extends Controller
      */
     public function index()
     {
-        $designers=DB::table('users')->where('role','=','designer')->limit(5)->get();
-        $desings=Design::all();
+        // $designers=[];
+        // $rates=DesignerRate::whereHas('designer', function($query){
+        //     $query->where('role','=','designer');
+        // })->select('designer_id',DB::raw('AVG(rate) as rate'))->groupBy('designer_id')->orderBy('rate','desc')->limit(5)->get();
+        // foreach ($rates as $rate) {
+        //     $designer=User::find($rate->designer_id);
+        //     array_push($designers,$designer); 
+        // }
+        $desings=Design::paginate(9);
         $maxPrice=Design::all()->max('price');
         $minPrice=Design::all()->min('price');
-        return view('designs.index',compact('designers','desings','maxPrice','minPrice'));
+        return view('designs.index',compact('desings','maxPrice','minPrice'));
         //
+    }
+
+    
+    public function filterBy(Request $request)
+    {
+        $filterType=$request->filterType ;
+        $category=$request->category;
+        $minPrice=$request->minPrice;
+        $minarr=explode('$', $minPrice);
+        $min=(int)$minarr[1];
+        $maxPrice=$request->maxPrice;
+        $maxarr=explode('$', $maxPrice);
+        $max=(int)$maxarr[1];
+        $designs=[];
+        $newArray=[];
+        // echo $maxPrice;
+        if($filterType && !$category)
+        {  
+            if($filterType == 'Top Rated')
+            {
+                $designs=Design::all()->whereBetween('price',[$min,$max])->sortByDesc('total_likes');
+            }
+            else if($filterType == 'Latest')
+            {
+                $designs=Design::all()->whereBetween('price',[$min,$max])->sortByDesc('created_at');
+            }
+        }
+        else if(!$filterType && $category)
+        {
+             $designs=Design::all()->whereBetween('price',[$min,$max])->where('category',$category);
+
+        }
+        else if($filterType && $category)
+        {
+            if($filterType == 'Top Rated')
+            {
+                $designs=Design::all()->whereBetween('price',[$min,$max])->where('category',$category)->sortByDesc('total_likes');
+
+            }
+            else if($filterType == 'Latest')
+            {
+                $designs=Design::all()->whereBetween('price',[$min,$max])->where('category',$category)->sortByDesc('created_at');
+            }
+        }
+        else if(!$filterType && !$category)
+        {
+            $designs=Design::all()->whereBetween('price',[$min,$max]);
+        }
+        foreach($designs as $design){ 
+            $design->{'image'}=$design->images()->first()->image;
+            $design->{'designer'}=$design->designer->name;
+            array_push($newArray,$design);
+        }
+
+        return response()->json([
+            'designs' => $newArray
+        ]);
     }
 
     /**
@@ -71,38 +135,27 @@ class DesignController extends Controller
                 }
             }
             $file=$request->file('sourceFile');
-            if ($file->getClientOriginalExtension() == 'pdf' )
-            {
-                    $filePath = $file->store('Files','public');
-                    $design= Design::create(['title'=> $request->title,
+            $filePath = $file->store('Files','public');
+            $design= Design::create(['title'=> $request->title,
                         'description'=>$request->description,
                         'price'=>$request->price,
                         'category'=>$request->category,
                         'designer_id'=>Auth::id(),
                         'source_file'=> $filePath,
                         'tag_id'=>$request->tag_id
-                    ]);
-                    $design->materials()->attach($request->Material);
-                    // $tags = explode(",", $request->tags);
-                    // $design->attachTags($tags);
-                    foreach ($request->images as $image) {
+            ]);
+            $design->materials()->attach($request->Material);
+            // $tags = explode(",", $request->tags);
+            // $design->attachTags($tags);
+            foreach ($request->images as $image) {
                         $filename = $image->store('Designs','public');
                         DesignImage::create([
                         'design_id' => $design->id,
                         'image' => $filename
-                        ]);
-                    }
-                return Redirect::back()->with('success','Design added successfuly');
+                    ]);
             }
-            else
-            {
-                return Redirect::back()->with('error','Sorry Only Upload pdf file ');
-            }
+            return redirect("design/".$design->id)->with('success','Design added successfuly');
             
-        }
-        else
-        {
-            return Redirect::back()->with('error','Sorry you have to add both File and Images');
         }
     }
 
@@ -117,8 +170,12 @@ class DesignController extends Controller
     {
         //
         $design = Design::findOrFail($id);
+        $tag=$design->tag();
         $designImages=DesignImage::all()->where('design_id','=',$id);
-        return view('designs.show',compact('design','designImages'));
+        $RelatedDesigns=Design::whereHas('tag', function($query){
+            $query->where('name','=','dress');
+        })->get();
+        return view('designs.show',compact('RelatedDesigns','design','designImages'));
     }
 
     /**
@@ -129,7 +186,7 @@ class DesignController extends Controller
      */
     public function edit($id)
     {
-        $design = Design::find($id)->where('designer_id' , '=',Auth::id())->get()->first();
+        $design = Design::find($id);
         $designMaterial=Material::all();
         $tags=Tag::all();
         $designImages=DesignImage::all()->where('design_id','=',$id);
@@ -144,8 +201,19 @@ class DesignController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StoreDesignsRequest $request,Design $design)
+    public function update(Request $request,Design $design)
     {
+         $validatedData = $request->validate([
+            'title' => 'required',
+            'price' => 'required',
+            'description' => 'required',
+            'category' => 'required',
+            'sourceFile'  => 'sometimes|mimes:pdf|max:10000',
+            'images' => 'sometimes',
+            'images.*' => 'mimes:jpg,jpeg,png',
+            'tag_id' => 'required',
+            'Material' => 'required'
+        ]);
         // dd($request);
         $design=Design::find($design->id);
         $design->update($request->all());
@@ -169,16 +237,22 @@ class DesignController extends Controller
                     return Redirect::back()->with('error','Sorry Only Upload png , jpg ,jpeg Images');
                 }
             }
+            foreach ($design->images as $image) {
+
+                        $image->delete();
+            }
+
             foreach ($request->images as $image) {
-                        $filename = $image->store('Designs','public');
+                 $filename = $image->store('Designs','public');
                         DesignImage::create([
                         'design_id' => $design->id,
                         'image' => $filename
                         ]);
-                    }              
+                        
+            }              
         }
 
-        return Redirect::back()->with('success','Design Upadated Successfuly');
+        return redirect("design/".$design->id)->with('success','Design Upadated Successfuly');
     }
 
     /**
@@ -192,6 +266,6 @@ class DesignController extends Controller
         //
         $design = Design::findOrFail($id);
         $design->delete();
-        return redirect('home')->with('success','Design deleted successfully ');
+        return redirect('designer/'.Auth::id())->with('success','Design deleted successfully ');
     }
 }

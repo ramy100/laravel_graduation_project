@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Auth\Access\Response;
 class CheckRole
 {
     /**
@@ -21,6 +21,6 @@ class CheckRole
                 return $next($request);
             }
         }
-        return redirect('/403')->with('error','You are not authorised to access admin pages.');
+        return abort(403,'You are not an '.$role);
     }
 }

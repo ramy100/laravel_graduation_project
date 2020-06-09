@@ -9,7 +9,7 @@ $factory->define(Design::class, function (Faker $faker) {
     return [
         //
         'tag_id' => $faker->numberBetween(1,10),
-        'company_id' => $faker->numberBetween(1,10),
+        'company_id' => null,
         'designer_id' => $faker->numberBetween(1,10),
         'description' => $faker->text,
         'title' => $faker->catchPhrase,

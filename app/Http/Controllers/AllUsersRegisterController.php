@@ -6,21 +6,22 @@ use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Profile;
 use Illuminate\Http\Response;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class AllUsersRegisterController extends RegisterController
 {
     public function __construct(Request $request){
-        if ($request->is('register/admin')){
-            $this->middleware('check-role:admin');
-        }else{
-            $this->middleware('guest');
+        if (!$request->is('register/admin')){
+            $this->middleware('admin-or-guest');
         }
     }
     // Showing Registeration form dynamically
     public function RegistrationForm(Request $request,$role){
+        $this->authorize_registeration_forms($request);
         return view('auth.allregister',[
             'route'=>$role.'.registeration',
             'role'=>$role
@@ -30,6 +31,7 @@ class AllUsersRegisterController extends RegisterController
     // registeration method
     public function register(Request $request)
     {
+        $this->authorize_registeration_forms($request);
         if ($request->is('register/admin')){
             $role = 'admin';
         }elseif ($request->is('register/company')) {
@@ -63,20 +65,38 @@ class AllUsersRegisterController extends RegisterController
 
     protected function create_new_user(array $data,$role)
     {
-        if(array_key_exists("image",$data))
-            $image = $data['image']->store('uploads', 'public');
-        else
-            $image=null;
-
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'address' => $data['address'],
-            'phone' => $data['phone'],
-            'image' => $image,
-            'role' => $role,
-            'password' => Hash::make($data['password']),
-        ]);
+        try {
+            DB::beginTransaction();
+            if(array_key_exists("image",$data))
+                $image = $data['image']->store('uploads', 'public');
+            else
+                $image=null;
+            $user = User::create([
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'address' => $data['address'],
+                'phone' => $data['phone'],
+                'image' => $image,
+                'role' => $role,
+                'password' => Hash::make($data['password']),
+            ]);
+            // create profile if role is company
+            if($role === 'company'){
+                Profile::create([
+                    'user_id'=>$user->id,
+                    'about'=>$data['about'],
+                    'website'=>$data['website'],
+                    ]);
+                $user->createAsStripeCustomer();
+            }
+        } catch (\Throwable $th) {
+            // delete user if an error arises and return server error
+            DB::rollBack();
+            return abort(500);            ;
+        }
+        // commit changes if every thing goes ok
+        Db::commit();
+        return $user;
     }
     
     
@@ -100,5 +120,13 @@ class AllUsersRegisterController extends RegisterController
     protected function registered(Request $request, $user)
     {
         //
+    }
+
+    protected function authorize_registeration_forms(Request $request)
+    {
+        $user=Auth::user();
+        if ($request->is('register/admin')){
+            $this->authorize('create',$user);
+        }
     }
 }
