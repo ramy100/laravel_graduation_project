@@ -115,7 +115,7 @@ $(document).ready(function(){
 <script src="https://js.stripe.com/v3/"></script>
 
 <script>
-    const stripe = Stripe('pk_test_51GrsV1LymTQ7NsPWaTS9k73M6VmRRiTFXdU48adSFfGyzx9LS17e3VhORhq5KqFq2G85qkCuUE9O7iItpuL8anex00vd84oO7K');
+    const stripe = Stripe('pk_test_51Gs6G0LFhLSiOB2Tl6v3PAnSACpYE3qNDEQMrw10uA3mLPsWMPUdnp0sIkN7cgEOhwMXcvJX5ex6UcJ3yTabOLQC00ajuDbj4w');
 
     const elements = stripe.elements();
     const cardElement = elements.create('card');
