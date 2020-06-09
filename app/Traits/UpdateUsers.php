@@ -23,7 +23,9 @@ trait UpdateUsers
         ],
             'phone' => ['sometimes','nullable', 'starts_with:011,012,010','digits:11'],
             'address' => ['sometimes','nullable','string', 'max:255' , 'min:10'],
-            'image'=>['sometimes','nullable','image']
+            'image'=>['sometimes','nullable','image'],
+            'about' => ['sometimes','nullable','string', 'max:255' , 'min:10'],
+            'website' => ['sometimes','nullable'],
         ]);
     }
     

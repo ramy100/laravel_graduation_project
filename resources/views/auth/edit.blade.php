@@ -1,125 +1,95 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header text-success">{{ __('update') }} {{$role}} profile</div>
-
-                <div class="card-body">
-                    <form method="POST" action="{{ route($route,$edit_user) }}" enctype="multipart/form-data">
-                        @method('PATCH')
-                        @csrf
-                        <div class="form-group row">
-                            <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $edit_user->name }}" autocomplete="name" autofocus>
-
-                                @error('name')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+<section class="testimonial py-5" id="testimonial">
+    <div class="container">
+        <div class="row ">
+            <div class="col-md-4 py-5 bg-primary text-white text-center ">
+                <div class=" ">
+                    <div class="card-body">
+                        <img src="http://www.ansonika.com/mavia/img/registration_bg.svg" style="width:30%">
+                        <h2 class="py-3">{{ ucfirst(trans($role)) }} Profile Update</h2>
+                        <p>Tation argumentum et usu, dicit viderer evertitur te has. Eu dictas concludaturque usu, facete detracto patrioque an per, lucilius pertinacia eu vel.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8 py-5 border">
+                <h4 class="pb-4">Please fill with your details</h4>
+                <form method="POST" action="{{ route($route,$edit_user) }}" enctype="multipart/form-data">
+                    @method('PATCH')
+                    @csrf
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <input id="Full Name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') ?? $edit_user->name }}" autocomplete="name" placeholder="Full Name" autofocus>
+                            @error('name')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
-
-                        <div class="form-group row">
-                            <label for="phone" class="col-md-4 col-form-label text-md-right">{{ __('Phone') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') ?? $edit_user->phone }}" autocomplete="phone">
-
-                                @error('phone')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                        <div class="form-group col-md-6">
+                          <input id="inputEmail4" placeholder="Email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') ?? $edit_user->email }}" autocomplete="email">
+                            @error('email')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
-
-                        <div class="form-group row">
-                            <label for="address" class="col-md-4 col-form-label text-md-right">{{ __('Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="address" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') ?? $edit_user->address }}" autocomplete="address">
-
-                                @error('address')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-3">
+                            <input id="phone Mobile No." type="text" placeholder="Mobile No." class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') ?? $edit_user->phone }}" autocomplete="phone">
+                            @error('phone')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
-
-                        <div class="form-group row">
-                            <label for="image" class="col-md-4 col-form-label text-md-right">{{ __('Picture') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') ?? $edit_user->image }}"  autocomplete="image" autofocus>
-
-                                @error('image')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') ?? $edit_user->email}}" autocomplete="email">
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
+                        <div class="form-group col-md-9">
+                            <input id="address" placeholder="Adress" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') ?? $edit_user->address }}" autocomplete="address">
+                            @error('address')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
                         </div>
                         @if($role === 'company')
-                        <div class="form-group row">
-                            <label for="about" class="col-md-4 col-form-label text-md-right">{{ __('ِAbout') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="about" type="text" class="form-control @error('about') is-invalid @enderror" name="about" value="{{ old('about') ?? $edit_user->profile->about }}" autocomplete="about">
-
-                                @error('about')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="website" class="col-md-4 col-form-label text-md-right">{{ __('Website') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="website" type="text" class="form-control @error('website') is-invalid @enderror" name="website" value="{{ old('website') ?? $edit_user->profile->website }}" autocomplete="website">
-
+                            <div class="form-group col-md-12">
+                                <input id="website" name="website" placeholder="Company Website" type="text" class="form-control @error('website') is-invalid @enderror" value="{{ old('website') ?? $edit_user->profile->website }}" autocomplete="website">
                                 @error('website')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
                                 @enderror
                             </div>
-                        </div>
+                            <div class="form-group col-md-12">
+                                <textarea id="about" name="about" placeholder="About Your Company" cols="40" rows="5" class="form-control @error('about') is-invalid @enderror" autocomplete="about">{{ old('about') ?? $edit_user->profile->about }}</textarea>
+                                @error('about')
+                                <span class="invalid-feedback" role="alert">    
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
                         @endif
-                        <div class="form-group row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Update') }} {{$role}}
-                                </button>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+                                <label class="form-check-label" for="invalidCheck2">
+                                <small>By clicking Submit, you agree to our Terms & Conditions, Visitor Agreement and Privacy Policy.</small>
+                                </label>
+                            </div>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                    <div class="form-row">
+                        <button type="submit" class="btn btn-danger">{{ __('Update') }} {{ ucfirst(trans($role)) }}</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
+</section>
 @endsection
