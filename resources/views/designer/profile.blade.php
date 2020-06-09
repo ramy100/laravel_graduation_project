@@ -8,12 +8,16 @@
 				<div class="col-lg-6" >
 						<img class="product-big-img" style="width:300px;height:400px;"src="<?php echo asset("storage/$designer->image")?>" alt="">
                         </br>
-                        <h3>{{ $designer->name }}</h3>
+                        <h3>{{ $designer->name }}<i class="flaticon-heart text-dark" value="{{$designer->id}}"></i></h3>
+						<!-- <i class="fas fa-heart fa-2x"></i> -->
                         </br>
                         <div class="col-lg-3" >
                         <a style="display:block;" href="{{ route('user.edit',$designer) }}" class="btn btn-info">Edit Profile</a>
                         </div> 
 						</br>
+                        
+						</br>
+
 						<div class="col-lg-3" >
 						{!! Form::open(['route'=>['designer.destroy',$designer],'method'=>'delete']) !!} 
 						{!! Form::submit('DELETE',['class'=>'btn btn-danger']) !!}
@@ -23,12 +27,12 @@
                 </br> 
 				<div class="col-lg-6 product-details">
 					<h2 class="p-title"> {{ $designer->name }}</h2>
-					<h3 class="p-price">//followers count</h3>
+					<h4 class="p-stock">followers  <span>{{$likes}}</span></h4>
 					<h4 class="p-stock">Emial <span>{{$designer->email}}</span></h4>
                     <h4 class="p-stock">Phone <span>{{$designer->phone}}</span></h4>
 					<h4 class="p-stock">Address <span>{{$designer->address}}</span></h4>
                     @if($user->role == "designer")
-					<a href="#" class="btn site-btn"style="margin-top:15px;">ADD NEW DESIGN</a>
+					<a href="{{ route('design.create',$designer) }}" class="btn site-btn"style="margin-top:15px;">ADD NEW DESIGN</a>
                     @endif
 					<div id="accordion" class="accordion-area">
 						<div class="panel">
@@ -100,15 +104,17 @@
             @foreach($current_designs as $design)
 				<div class="product-item">
 					<div class="pi-pic">
-						<img src="<?php echo asset("storage/$design->source_file")?>" alt="">
-						<div class="pi-links">
+					
+						<!-- <div class="pi-links">
 							<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 							<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-						</div>
-					</div>
+						</div> -->
+					
 					<div class="pi-text">
 						<h6>{{$design->price}}</h6>
+				
 						<h5>{{$design->title}} </h5>
+					</div>
 					</div>
 				</div>
             @endforeach
@@ -116,6 +122,9 @@
 		</div>
 	</section>
 	<!-- current designs section end -->
+	<script>
+		
+	</script>
 
 
 	@endsection

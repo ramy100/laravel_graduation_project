@@ -101,6 +101,17 @@
                                 </div>
                             <a href="{{ route('website.cart') }}">Shopping Cart</a>
                             </div>
+                            @if($user && $user->role == "designer")
+                            <div> 
+                            <a href="{{ route('designer.show',['designer'=>$user->id]) }}">Your Profile</a>
+                            </div>
+                            @elseif($user && $user->role == "company")
+                            <div> 
+                            <a href="{{ route('company.show',['company'=>$user->id]) }}">Your Profile</a>
+                            </div>
+                           
+                            
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -111,11 +122,9 @@
                 <!-- menu -->
                 <ul class="main-menu">
                     <li><a href="/">Home</a></li>
-                    <li><a href="#">Women</a></li>
-                    <li><a href="#">Men</a></li>
-                    <li><a href="#">Jewelry
-                        <span class="new">New</span>
-                    </a></li>
+                    <li><a href="{{ route('designer.index')}}">Our Designers</a></li>
+                    <li><a href="{{ route('design.index')}}">Designs</a></li>
+                    <li><a href="{{route('company.index')}}">Companies</a></li>
                     <li><a href="#">Shoes</a>
                         <ul class="sub-menu">
                             <li><a href="#">Sneakers</a></li>
@@ -285,6 +294,7 @@
             })
 
         })
+
 
     });
 </script>

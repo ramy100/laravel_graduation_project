@@ -50,9 +50,11 @@ Route::resource('company', 'CompanyController')->except([
 Route::resource('user','AllUsersUpdateController')->only([
     'update','edit'
 ]);
+Route::post('savelikes', 'DesignerController@savelikes')->name('savelikes');
 Route::resource('designer', 'DesignerController')->except([
     'create','store'
 ]);
+
 Route::get('/403', function () {
     return view('auth.403');
 });
