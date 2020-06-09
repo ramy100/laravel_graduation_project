@@ -24,7 +24,7 @@
 					<form class="checkout-form">
 						<div class="cf-title">Payment</div>
 						<ul class="payment-list">
-						<li class="paypalBtn activeBtn">Paypal<a href="javascript:void(0)"><img src="{{ asset('images/paypal.png') }}" alt=""></a></li>
+						<li class="paypalBtn activeBtn">Paypal<a href="{{route('checkout')}}"><img src="{{ asset('images/paypal.png') }}" alt=""></a></li>
 						<li class="mastercardBtn">Credit / Debit card<a href='javascript:void(0)'><img src="{{ asset('images/mastercart.png') }}" alt=""></a></li>
 							{{-- <li>Pay when you get the package</li> --}}
 						</ul>
@@ -71,27 +71,4 @@
 @push('scripts')
 
 
-<script>
-
-$(document).ready(function(){
-
-    $(document).find('.paypalBtn').click();
-
-	$(document).on('click', '.paypalBtn', function(){
-		$(this).addClass('activeBtn');
-	
-		$('.mastercardBtn').removeClass('activeBtn');
-		$('#paypalform').show();
-		$('#mastercardform').hide();
-	})
-
-	$(document).on('click', '.mastercardBtn', function(){
-		$(this).addClass('activeBtn');
-		$('.paypalBtn').removeClass('activeBtn');
-		$('#paypalform').hide();
-		$('#mastercardform').show();
-	})
-
-});
-</script>
 @endpush
