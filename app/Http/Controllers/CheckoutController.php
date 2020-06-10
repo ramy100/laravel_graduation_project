@@ -14,9 +14,7 @@ class CheckoutController extends Controller
     
     public function checkout(){
         $user = Auth::user();
-        return view('cart.checkout',[
-            'intent' => $user->createSetupIntent()
-        ]);
+        return view('cart.checkout');
     }
     
 }

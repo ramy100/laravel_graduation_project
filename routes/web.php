@@ -17,7 +17,8 @@ Route::get('/', 'IndexController@index')->name('website.index');
 
 // payement
 Route::get('/checkout', 'CheckoutController@checkout')->name('checkoutPage');
-Route::post('/checkout', 'CompanyPaymentController@credit_card_checkout')->name('pay.credit.card');
+Route::post('/checkout/credit', 'CompanyPaymentController@credit_card_checkout')->name('pay.credit.card');
+Route::get('/checkout/credit', 'CompanyPaymentController@show_payment_form')->name('pay.credit.card.form');
 
 // cart routes
 Route::get('/cart', 'CartController@cart')->name('website.cart');
@@ -31,7 +32,8 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::post('/design/vote', 'DesignController@vote');
+Route::post('design/comment', 'DesignController@comment');
+Route::post('/design/vote', 'DesignController@vote')->middleware('check-role:user');
 Route::post('design/filterBy', 'DesignController@filterBy');
 Route::resource('design', 'DesignController');
 
@@ -40,7 +42,7 @@ Route::get('auth/social', 'Auth\LoginController@show')->name('social.login');
 Route::get('oauth/{driver}', 'Auth\LoginController@redirectToProvider')->name('social.oauth');
 Route::get('oauth/{driver}/callback', 'Auth\LoginController@handleProviderCallback')->name('social.callback');
 
-
+Route::get('/createAccount', 'AllUsersRegisterController@createAccount')->name('createAccount');
 Route::get('/register/{role}','AllUsersRegisterController@RegistrationForm')
 ->where('role','admin|user|designer|company')->name('registeration.form');
 Route::post('/register/user','AllUsersRegisterController@register')->name('user.registeration');

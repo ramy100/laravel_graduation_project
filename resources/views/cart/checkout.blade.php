@@ -25,37 +25,14 @@
 						<div class="cf-title">Payment</div>
 						<ul class="payment-list">
 						<li class="paypalBtn activeBtn">Paypal<a href="{{route('checkout')}}"><img src="{{ asset('images/paypal.png') }}" alt=""></a></li>
-						<li class="mastercardBtn">Credit / Debit card<a href='javascript:void(0)'><img src="{{ asset('images/mastercart.png') }}" alt=""></a></li>
+						<li class="mastercardBtn">Credit / Debit card<a href="{{route('pay.credit.card.form')}}"><img src="{{ asset('images/mastercart.png') }}" alt=""></a></li>
 							{{-- <li>Pay when you get the package</li> --}}
 						</ul>
-
 						<div id="paypalform">
 							<button class="site-btn submit-order-btn">Place Order</button>
 						</div>
 					</form>
-					<div id="mastercardform" style="display: none;">
-						<div class="container">
-							<div class="container">
-									<div class="form-group row">
-										<legend class="col-form-legend col-sm-1-12">Name On Card</legend>
-										<div class="col-sm-1-12">
-											<input id="card-holder-name" class="form-control" type="text">
-										</div>
-									</div>
-									<fieldset class="form-group row">
-										<legend class="col-form-legend col-sm-1-12">Card Details</legend>
-										<div class="col-sm-1-12">
-											<div id="card-element" class="form-control"></div>
-										</div>
-									</fieldset>
-									<div class="form-group row">
-										<div class="offset-sm-2 col-sm-10">
-										<button class="site-btn submit-order-btn" data-secret="{{ $intent->client_secret }}" id="card-button">Process Payment</button>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
+					
 				</div>
 				<div class="col-lg-4 order-1 order-lg-2">
 					<div class="checkout-cart">
@@ -85,66 +62,3 @@
 	<!-- checkout section end -->
 
 @stop
-
-@push('scripts')
-
-
-<script>
-
-$(document).ready(function(){
-
-    $(document).find('.paypalBtn').click();
-
-	$(document).on('click', '.paypalBtn', function(){
-		$(this).addClass('activeBtn');
-	
-		$('.mastercardBtn').removeClass('activeBtn');
-		$('#paypalform').show();
-		$('#mastercardform').hide();
-	})
-
-	$(document).on('click', '.mastercardBtn', function(){
-		$(this).addClass('activeBtn');
-		$('.paypalBtn').removeClass('activeBtn');
-		$('#paypalform').hide();
-		$('#mastercardform').show();
-	})
-
-});
-</script>
-<script src="https://js.stripe.com/v3/"></script>
-
-<script>
-
-    const stripe = Stripe('pk_test_51Gs6G0LFhLSiOB2Tl6v3PAnSACpYE3qNDEQMrw10uA3mLPsWMPUdnp0sIkN7cgEOhwMXcvJX5ex6UcJ3yTabOLQC00ajuDbj4w');
-
-
-    const elements = stripe.elements();
-    const cardElement = elements.create('card');
-
-    cardElement.mount('#card-element');
-</script>   
-<script>
-const cardHolderName = document.getElementById('card-holder-name');
-const cardButton = document.getElementById('card-button');
-
-cardButton.addEventListener('click', async (e) => {
-    const { paymentMethod, error } = await stripe.createPaymentMethod(
-        'card', cardElement, {
-            billing_details: { name: cardHolderName.value }
-        }
-    );
-
-    if (error) {
-        // Displaing error to user if form not complete to the user
-        alert(error.message)
-    } else {
-        axios.post('',{
-            payment_method:paymentMethod.id
-        }).then((data)=>{
-			location.replace(data.data.url)
-		})
-    }
-});
-</script>
-@endpush

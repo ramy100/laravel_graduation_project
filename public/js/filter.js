@@ -51,12 +51,8 @@
 		            		<div class="col-lg-4 col-sm-6">
 							<div class="product-item">
 								<div class="pi-pic">
-									<a href="design/${element.id}"><img src="/storage/${element.image}" alt="Design Image" id="designImage">
-									<div class="pi-links"></a>
-										<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-										<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-									</div>
-								</div>
+									<a href="design/${element.id}"><img src="/storage/${element.image}" alt="Design Image" id="designImage"></a>
+																	</div>
 
 								<div class="pi-text">
 									<h6>&dollar;${element.price} </h6>

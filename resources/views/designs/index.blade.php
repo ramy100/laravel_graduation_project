@@ -67,10 +67,21 @@
 						<div class="col-lg-4 col-sm-6">
 							<div class="product-item">
 								<div class="pi-pic">
+									@if($design->state != "sketch")
+									<div class="tag-sale">Sold</div>
+									@endif
 									<a href="{{route('design.show', ['design' => $design->id])}}"><img src="{{asset ('storage/'.$design->images()->first()->image) }} " alt="Design Image" id="designImage"></a>
 									<div class="pi-links">
-										<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-										<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+
+										@if((Auth::user())&&(Auth::user()->role == "company") && ($design->state == "sketch") )
+										<div class="pi-links">
+											<a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card site-btn mb-2"  >ADD TO CART</a>
+										</div>
+										@endif
+
+										@if((Auth::user())&&(Auth::user()->role == "user") && ($design->state == "sketch") )
+										<a href="{{route('design.show', ['design' => $design->id])}}" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+										@endif
 									</div>
 								</div>
 

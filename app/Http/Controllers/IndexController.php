@@ -20,5 +20,6 @@ class IndexController extends Controller
         return view('welcome', compact('latestDesigns', 'tags', 'topDesigns', 'companies', 'role'));
     }
 
+   
     
 }

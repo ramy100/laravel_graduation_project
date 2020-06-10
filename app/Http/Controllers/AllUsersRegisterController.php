@@ -19,6 +19,12 @@ class AllUsersRegisterController extends RegisterController
             $this->middleware('admin-or-guest');
         }
     }
+
+    public function createAccount(Request $request)
+    {
+        return view('auth.createAccount');
+    }
+
     // Showing Registeration form dynamically
     public function RegistrationForm(Request $request,$role){
         $this->authorize_registeration_forms($request);

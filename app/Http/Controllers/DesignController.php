@@ -12,6 +12,7 @@ use App\User;
 use App\DesignerRate;
 use App\DesignVote;
 use App\Http\Requests\StoreDesignsRequest;
+use App\DesignComment;
 use Redirect;
 use DB;
 
@@ -24,14 +25,6 @@ class DesignController extends Controller
      */
     public function index()
     {
-        // $designers=[];
-        // $rates=DesignerRate::whereHas('designer', function($query){
-        //     $query->where('role','=','designer');
-        // })->select('designer_id',DB::raw('AVG(rate) as rate'))->groupBy('designer_id')->orderBy('rate','desc')->limit(5)->get();
-        // foreach ($rates as $rate) {
-        //     $designer=User::find($rate->designer_id);
-        //     array_push($designers,$designer); 
-        // }
         $desings=Design::paginate(9);
         $maxPrice=Design::all()->max('price');
         $minPrice=Design::all()->min('price');
@@ -124,6 +117,23 @@ class DesignController extends Controller
         ]);
     }
 
+    
+    public function comment(Request $request)
+    {
+        $design_id=$request->design_id;
+        $body=$request->comment_body;
+        $user_id=Auth::id();
+        $comment=DesignComment::create([
+            'user_id'=>$user_id,
+            'design_id'=>$request->design_id,
+            'body'=>$request->comment_body
+        ]);
+        $comment->{'user_image'}=$comment->user->image;
+        $comment->{'user_name'}=$comment->user->name;
+         return response()->json([
+            'comment' => $comment
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -131,6 +141,7 @@ class DesignController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Design::class);
         $design = new Design();
         $designMaterial=Material::all();
         $tags=Tag::all();
@@ -211,7 +222,8 @@ class DesignController extends Controller
                 break;
             }
         }
-        return view('designs.show',compact('voted','RelatedDesigns','design','designImages'));
+        $comments=$design->comments;
+        return view('designs.show',compact('comments','voted','RelatedDesigns','design','designImages'));
     }
 
     /**
@@ -223,6 +235,7 @@ class DesignController extends Controller
     public function edit($id)
     {
         $design = Design::find($id);
+        $this->authorize('update', $design);
         $designMaterial=Material::all();
         $tags=Tag::all();
         $designImages=DesignImage::all()->where('design_id','=',$id);
@@ -239,6 +252,7 @@ class DesignController extends Controller
      */
     public function update(Request $request,Design $design)
     {
+        $this->authorize('update', $design);
          $validatedData = $request->validate([
             'title' => 'required',
             'price' => 'required',
@@ -301,6 +315,7 @@ class DesignController extends Controller
     {
         //
         $design = Design::findOrFail($id);
+         $this->authorize('delete', $design);
         $design->delete();
         return redirect('designer/'.Auth::id())->with('success','Design deleted successfully ');
     }
