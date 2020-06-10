@@ -36,7 +36,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
 
 
-
+    @yield('styles')
 
 
 </head>
@@ -65,8 +65,9 @@
                                 <div class="up-item">
                                     <i class="flaticon-profile"></i>
                                     @if (Route::has('register'))
-                                        <a href="{{ route('login') }}">Sign</a> In or 
-                                        <div class="dropdown show">
+                                        <a href="{{ route('login') }}">Sign</a> In or
+                                        <a href="{{ route('createAccount') }}">Create Account</a> 
+                                       {{-- <div class="dropdown show">
                                           <a class=" dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                            Create Account
                                           </a>
@@ -77,7 +78,7 @@
                                             <a href="{{ route('registeration.form','company') }}" class="items">Register Company</a>
                                             <a href="{{ route('registeration.form','designer') }}" class="items">Register Designer</a>
                                           </div>
-                                        </div>                                          
+                                        </div>  --}}                                        
                                     @endif
                                 </div>
                             @else

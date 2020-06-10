@@ -12,6 +12,7 @@ use App\User;
 use App\DesignerRate;
 use App\DesignVote;
 use App\Http\Requests\StoreDesignsRequest;
+use App\DesignComment;
 use Redirect;
 use DB;
 
@@ -116,6 +117,23 @@ class DesignController extends Controller
         ]);
     }
 
+    
+    public function comment(Request $request)
+    {
+        $design_id=$request->design_id;
+        $body=$request->comment_body;
+        $user_id=Auth::id();
+        $comment=DesignComment::create([
+            'user_id'=>$user_id,
+            'design_id'=>$request->design_id,
+            'body'=>$request->comment_body
+        ]);
+        $comment->{'user_image'}=$comment->user->image;
+        $comment->{'user_name'}=$comment->user->name;
+         return response()->json([
+            'comment' => $comment
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -204,7 +222,8 @@ class DesignController extends Controller
                 break;
             }
         }
-        return view('designs.show',compact('voted','RelatedDesigns','design','designImages'));
+        $comments=$design->comments;
+        return view('designs.show',compact('comments','voted','RelatedDesigns','design','designImages'));
     }
 
     /**
