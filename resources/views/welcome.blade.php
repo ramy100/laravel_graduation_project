@@ -110,7 +110,7 @@
                                 <img src="{{ asset('images/product/1.jpg') }}" alt="">
                             </a> --}}
                             <a href="{{route('design.show', ['design' => $design->id])}}"> 
-                                <img src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
+                                <img width="200px" height="350px"  src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
                             </a>
                             <div class="pi-links"> 
                                 @if ($role == 'company')
@@ -161,7 +161,7 @@
                                 </a> --}}
                                 
                                 <a href="{{route('design.show', ['design' => $design->id])}}">
-                                        <img src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
+                                        <img width="200px" height="320px" src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
                                 </a>
                                
                                 <div class="pi-links">

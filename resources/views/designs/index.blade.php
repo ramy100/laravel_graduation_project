@@ -75,7 +75,7 @@
 
 										@if((Auth::user())&&(Auth::user()->role == "company") && ($design->state == "sketch") )
 										<div class="pi-links">
-											<a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card site-btn mb-2"  >ADD TO CART</a>
+											<a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
 										</div>
 										@endif
 
