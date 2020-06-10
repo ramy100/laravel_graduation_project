@@ -87,7 +87,7 @@ class AllUsersRegisterController extends RegisterController
                 'password' => Hash::make($data['password']),
             ]);
             // create profile if role is company
-            if($role === 'company'){
+            if($role === 'company' || $role==='designer'){
                 Profile::create([
                     'user_id'=>$user->id,
                     'about'=>$data['about'],
