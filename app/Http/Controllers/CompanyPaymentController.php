@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Design;
+use App\Order;
 use App\User;
 use Cart;
 use Exception;
@@ -25,8 +26,26 @@ class CompanyPaymentController extends Controller
         $total_amount = $items->sum('price');
         $items_ids = $items->keys();
         $total_amount_in_cents=$total_amount*100;
-        $this->change_company_ids_for_designs($items_ids,$user->id);
-        $this->charge_user($user,$total_amount_in_cents,$payment_method);
+
+        // try changing in database record first
+        try {
+            $this->change_company_ids_for_designs($items_ids,$user->id,$total_amount_in_cents);
+        } catch (\Throwable $th) {
+            // if database fails to update rollback and stop transaction and return fail message
+            DB::rollBack();
+            return $this->create_order_record_with_message($user->id,$total_amount,'fail in database','payment failed','danger');
+        }
+
+        // try charging user
+        try {
+            $user->charge($total_amount_in_cents, $payment_method);
+        } catch (\Throwable $th) {
+            // if payment fails rollback and return fail message
+            DB::rollBack();
+            return $this->create_order_record_with_message($user->id,$total_amount,'fail in paying','payment failed','danger');
+        }
+
+
         // if payment succeed -> commit database changes and clear cart and return success message
         DB::commit();
         Cart::session($user->id)->clear();
@@ -34,6 +53,9 @@ class CompanyPaymentController extends Controller
             'url'=> redirect()->route('website.cart')->with(['status'=>'Payment Success','color'=>'success'])->getTargetUrl(),
         ]);
     }
+
+
+
     public function show_payment_form(Request $request)
     {
         $user = Auth::user();
@@ -41,33 +63,38 @@ class CompanyPaymentController extends Controller
             'intent' => $user->createSetupIntent()
         ]);
     }
-    protected function change_company_ids_for_designs($designIds,$user_id)
+
+
+
+    protected function change_company_ids_for_designs($designIds,$user_id,$priceInCents)
     {
         DB::beginTransaction();
-        try {
-            // changing company ids for those designs
-            foreach ($designIds as $design) {
-                DB::table('designs')->where('id',$design)->update(['company_id'=>$user_id,'state'=>'sold']);
-            }
-        } catch (\Throwable $th) {
-            // if database fails to update rollback and stop transaction and return fail message
-            DB::rollBack();
-            return response([
-                'url'=> redirect()->route('website.cart')->with(['status'=>'Payment Failed','color'=>'danger'])->getTargetUrl(),
-            ]);
+        // success record in orders
+        Order::create([
+            'company_id'=> $user_id,
+            'total' => $priceInCents/100,
+            'state'=>'success',
+            'payment_method'=>'credit_card',
+        ]);
+        // changing company ids for those designs
+        foreach ($designIds as $design) {
+            DB::table('designs')->where('id',$design)->update(['company_id'=>$user_id,'state'=>'sold']);
         }
     }
-    protected function charge_user(User $user , float $priceInCents,$paymenMethod)
+
+    protected function create_order_record_with_message($company_id,$totalPriceInDollars,$status,$message,$messsageColor)
     {
-        try {
-            // charging customer
-            $user->charge($priceInCents, $paymenMethod);
-        } catch (Exception $e) {
-            // if payment fails rollback and return fail
-            DB::rollBack();
-            return response([
-                'url'=> redirect()->route('website.cart')->with(['status'=>'Payment Failed','color'=>'danger'])->getTargetUrl(),
-            ]);
-        }
+        // create faile record in database
+        Order::create([
+            'company_id'=> $company_id,
+            'total' => $totalPriceInDollars,
+            'state'=>$status,
+            'payment_method'=>'credit_card',
+        ]);
+        // return fail message
+        return response([
+            'url'=> redirect()->route('website.cart')->with(['status'=>$message,'color'=>$messsageColor])->getTargetUrl(),
+        ]);
     }
+    
 }
