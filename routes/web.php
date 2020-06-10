@@ -54,6 +54,7 @@ Route::resource('company', 'CompanyController')->except([
 Route::resource('user','AllUsersUpdateController')->only([
     'update','edit'
 ]);
+Route::get('/featuredesign/{design}','DesignerController@featuredesign')->name('featuredesign');
 Route::post('savelikes', 'DesignerController@savelikes')->name('savelikes');
 Route::resource('designer', 'DesignerController')->except([
     'create','store'
@@ -63,7 +64,9 @@ Route::resource('designer', 'DesignerController')->except([
 // Routes for both tags and material resources
 Route::resource('admin/tag', 'TagController');
 Route::resource('admin/material', 'MaterialController');
-
+Route::resource('user','ProfileController')->only([
+     'create','store'
+]);
 
 //paypal routes
 Route::get('paypal/ec-checkout', 'PayPalController@getExpressCheckout')->name('checkout');

@@ -6,27 +6,17 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use \App\Design;
 use \App\DesignerRate;
 use \App\DesignImage;
+use App\Profile;
 use Auth;
+
 use Illuminate\Support\Facades\DB;
 
 class DesignerController extends Controller
 {
-    // public function __construct(){
-
-    // }
-
-    // public function showRegistrationForm()
-    // {
-    //     return view('auth.allregister',[
-    //         'route'=>'designer.register',
-    //         'role'=>'Designer'
-    //     ]);
-    // }
-
-
     protected function create(array $data)
     {
         if(array_key_exists("image",$data))
@@ -53,24 +43,18 @@ class DesignerController extends Controller
      */
     public function index()
     {
-        $designers = DB::table('users')
-        ->join('designer_rates', 'designer_rates.designer_id', '=', 'users.id')
-        ->select('designer_id','users.name','users.image', DB::raw('count(*) as total'))
-        ->orderBy('total', 'desc') //order in descending order
-        ->groupBy('designer_id')
-        // ->take(10)//limit the images to Top 10 favorite images.
-        // ->get();
-        ->paginate(10);
-        // print($designers);
-        return view('designer\designerslist',['designers'=>$designers]);
+        // $designers = DB::table('users')
+        // ->join('designer_rates', 'designer_rates.designer_id', '=', 'users.id')
+        // ->select('designer_id','users.name','users.image', DB::raw('count(*) as total'))
+        // ->orderBy('total', 'desc') //order in descending order
+        // ->groupBy('designer_id')
+        // // ->take(10)//limit the images to Top 10 favorite images.
+        // // ->get();
+        // ->paginate(10);
+        $designers = User::where('role','designer')->orderBy('likes', 'DESC')->paginate(10);
+        // var_dump($designers);
+        return view('designer.designerslist',['designers'=>$designers]);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
 
     /**
      * Display the specified resource.
@@ -81,73 +65,27 @@ class DesignerController extends Controller
     public function show($id)
     {
         $user = Auth::user();
-        // print($user);
-        $designer = User::findOrFail($id);
+        $about = Profile::where('user_id',$id)->get();
+        $designer = User::where(['role'=>'designer','id'=>$id])->get();
         $current_designs = Design::where('designer_id', $id)->get();
         $likes_count =User::find($id)->designer_rates->count();
-        // $designs = Design::where('designer_id',$id)->get();
-        // print($designs);
-        // $image_array=[];
-        // foreach($designs as $design)
-        // {
-        // $design_image = DesignImage::where('design_id',$design[0]["id"])->first()->get();
-        // array_push($image_array, $design_image); 
-        // }
-        // print($image_array);
-        // print($likes_count);
-        return view('designer\profile',['designer'=>$designer,'user'=>$user,'current_designs'=>$current_designs,'likes'=>$likes_count]);
-          
-        
-    }
+        $designs = Design::where('designer_id',$id)->get();
+        $cimage_array=[];
+        foreach($designs as $design)
+        {
+            $design_image = DesignImage::where('design_id',$design->id)->get();
+        array_push($cimage_array, $design_image[0]); 
+        }
+        $featured_designs = Design::where(['designer_id'=>$id,'featured'=>1])->get();
+        $fimage_array=[];
+        foreach($featured_designs as $design)
+        {
+            $featured_image = DesignImage::where('design_id',$design->id)->get();
+        array_push($fimage_array, $featured_image[0]); 
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        // return view('designer.edit',['designer'=>User::find($id)]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function update(Request $request, $id)
-    // {
-
-    //     //validation
-    //     //update
-
-    //     $designer = User::findOrFail($id);
-    //     $designer->name = $request->name;
-    //     $designer->address = $request->address;
-    //     if($request->hasfile('image')){      
-    //     $file= $request->file('image');
-    //     $extension = $file->getClientOriginalExtension();
-    //     $filename = time().'.'.$extension;
-    //     $file->move('storage/uploads',$filename);
-    //     $designer->image = $filename;
-    //     }
-    //     else {
-    //         return $request;
-    //         $designer->image='';
-    //     }
-    //     //redirect
-    //     if($designer->save()){
-    //         return redirect()->route('home')->withSuccess('S-a incarcat cu success!');
-    //     }else{
-    //         return redirect()->route('home')->withDanger('Nu s-a incarcat! A aparut o eroare.');
-    //     }
-    //     // $designer->password = $request->password;
-
-    // }
-
+        return view('designer.profile',['designer'=>$designer,'user'=>$user,'featured_images'=>$fimage_array,'current_images'=>$cimage_array,'likes'=>$likes_count,'about'=>$about]);       
+    }    
     /**
      * Remove the specified resource from storage.
      *
@@ -156,7 +94,6 @@ class DesignerController extends Controller
      */
     public function destroy($id)
     {
-        print("Destroooooooooooooooooy");
         $designer = User::find($id);
         $designer->delete();
         return redirect()->route('home');
@@ -167,9 +104,14 @@ class DesignerController extends Controller
         $check =DesignerRate::where(['designer_id'=>$id,'liker_id'=> Auth::user()["id"]])->get();
             if($check->count() > 0 )
             {
-                
+                $designer = User::find($id);
+                $likes  = $designer->likes - 1;
+                $designer->likes = $likes ;
+                $designer->save(); 
+
                 DesignerRate::where(['designer_id'=>$id,'liker_id'=> Auth::user()["id"]])->delete();
                 $exist =0;
+
             }
             else
             {
@@ -178,10 +120,19 @@ class DesignerController extends Controller
                 $new_rate->liker_id =Auth::user()["id"];
                 $new_rate->save();
                 $exist =1;
-
-                
+                $designer = User::find($id);
+                $likes  = $designer->likes + 1;
+                $designer->likes = $likes ;
+                $designer->save();              
                 
             }
         return response()->json(['success'=>'Got Simple Ajax Request.','input'=>$id,'exist'=>$exist]);
+    }
+    public function featuredesign($design)
+    {
+        $specific_design = Design::find($design);
+        $specific_design->featured = 1;
+        $specific_design->save();
+        return Redirect::back()->with('success','Design added successfuly');
     }
 }
