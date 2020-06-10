@@ -34,6 +34,13 @@ class CompanyPaymentController extends Controller
             'url'=> redirect()->route('website.cart')->with(['status'=>'Payment Success','color'=>'success'])->getTargetUrl(),
         ]);
     }
+    public function show_payment_form(Request $request)
+    {
+        $user = Auth::user();
+        return view('cart.creditcard',[
+            'intent' => $user->createSetupIntent()
+        ]);
+    }
     protected function change_company_ids_for_designs($designIds,$user_id)
     {
         DB::beginTransaction();
