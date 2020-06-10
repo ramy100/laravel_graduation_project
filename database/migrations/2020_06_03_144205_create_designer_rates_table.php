@@ -22,7 +22,7 @@ class CreateDesignerRatesTable extends Migration
 
 
             $table->foreign('liker_id')->references('id')->on('users');
-            $table->foreign('designer_id')->references('id')->on('users');
+            $table->foreign('designer_id')->references('id')->on('users')->onDelete('cascade');;
 
         });
     }

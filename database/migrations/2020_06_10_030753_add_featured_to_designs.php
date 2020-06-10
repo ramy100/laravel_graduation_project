@@ -14,7 +14,8 @@ class AddFeaturedToDesigns extends Migration
     public function up()
     {
         Schema::table('designs', function (Blueprint $table) {
-            //
+            $table->boolean('featured')->default(0);
+
         });
     }
 
@@ -26,7 +27,8 @@ class AddFeaturedToDesigns extends Migration
     public function down()
     {
         Schema::table('designs', function (Blueprint $table) {
-            //
+            $table->dropColumn('featured');
+
         });
     }
 }

@@ -73,9 +73,9 @@
                                 </span>
                             @enderror
                         </div>
-                        @if($role === 'company')
+                        @if($role === 'company' || $role ==='designer')
                             <div class="form-group col-md-12">
-                                <input id="website" name="website" placeholder="Company Website" type="text" class="form-control @error('website') is-invalid @enderror" value="{{ old('website') }}" autocomplete="website">
+                                <input id="website" name="website" placeholder="{{ ucfirst(trans($role)) }} Website" type="text" class="form-control @error('website') is-invalid @enderror" value="{{ old('website') }}" autocomplete="website">
                                 @error('website')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -83,7 +83,7 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-12">
-                                <textarea id="about" name="about" placeholder="About Your Company" cols="40" rows="5" class="form-control @error('about') is-invalid @enderror" autocomplete="about">{{ old('about') }}</textarea>
+                                <textarea id="about" name="about" placeholder="About Your {{ ucfirst(trans($role)) }}" cols="40" rows="5" class="form-control @error('about') is-invalid @enderror" autocomplete="about">{{ old('about') }}</textarea>
                                 @error('about')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
