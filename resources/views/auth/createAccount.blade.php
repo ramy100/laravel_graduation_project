@@ -43,15 +43,15 @@
             </div>
             <div class="col-md-6 py-5 border">
                 <div>
-                    <!-- <h6 class="ppp">Are you a fashion designer?</h6>  -->
+                    
                      <a class="site-btn btn-register" href="{{ route('registeration.form','designer') }}">Sign Up As A Designer</a>
                  </div>
             <div>
-                <!-- <h6 class="ppp">Do you have a company and need a fashion designer?</h6>  -->
+               
                 <a class="btn company btn-register " href="{{ route('registeration.form','company') }}">Sign Up As A Company</a>
             </div>
             <div>
-             <!-- <h6 class="ppp">Are you excited to see your faviourite design implemented?</h6>  -->
+             
              <a class="btn-register btn-dark" href="{{ route('registeration.form','user') }}">Sign Up As A User</a>
             </div>
         </div>
