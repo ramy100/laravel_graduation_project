@@ -1,15 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-	<style type="text/css">
-		.show{
-			color: #f51167;
-			
-		}
-		.hide{
-			color: gray;
-		}
-	</style>
 	@if (session('success'))
         <div class="alert alert-success" style="margin:0 auto;">
             {{ session('success') }}
@@ -42,10 +33,17 @@
 					<input type="hidden" name="designId" value="{{ $design->id }}" id="designId">
 
 					<!-- vote -->
+					@if((Auth::user()->role == "user") && ($design->state == "sketch") )
 					<a href="#" class="wishlist-btn " style="font-size: 40px;margin-left: 10px;"><i class="fa fa-heart {{($voted == 'True') ? 'show':'hide' }}"></i>
 					</a>
+					@endif
 
-					<h4 class="p-stock">Available: <span>In Stock</span></h4>
+					@if($design->state == "sketch")
+					<h4 class="p-stock">Available: <span>{{$design->state}}</span></h4>
+					@else
+						<h4 class="p-stock"><span>Not Available</span></h4>
+					@endif
+
 					<div class="pi-links">
 						<p>Designer : {{ $design->designer->name}}</p> 
 					</div>
@@ -55,7 +53,8 @@
 					<!-- <div class="p-review">
 						<a href="">3 reviews</a>|<a href="">Add your review</a>
 					</div> -->
-					
+
+					<!-- delete design -->
 					@if(Auth::id() == $design->designer_id)
 					<form action="{{route('design.destroy',$design->id)}}" method="POST" style="display: inline;">
                             @method('DELETE')
@@ -63,8 +62,10 @@
                         <button class="deleteDesign btn-danger" onclick="return confirm('Are you sure?')"  type="submit">Delete</button>
                     </form>
                     	<a class=" editDesign " href="{{route('design.edit',$design->id)}}"  >Edit</a>
-                    @else
-                    	<a href="#" class="site-btn mb-2">Buy NOW</a>		
+                    @elseif((Auth::user()->role == "company") && ($design->state == "sketch") )
+
+                    <!-- buy design -->
+                    	<a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card site-btn mb-2"  >ADD TO CART</a>		
                     @endif
 					<div id="accordion" class="accordion-area">
 						<div class="panel">
