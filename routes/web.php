@@ -41,7 +41,7 @@ Route::get('auth/social', 'Auth\LoginController@show')->name('social.login');
 Route::get('oauth/{driver}', 'Auth\LoginController@redirectToProvider')->name('social.oauth');
 Route::get('oauth/{driver}/callback', 'Auth\LoginController@handleProviderCallback')->name('social.callback');
 
-
+Route::get('/createAccount', 'AllUsersRegisterController@createAccount')->name('createAccount');
 Route::get('/register/{role}','AllUsersRegisterController@RegistrationForm')
 ->where('role','admin|user|designer|company')->name('registeration.form');
 Route::post('/register/user','AllUsersRegisterController@register')->name('user.registeration');

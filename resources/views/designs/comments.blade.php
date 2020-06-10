@@ -21,9 +21,10 @@
         </div>
 	</div>
 	@empty
-		<div>No Comments Yet!</div>
+		<div style="text-align: center;margin:10px auto;">No Comments Yet!</div>
 	@endforelse
 </div>
+@if (Auth::check())
 <div class="panel-body row addComment">
 	<div class="col-md-12">
 		<div class="widget-area no-padding blank">
@@ -32,12 +33,13 @@
 					{{ csrf_field() }}
 					<input type="hidden" name="designId" id="designId" value="{{$design->id}}">
 					<textarea placeholder="Leave a comment.." id="body"></textarea>
-					<button type="submit" class="btn site-btn"><i class="fa fa-share"></i> Share</button>
+					<button type="submit" class="btn site-btn"><i class="fa fa-share"></i> ADD</button>
 				</form>
 			</div><!-- Status Upload  -->
 		</div><!-- Widget Area -->
 	</div>
 </div>
+@endif
 
 
     
