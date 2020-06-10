@@ -11,14 +11,13 @@
                             <span>Make A Change</span>
                             <h2>our audiance</h2>
                             <p>Are you trying to find a suitable clothes matches your taste, we can help you with than just click the vote button to see our designs gallary and vote for your favourite ones to put it under radar for fashion copmanies to make a production line for it. </p>
-                            <a href="#" class="site-btn sb-white">VOTE NOW</a>
+                            @if (Auth::guest())
+                                <a href="{{ route('login')}}" class="site-btn sb-white">VOTE NOW</a>
+                            @else
+                                <a href="{{ route('design.index')}}" class="site-btn sb-white">VOTE NOW</a>
+                            @endif
                         </div>
                     </div>
-                    {{-- <div class="offer-card text-white">
-                        <span>from</span>
-                        <h2>$29</h2>
-                        <p>SHOP NOW</p>
-                    </div> --}}
                 </div>
             </div>
             <div class="hs-item set-bg" data-setbg="{{ asset('images/bg-2.jpg') }}">
@@ -33,11 +32,6 @@
                             @endguest
                         </div>
                     </div>
-                    {{-- <div class="offer-card text-white">
-                        <span>from</span>
-                        <h2>$29</h2>
-                        <p>SHOP NOW</p>
-                    </div> --}}
                 </div>
             </div>
             <div class="hs-item set-bg" data-setbg="{{ asset('images/bg.jpg') }}">
@@ -109,7 +103,6 @@
                 <h2>LATEST DESIGNS</h2>
             </div>
             <div class="product-slider owl-carousel">
-               
                 @foreach ($latestDesigns as $design)
                     <div class="product-item">
                         <div class="pi-pic">
@@ -129,8 +122,10 @@
                             </div>
                         </div>
                         <div class="pi-text">
-                            <h6>${{ $design->price }}</h6>
-                            <p>{{ $design->title}}</p>
+                            @if ($role == 'company')
+                                <h6>${{ $design->price }}</h6>
+                            @endif
+                            <p>{{ $design->title }}</p>
                         </div>
                     </div>
                 @endforeach
@@ -140,14 +135,14 @@
     <!-- letest design section end -->
 
     {{-- tags sction --}}
-    <div class="container">
+    {{-- <div class="container">
         <ul class="product-filter-menu">
             <h4 class="mb-1">Our Tags</h4>
             @foreach ($tags as $tag)
                 <li><a href="#">{{$tag->name}}</a></li>
             @endforeach
         </ul>
-    </div>
+    </div> --}}
     {{-- End of tags section  --}}
 
     <!-- Product filter section -->
@@ -175,10 +170,13 @@
                                     @endif                                    
                                     @if ($role == 'user')
                                         <a href="javascript:void(0)" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                    @endif                                </div>
+                                    @endif                                
+                                </div>
                             </div>
                             <div class="pi-text">
-                                <h6>${{ $design->price }}</h6>
+                                @if ($role == 'company')
+                                    <h6>${{ $design->price }}</h6>
+                                @endif
                                 <p>{{ $design->title}}</p>
                             </div>
                         </div>
@@ -186,7 +184,7 @@
                 @endforeach
             </div>
             <div class="text-center pt-5">
-                <a href='#' class="site-btn sb-line sb-dark">SEE MORE</a>
+                <a href="{{ route('design.index')}}" class="site-btn sb-line sb-dark">SEE MORE</a>
             </div>
         </div>
     </section>
@@ -200,19 +198,18 @@
             </div>
             <div class="product-slider owl-carousel">
                 @foreach ($companies as $company)
-               
                     <div class="product-item">
                         <div class="pi-pic">
-                            <a href="">
-                                <img src="{{ asset('images/product/1.jpg') }}" alt="">
+                            <a href="{{route('company.show', $company)}}" >
+                                {{-- <img src="{{ asset('images/product/1.jpg') }}" alt=""> --}}
+                                <img src="{{asset('storage/'.$company->image)}}" alt="">
                             </a>
-                            {{--<img src="{{asset('storage/'.$company->image)}}" alt="">--}}
                             <div class="pi-links">
-                                <a href="#" class="btn btn-info">KNOW MORE</a>
+                                <a href="{{route('company.show', $company)}}" class="btn btn-info">KNOW MORE</a>
                             </div>
                         </div>
                         <div class="pi-text">
-                            <h6>${{ $company->name }}</h6>
+                            <p>{{ $company->name }}</p>
                         </div>
                     </div>
                 @endforeach
@@ -227,7 +224,7 @@
                 <div class="tag-new">NEW</div>
                 <span>New DESIGNS</span>
                 <h2>EVERY DAY</h2>
-                <a href="#" class="site-btn">VOTE NOW</a>
+                <a href="{{route('design.index')}}" class="site-btn">VOTE NOW</a>
             </div>
         </div>
     </section>

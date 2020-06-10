@@ -46,7 +46,7 @@ class LoginController extends Controller
 
     // socialite login
     protected $providers = [
-        'facebook','google','twitter'
+        'facebook','google'
     ];
 
     public function show()
@@ -63,7 +63,7 @@ class LoginController extends Controller
         try {
             return Socialite::driver($driver)->redirect();
         } catch (Exception $e) {
-            return redirect('home')->with('error','Unable to login');
+            return redirect('/')->with('error','Unable to login');
             // return $this->sendFailedResponse($e->getMessage());
         }
     }
@@ -74,7 +74,7 @@ class LoginController extends Controller
         try {
             $user = Socialite::driver($driver)->user();
         } catch (Exception $e) {
-            return redirect('home')->with('error','Unable to login');
+            return redirect('/')->with('error','Unable to login');
             // return $this->sendFailedResponse($e->getMessage());
         }
 
@@ -86,7 +86,7 @@ class LoginController extends Controller
 
     protected function sendSuccessResponse()
     {
-        return redirect()->intended('home');
+        return redirect()->intended('/');
     }
 
     protected function sendFailedResponse($msg = null)
