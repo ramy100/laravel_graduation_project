@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('styles')
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/comments.css') }}">
+@endsection
+
 @section('content')
 	@if (session('success'))
         <div class="alert alert-success" style="margin:0 auto;">
@@ -33,7 +37,7 @@
 					<input type="hidden" name="designId" value="{{ $design->id }}" id="designId">
 
 					<!-- vote -->
-					@if((Auth::user()->role == "user") && ($design->state == "sketch") )
+					@if((Auth::user()) &&(Auth::user()->role == "user") && ($design->state == "sketch") )
 					<a href="#" class="wishlist-btn " style="font-size: 40px;margin-left: 10px;"><i class="fa fa-heart {{($voted == 'True') ? 'show':'hide' }}"></i>
 					</a>
 					@endif
@@ -55,14 +59,14 @@
 					</div> -->
 
 					<!-- delete design -->
-					@if(Auth::id() == $design->designer_id)
+					@if((Auth::user()) && (Auth::id() == $design->designer_id))
 					<form action="{{route('design.destroy',$design->id)}}" method="POST" style="display: inline;">
                             @method('DELETE')
                             @csrf
                         <button class="deleteDesign btn-danger" onclick="return confirm('Are you sure?')"  type="submit">Delete</button>
                     </form>
                     	<a class=" editDesign " href="{{route('design.edit',$design->id)}}"  >Edit</a>
-                    @elseif((Auth::user()->role == "company") && ($design->state == "sketch") )
+                    @elseif((Auth::user()) && (Auth::user()->role == "company") && ($design->state == "sketch") )
 
                     <!-- buy design -->
                     	<a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card site-btn mb-2"  >ADD TO CART</a>		
@@ -78,15 +82,17 @@
 								</div>
 							</div>
 						</div>
+
+						<!-- Reviews -->
 						<div class="panel">
 							<div class="panel-header" id="headingTwo">
 								<button class="panel-link" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">Reviews </button>
 							</div>
 							<div id="collapse2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-								<div class="panel-body">
+								
+									@include('designs.comments')
+								
 
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integer bibendum sodales arcu id te mpus. Ut consectetur lacus leo, non scelerisque nulla euismod nec.</p>
-								</div>
 							</div>
 						</div>
 						
@@ -112,7 +118,7 @@
 						<div class="pi-pic">
 							<a href="{{route('design.show', ['design' => $design->id])}}"><img id="designImage" src="{{asset ('storage/'.$design->images->first()->image) }}" alt=""></a>
 						</div>
-						<div class="pi-text">
+						<div class="pi-text ">
 							<h6>&dollar;{{ $design->price }}</h6>
 							<p>{{ $design->title }} </p>
 						</div>
@@ -127,4 +133,5 @@
 @endsection
 @push('scripts')
 	<script src="{{ asset('js/vote.js') }}"></script>
+	<script src="{{ asset('js/comments.js') }}"></script>
 @endpush

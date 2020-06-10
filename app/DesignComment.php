@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class DesignComment extends Model
 {
     //
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'body', 'design_id', 'user_id'
+    ];
+
     public function design()
     {
         return $this->belongsTo(Design::class,'design_id');
