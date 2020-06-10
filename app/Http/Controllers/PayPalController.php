@@ -7,6 +7,7 @@ use Srmklive\PayPal\Services\ExpressCheckout;
 use Cart;
 use App\Order;
 use App\SubOrder;
+use Illuminate\Support\Facades\DB;
 class PayPalController extends Controller
 {
 
@@ -19,7 +20,7 @@ class PayPalController extends Controller
     public function getExpressCheckout(){
         $cart = $this->getCheckoutData();
         try {
-            $response = $this->provider->setExpressCheckout($cart, false);
+            $response = $this->provider->setExpressCheckout($cart);
             return redirect($response['paypal_link']);
         } catch (\Exception $e) {
             $invoice = $this->makeOrder('Invalid');
@@ -49,7 +50,7 @@ class PayPalController extends Controller
     }
 
     public function getExpressCheckoutCancel(){
-        dd('Canceled');
+        return back()->with('error','Your transaction has been canelled');
     }
 
     public function getExpressCheckoutSuccess(Request $request)
@@ -67,12 +68,15 @@ class PayPalController extends Controller
         }
         $check = $this->makeOrder($status);
         Cart::clear();
-        return redirect('/cart')->with('message', 'success transation');
+        return redirect('/cart')->with('message', 'success transaction');
     }
 
     public function makeOrder($status){
 
         $cart = Cart::session(auth()->id())->getContent();
+        $designs_ids = $cart->keys();
+        
+        DB::beginTransaction();
         $order = new Order();
         $order->company_id = auth()->user()->id;
         $order->total = Cart::session(auth()->user()->id)->getTotal();
@@ -91,7 +95,10 @@ class PayPalController extends Controller
             $subOrder->price = $item->price;
             $subOrder->save();
         }
-
+        foreach ($designs_ids as $design) {
+            DB::table('designs')->where('id',$design)->update(['company_id'=>auth()->user()->id,'state'=>'sold']);
+        }
+        DB::commit();
         return 0;
     }
 }

@@ -61,7 +61,7 @@ class LoginController extends Controller
         }
 
         try {
-            return Socialite::driver($driver)->redirect();
+            return Socialite::driver($driver)->redirect('/');
         } catch (Exception $e) {
             return redirect('/')->with('error','Unable to login');
             // return $this->sendFailedResponse($e->getMessage());
@@ -91,7 +91,7 @@ class LoginController extends Controller
 
     protected function sendFailedResponse($msg = null)
     {
-        return redirect()->route('social.login')
+        return redirect()->route('login')
             ->withErrors(['msg' => $msg ?: 'Unable to login, try with another provider to login.']);
     }
 
@@ -136,7 +136,7 @@ class LoginController extends Controller
 
                 }else{
             
-            //Show message here what you want to show
+                    return back()->with('error', 'Try to login later');
             
             }
         }
