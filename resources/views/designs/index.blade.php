@@ -73,13 +73,13 @@
 									<a href="{{route('design.show', ['design' => $design->id])}}"><img src="{{asset ('storage/'.$design->images()->first()->image) }} " alt="Design Image" id="designImage"></a>
 									<div class="pi-links">
 
-										@if((Auth::user()->role == "company") && ($design->state == "sketch") )
+										@if((Auth::user())&&(Auth::user()->role == "company") && ($design->state == "sketch") )
 										<div class="pi-links">
 											<a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card site-btn mb-2"  >ADD TO CART</a>
 										</div>
 										@endif
 
-										@if((Auth::user()->role == "user") && ($design->state == "sketch") )
+										@if((Auth::user())&&(Auth::user()->role == "user") && ($design->state == "sketch") )
 										<a href="{{route('design.show', ['design' => $design->id])}}" class="wishlist-btn"><i class="flaticon-heart"></i></a>
 										@endif
 									</div>
