@@ -1,17 +1,21 @@
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- CSRF Token -->
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        
+        <title>{{ config('app.name', 'Laravel') }}</title>
+        
+        <!-- Scripts -->
+        <script src="{{ asset('js/app.js') }}" defer></script>
+    {{-- login    --}}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/util.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
+    {{-- end of login --}}
+    
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -30,6 +34,7 @@
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+
 
 
 
@@ -268,7 +273,7 @@
     <script src="{{ asset('js/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
 
-     
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
         integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
@@ -276,29 +281,28 @@
     
 
 
-<script>
-    $(document).ready(function(){
+    <script>
+        $(document).ready(function(){
 
-        $(document).on('click', '.add-card', function(){
-            var design_id = $(this).data('id');
-            $.post('{{ route('add-to-cart') }}', {"_token": "{{ csrf_token() }}","id": design_id}, function(response){
-				
-                if(response.status == '1'){
-
-                    $(document).find('#cart-count').html(response.count);
+            $(document).on('click', '.add-card', function(){
+                var design_id = $(this).data('id');
+                $.post('{{ route('add-to-cart') }}', {"_token": "{{ csrf_token() }}","id": design_id}, function(response){
                     
-                }
-                    alert(response.msg);
-            }).fail(function(error){
+                    if(response.status == '1'){
+
+                        $(document).find('#cart-count').html(response.count);
+                        
+                    }
+                        alert(response.msg);
+                }).fail(function(error){
+
+                })
 
             })
 
-        })
 
-
-    });
-</script>
-
+        });
+    </script>
 
      @stack('scripts')
 

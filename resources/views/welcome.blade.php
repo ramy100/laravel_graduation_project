@@ -113,13 +113,12 @@
                 @foreach ($latestDesigns as $design)
                     <div class="product-item">
                         <div class="pi-pic">
-                            <a href="{{route('design.show', ['design' => $design->id])}}">
+                            {{-- <a href="{{route('design.show', ['design' => $design->id])}}">
                                 <img src="{{ asset('images/product/1.jpg') }}" alt="">
-                            </a>
-                            {{-- <div class="pi-links"> --}}
-                            {{--<a href="{{route('design.show', ['design' => $design->id])}}"> 
+                            </a> --}}
+                            <a href="{{route('design.show', ['design' => $design->id])}}"> 
                                 <img src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
-                            </a>--}}
+                            </a>
                             <div class="pi-links"> 
                                 @if ($role == 'company')
                                     <a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
@@ -162,14 +161,14 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="product-item">
                             <div class="pi-pic">
-                                <a href="{{route('design.show', ['design' => $design->id])}}">
+                                {{-- <a href="{{route('design.show', ['design' => $design->id])}}">
                                     <img src="{{ asset('images/product/9.jpg') }}" alt="">
+                                </a> --}}
+                                
+                                <a href="{{route('design.show', ['design' => $design->id])}}">
+                                        <img src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
                                 </a>
-                                {{--
-                                    <a href="{{route('design.show', ['design' => $design->id])}}">
-                                            <img src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
-                                    </a>
-                                --}}
+                               
                                 <div class="pi-links">
                                     @if ($role == 'company')
                                         <a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>

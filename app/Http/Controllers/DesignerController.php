@@ -62,7 +62,7 @@ class DesignerController extends Controller
         // ->get();
         ->paginate(10);
         // print($designers);
-        return view('designer\designerslist',['designers'=>$designers]);
+        return view('designer.designerslist',['designers'=>$designers]);
     }
 
     /**
@@ -95,7 +95,7 @@ class DesignerController extends Controller
         // }
         // print($image_array);
         // print($likes_count);
-        return view('designer\profile',['designer'=>$designer,'user'=>$user,'current_designs'=>$current_designs,'likes'=>$likes_count]);
+        return view('designer.profile',['designer'=>$designer,'user'=>$user,'current_designs'=>$current_designs,'likes'=>$likes_count]);
           
         
     }
