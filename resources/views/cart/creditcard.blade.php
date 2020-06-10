@@ -60,7 +60,7 @@
 <script>
 const cardHolderName = document.getElementById('card-holder-name');
 const cardButton = document.getElementById('card-button');
-const app = document.getElementById('app');
+const app = document.getElementsByTagName('body')[0];
 function get_loading_element() {
     return (
     `
