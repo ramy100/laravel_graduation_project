@@ -8,8 +8,8 @@
 		<div class="container">
 			<h4>Your cart</h4>
 			<div class="site-pagination">
-				<a href="">Home</a> /
-				<a href="">Your cart</a>
+				<a href="/">Home</a> /
+				<a href="{{route('website.cart')}}">Your cart</a>
 			</div>
 		</div>
 	</div>
@@ -41,7 +41,7 @@
 							<?php $total = 0; ?>
 							@foreach (Cart::session(auth()->id())->getContent() as $item)
 							<li>
-							<div class="pl-thumb"><img src="{{ asset('images/cart/2.jpg') }}" alt=""></div>
+							<div class="pl-thumb"><img src="{{ asset('storage/'.$item->attributes->image) }}" alt=""></div>
 							<h6>{{ $item->name }}</h6>
 								<p>${{ $item->price }}</p>
 							</li>	

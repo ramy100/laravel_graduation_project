@@ -167,7 +167,7 @@
                                 </a> --}}
                                 
                                 <a href="{{route('design.show', ['design' => $design->id])}}">
-                                        <img width="200px" height="320px" src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
+                                        <img width="250px" height="420px" src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
                                 </a>
                                
                                 <div class="pi-links">
