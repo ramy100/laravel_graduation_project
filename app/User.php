@@ -7,7 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Cashier\Billable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Notifiable;
     use Billable;
@@ -66,6 +66,10 @@ class User extends Authenticatable
         return $this->hasOne(Profile::class,'user_id');
     }
     
+    public function my_votes()
+    {
+        return $this->hasMany(DesignVote::class,'user_id');
+    }
     public static function boot() {
         parent::boot();
 

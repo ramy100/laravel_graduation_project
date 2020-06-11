@@ -74,15 +74,19 @@ class AllUsersRegisterController extends RegisterController
         try {
             DB::beginTransaction();
             if(array_key_exists("image",$data))
-                $image = $data['image']->store('uploads', 'public');
+                $image_path = $data['image']->store('uploads', 'public');
             else
-                $image=null;
+                $image_path=null;
+
+            if(array_key_exists("document",$data))
+                $document_path = $data['document']->store('Files', 'public');
+
             $user = User::create([
                 'name' => $data['name'],
                 'email' => $data['email'],
                 'address' => $data['address'],
                 'phone' => $data['phone'],
-                'image' => $image,
+                'image' => $image_path,
                 'role' => $role,
                 'password' => Hash::make($data['password']),
             ]);
@@ -92,13 +96,15 @@ class AllUsersRegisterController extends RegisterController
                     'user_id'=>$user->id,
                     'about'=>$data['about'],
                     'website'=>$data['website'],
-                    ]);
+                    'document'=>$document_path,
+                    'is_verified'=>'pending',
+                ]);
                 // $user->createAsStripeCustomer();
             }
         } catch (\Throwable $th) {
             // delete user if an error arises and return server error
             DB::rollBack();
-            return abort(500);            ;
+            return abort(500);
         }
         // commit changes if every thing goes ok
         Db::commit();

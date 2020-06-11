@@ -109,9 +109,6 @@
                             @if($design->state != "sketch")
                             <div class="tag-sale">Sold</div>
                             @endif
-                            {{-- <a href="{{route('design.show', ['design' => $design->id])}}">
-                                <img src="{{ asset('images/product/1.jpg') }}" alt="">
-                            </a> --}}
                             <a href="{{route('design.show', ['design' => $design->id])}}"> 
                                 <img width="200px" height="350px"  src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
                             </a>

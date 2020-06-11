@@ -28,7 +28,7 @@ Route::get('load-cart-data', 'CartController@loadCartData')->name('load-cart');
 Route::get('empty-cart', 'CartController@emptyCart')->name('empty-cart');
 
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -76,4 +76,7 @@ Route::get('paypal/ec-checkout-success', 'PayPalController@getExpressCheckoutSuc
 Route::get('paypal/ec-checkout-cancel', 'PayPalController@getExpressCheckoutCancel')->name('paypal.cancel');
 
 
-
+// user profile 
+Route::resource('user', 'UserProfileController')->except([
+    'create', 'store','update','edit'
+]);
