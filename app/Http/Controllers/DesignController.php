@@ -28,7 +28,9 @@ class DesignController extends Controller
         $desings=Design::paginate(9);
         $maxPrice=Design::all()->max('price');
         $minPrice=Design::all()->min('price');
-        return view('designs.index',compact('desings','maxPrice','minPrice'));
+        $tags=Tag::all();
+        $materials=Material::all();
+        return view('designs.index',compact('materials','tags','desings','maxPrice','minPrice'));
         //
     }
 
@@ -72,10 +74,13 @@ class DesignController extends Controller
         $maxarr=explode('$', $maxPrice);
         $max=(int)$maxarr[1];
         $userRole="";
+        $tag=$request->tag;
         $userExist=Auth::check();
+        $material=$request->material;
         $newArray=[];
-        // echo $maxPrice;
-        if($filterType && !$category)
+        $designs=[];
+
+        if($filterType && !$category && !$tag )
         {  
             if($filterType == 'Top Rated')
             {
@@ -86,12 +91,12 @@ class DesignController extends Controller
                 $designs=Design::all()->whereBetween('price',[$min,$max])->sortByDesc('created_at');
             }
         }
-        else if(!$filterType && $category)
+        else if(!$filterType && $category && !$tag )
         {
              $designs=Design::all()->whereBetween('price',[$min,$max])->where('category',$category);
 
         }
-        else if($filterType && $category)
+        else if($filterType && $category && !$tag )
         {
             if($filterType == 'Top Rated')
             {
@@ -103,24 +108,59 @@ class DesignController extends Controller
                 $designs=Design::all()->whereBetween('price',[$min,$max])->where('category',$category)->sortByDesc('created_at');
             }
         }
-        else if(!$filterType && !$category)
+        else if(!$filterType & !$category && !$tag )
         {
             $designs=Design::all()->whereBetween('price',[$min,$max]);
         }
-        foreach($designs as $design){ 
+
+        else if($filterType && $category && $tag)
+        {
+            if($filterType == 'Top Rated')
+            {
+               $designs= Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->where('category',$category)->whereBetween('price',[$min,$max])->get()->sortByDesc('total_likes');
+            }
+            else if($filterType == 'Latest')
+            {
+                $designs= Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->where('category',$category)->whereBetween('price',[$min,$max])->get()->sortByDesc('created_at');
+                
+            }
+        }
+        else if( !$filterType && $category && $tag)
+        {
+            $designs= Design::whereHas('tag', function($query) use ($tag){$query->where('name','=',$tag);})->where('category',$category)->whereBetween('price',[$min,$max])->get();
+        }
+        else if( $filterType && !$category && $tag)
+        {
+             if($filterType == 'Top Rated')
+            {
+               $designs= Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->whereBetween('price',[$min,$max])->get()->sortByDesc('total_likes');
+            }
+            else if($filterType == 'Latest')
+            {
+                $designs= Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->whereBetween('price',[$min,$max])->get()->sortByDesc('created_at');
+                
+            }
+        }
+        else if( !$filterType && !$category && $tag)
+        {
+            $designs= Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->whereBetween('price',[$min,$max])->get();
+        }
+            foreach($designs as $design){ 
             $design->{'image'}=$design->images()->first()->image;
             $design->{'designer'}=$design->designer->name;
             array_push($newArray,$design);
-        }
+            }
+
+        
         if($userExist)
-        {;
+        {
             $userRole=Auth::user()->role;
             
         }
         return response()->json([
             'designs' => $newArray,
             'user_exist'=>$userExist,
-            'user_role'=>$userRole
+            'user_role'=>$userRole,
         ]);
     }
 
@@ -217,10 +257,11 @@ class DesignController extends Controller
     {
         //
         $design = Design::findOrFail($id);
-        $tag=$design->tag();
+        $tag=$design->tag;
         $voted="False";
         $designImages=DesignImage::all()->where('design_id','=',$id);
-        $RelatedDesigns=Design::whereHas('tag', function($query){$query->where('name','=','dress');})->get();
+        // pass category
+        $RelatedDesigns=Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->get();
         $votes=$design->votes;
         foreach ($votes as $vote) {
             if($vote->user_id == Auth::id())
