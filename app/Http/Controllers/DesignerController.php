@@ -65,10 +65,12 @@ class DesignerController extends Controller
     public function show($id)
     {
         $user = Auth::user();
+        $vote_exist =  DesignerRate::where(['designer_id'=> $id,'liker_id'=>Auth::id()])->get();
+        print($vote_exist);
         $about = Profile::where('user_id',$id)->get();
         $designer = User::where(['role'=>'designer','id'=>$id])->get();
-        $current_designs = Design::where('designer_id', $id)->get();
-        $likes_count =User::find($id)->designer_rates->count();
+        $current_designs = Design::where('designer_id', $id)->get()->count();
+        $likes_count =User::findOrFail($id)->likes;
         $designs = Design::where('designer_id',$id)->get();
         $cimage_array=[];
         foreach($designs as $design)
@@ -84,7 +86,7 @@ class DesignerController extends Controller
         array_push($fimage_array, $featured_image[0]); 
         }
 
-        return view('designer.profile',['designer'=>$designer,'user'=>$user,'featured_images'=>$fimage_array,'current_images'=>$cimage_array,'likes'=>$likes_count,'about'=>$about]);       
+        return view('designer.profile',['designer'=>$designer,'user'=>$user,'vote_exist'=>$vote_exist,'design_count'=>$current_designs,'featured_images'=>$fimage_array,'current_images'=>$cimage_array,'likes'=>$likes_count,'about'=>$about]);       
     }    
     /**
      * Remove the specified resource from storage.
@@ -126,7 +128,7 @@ class DesignerController extends Controller
                 $designer->save();              
                 
             }
-        return response()->json(['success'=>'Got Simple Ajax Request.','input'=>$id,'exist'=>$exist]);
+        return response()->json(['success'=>'Got Simple Ajax Request.','likes'=>$likes,'input'=>$id,'exist'=>$exist]);
     }
     public function featuredesign($design)
     {

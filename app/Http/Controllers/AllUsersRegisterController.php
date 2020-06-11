@@ -93,7 +93,7 @@ class AllUsersRegisterController extends RegisterController
                     'about'=>$data['about'],
                     'website'=>$data['website'],
                     ]);
-                $user->createAsStripeCustomer();
+                // $user->createAsStripeCustomer();
             }
         } catch (\Throwable $th) {
             // delete user if an error arises and return server error
