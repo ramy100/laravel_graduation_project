@@ -66,6 +66,10 @@ class User extends Authenticatable
         return $this->hasOne(Profile::class,'user_id');
     }
     
+    public function my_votes()
+    {
+        return $this->hasMany(DesignVote::class,'user_id');
+    }
     public static function boot() {
         parent::boot();
 

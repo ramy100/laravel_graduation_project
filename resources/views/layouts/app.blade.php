@@ -111,11 +111,15 @@
                             @endif
                             @if($user && $user->role == "designer")
                             <div> 
-                            <a href="{{ route('designer.show',['designer'=>$user->id]) }}">Your Profile</a>
+                                <a href="{{ route('designer.show',['designer'=>$user->id]) }}">Your Profile</a>
                             </div>
                             @elseif($user && $user->role == "company")
                             <div> 
-                            <a href="{{ route('company.show',['company'=>$user->id]) }}">Your Profile</a>
+                                <a href="{{ route('company.show',['company'=>$user->id]) }}">Your Profile</a>
+                            </div>
+                            @elseif($user && $user->role == "user")
+                            <div> 
+                                <a href="{{ route('user.show',['user'=>$user->id]) }}">Your Profile</a>
                             </div>
                            
                             
