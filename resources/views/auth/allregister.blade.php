@@ -19,6 +19,7 @@
                     @csrf
                     <div class="form-row">
                         <div class="form-group col-md-6">
+                            <label for="Name" class="text-info">{{ ucfirst(trans($role)) }} Name</label>
                             <input id="Full Name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" placeholder="Full Name" autocomplete="name" autofocus>
                             @error('name')
                                 <span class="invalid-feedback" role="alert">
@@ -27,7 +28,8 @@
                             @enderror
                         </div>
                         <div class="form-group col-md-6">
-                          <input id="inputEmail4" placeholder="Email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email">
+                            <label for="inputEmail4" class="text-info">{{ ucfirst(trans($role)) }} Email</label>
+                            <input id="inputEmail4" placeholder="Email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email">
                             @error('email')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -37,7 +39,8 @@
                       </div>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                          <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
+                            <label for="password" class="text-info">Password</label>
+                            <input id="password" type="password" placeholder="Password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
                             @error('password')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -45,11 +48,13 @@
                             @enderror
                         </div>
                         <div class="form-group col-md-6">
-                          <input id="password-confirm inputEmail4" placeholder="Confirm password" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
+                            <label for="password-confirm" class="text-info">Password Confirm</label>
+                            <input id="password-confirm inputEmail4" placeholder="Confirm password" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group col-md-3">
+                            <label for="phone" class="text-info">{{ ucfirst(trans($role)) }} Mobile No.</label>
                             <input id="phone Mobile No." type="text" placeholder="Mobile No." class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" autocomplete="phone">
                             @error('phone')
                                 <span class="invalid-feedback" role="alert">
@@ -58,6 +63,7 @@
                             @enderror
                         </div>
                         <div class="form-group col-md-9">
+                            <label for="address" class="text-info">{{ ucfirst(trans($role)) }} Address</label>
                             <input id="address" placeholder="Adress" type="text" class="form-control @error('address') is-invalid @enderror" name="address" value="{{ old('address') }}" autocomplete="address">
                             @error('address')
                                 <span class="invalid-feedback" role="alert">
@@ -66,7 +72,8 @@
                             @enderror
                         </div>
                         <div class="form-group col-md-12">
-                        <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}"  autocomplete="image"> 
+                            <label for="image" class="text-info">{{ ucfirst(trans($role)) }} Image</label>
+                            <input id="image" type="file" class="form-control @error('image') is-invalid @enderror" name="image" value="{{ old('image') }}"  autocomplete="image"> 
                             @error('image')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
@@ -75,6 +82,7 @@
                         </div>
                         @if($role === 'company' || $role ==='designer')
                             <div class="form-group col-md-12">
+                                <label for="website" class="text-info">{{ ucfirst(trans($role)) }} Website</label>
                                 <input id="website" name="website" placeholder="{{ ucfirst(trans($role)) }} Website" type="text" class="form-control @error('website') is-invalid @enderror" value="{{ old('website') }}" autocomplete="website">
                                 @error('website')
                                 <span class="invalid-feedback" role="alert">
@@ -83,8 +91,19 @@
                                 @enderror
                             </div>
                             <div class="form-group col-md-12">
+                                <label for="about" class="text-info">About The {{ ucfirst(trans($role)) }}</label>
                                 <textarea id="about" name="about" placeholder="About Your {{ ucfirst(trans($role)) }}" cols="40" rows="5" class="form-control @error('about') is-invalid @enderror" autocomplete="about">{{ old('about') }}</textarea>
                                 @error('about')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                            <div class="form-group col-md-12">
+                                <label for="document" class="text-info">{{ ucfirst(trans($role)) }} Document</label>
+                                <input id="document" type="file" class="form-control @error('document') is-invalid @enderror" name="document" value="{{ old('document') }}"  autocomplete="document"> 
+                                <small class="form-text text-muted">Add any documents to validate your identity and it will be reviewed by our team</small>
+                                @error('document')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

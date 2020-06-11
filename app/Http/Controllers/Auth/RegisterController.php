@@ -57,6 +57,7 @@ class RegisterController extends Controller
             'address' => ['sometimes','nullable','string', 'max:255' , 'min:10'],
             'about' => ['sometimes','nullable','string', 'max:255' , 'min:10'],
             'website' => ['sometimes','nullable'],
+            'document'=>['required','mimes:pdf']
         ]);
     }
 

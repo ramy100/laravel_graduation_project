@@ -18,10 +18,9 @@ trait UpdateUsers
     {
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'
-        ,Rule::unique('users', 'email')->ignore($company->id)
-        ],
-            'phone' => ['sometimes','nullable', 'starts_with:011,012,010','digits:11'],
+            'phone' => ['sometimes','nullable', 'starts_with:011,012,010','digits:11'
+            ,Rule::unique('users', 'phone')->ignore($company->id)
+            ],
             'address' => ['sometimes','nullable','string', 'max:255' , 'min:10'],
             'image'=>['sometimes','nullable','image'],
             'about' => ['sometimes','nullable','string', 'max:255' , 'min:10'],
@@ -45,7 +44,6 @@ trait UpdateUsers
             }
             $updated =  $user->update([
                 'name' => $data['name'],
-                'email' => $data['email'],
                 'address' => $data['address'],
                 'phone' => $data['phone'],
                 'image' => $image,
