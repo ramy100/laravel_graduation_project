@@ -21,7 +21,7 @@
 							<?php  $total += $item->price; ?>
 							<tr>
 								<td class="product-col text-center">
-									<img src="{{asset('images/cart/1.jpg')}}" alt="">
+									<img src="{{asset('storage/'.$item->attributes->image)}}" alt="">
 									<div class="pc-title">
 									<h4>{{ $item->name }}</h4>
 									</div>

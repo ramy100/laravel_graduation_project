@@ -106,6 +106,9 @@
                 @foreach ($latestDesigns as $design)
                     <div class="product-item">
                         <div class="pi-pic">
+                            @if($design->state != "sketch")
+                            <div class="tag-sale">Sold</div>
+                            @endif
                             {{-- <a href="{{route('design.show', ['design' => $design->id])}}">
                                 <img src="{{ asset('images/product/1.jpg') }}" alt="">
                             </a> --}}
@@ -113,7 +116,7 @@
                                 <img width="200px" height="350px"  src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
                             </a>
                             <div class="pi-links"> 
-                                @if ($role == 'company')
+                                @if ($role == 'company' && ($design->state == "sketch"))
                                     <a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
                                 @endif
                                 @if ($role == 'user')
@@ -156,16 +159,19 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="product-item">
                             <div class="pi-pic">
+                                @if($design->state != "sketch")
+                                <div class="tag-sale">Sold</div>
+                                @endif
                                 {{-- <a href="{{route('design.show', ['design' => $design->id])}}">
                                     <img src="{{ asset('images/product/9.jpg') }}" alt="">
                                 </a> --}}
                                 
                                 <a href="{{route('design.show', ['design' => $design->id])}}">
-                                        <img width="200px" height="320px" src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
+                                        <img width="250px" height="420px" src="{{asset ('storage/'.$design->images()->first()->image) }}" alt="">
                                 </a>
                                
                                 <div class="pi-links">
-                                    @if ($role == 'company')
+                                    @if ($role == 'company' && ($design->state == "sketch"))
                                         <a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
                                     @endif                                    
                                     @if ($role == 'user')

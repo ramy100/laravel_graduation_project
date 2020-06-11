@@ -41,7 +41,12 @@ class AppServiceProvider extends ServiceProvider
                 $count = 0;
             }
             $user = Auth::user();
-            $v->with(['cart_count' => $count,'user'=>$user]);
+            $user_role = Auth::user() ? Auth::user()->role : '';
+            $v->with([
+                'cart_count' => $count,
+                'user' => $user, 
+                'user_role'=> $user_role,
+                ]);
         });
 
     }

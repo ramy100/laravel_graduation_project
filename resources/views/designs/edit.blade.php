@@ -54,7 +54,7 @@
 									<select id="tags" name="tag_id" class="form-control mb-2 js-example-basic-single" autofocus>
 									  <option value="" disabled >Tags</option>
 									  @foreach ($tags as $tag) 
-									  	<option value="{{ $tag ->id}}" {{ ($design->tag->id == $tag->id) ?? 'selected'}}>{{ $tag ->name}}</option>
+									  	<option value="{{ $tag ->id}}" {{ ($design->tag->id == $tag->id) ? 'selected' : '' }}>{{ $tag ->name}}</option>
 									  @endforeach
 									</select>
 								</div>
@@ -84,10 +84,10 @@
 								<div style="margin: 10px 0;">
 									<select id="cars" name="category" class="form-control js-example-basic-single" autofocus>
 									  <option value="" disabled >Category</option>
-									  <option value="men" {{ $design->category =="men" ?? 'selected' }}>Men</option>
-									  <option value="women" {{ $design->category =="women" ?? 'selected' }}>Women</option>
-									  <option value="kids" {{ $design->category =="kids" ?? 'selected' }}>Kids</option>
-									  <option value="teenagers" {{ $design->category =="teenagers" ?? 'selected' }}>Teenagers</option>
+									  <option value="men" {{ $design->category === "men" ? 'selected':'' }}>Men</option>
+									  <option value="women" {{ $design->category ==="women" ? 'selected':'' }}>Women</option>
+									  <option value="kids" {{ $design->category =="kids" ? 'selected' :'' }}>Kids</option>
+									  <option value="teenagers" {{ $design->category =="teenagers" ? 'selected':'' }}>Teenagers</option>
 									</select>
 								</div>
 								@if($errors->first('category'))

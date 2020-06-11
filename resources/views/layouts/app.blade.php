@@ -100,13 +100,15 @@
                                     </div>
                                 </div>
                             @endguest
-                            <div class="up-item">
-                                <div class="shopping-card">
-                                    <i class="flaticon-bag"></i>
-                                <span id="cart-count">{{ $cart_count }}</span>
+                            @if ($user_role == 'company')                                
+                                <div class="up-item">
+                                    <div class="shopping-card">
+                                        <i class="flaticon-bag"></i>
+                                    <span id="cart-count">{{ $cart_count }}</span>
+                                    </div>
+                                    <a href="{{ route('website.cart') }}">Shopping Cart</a>
                                 </div>
-                            <a href="{{ route('website.cart') }}">Shopping Cart</a>
-                            </div>
+                            @endif
                             @if($user && $user->role == "designer")
                             <div> 
                             <a href="{{ route('designer.show',['designer'=>$user->id]) }}">Your Profile</a>
