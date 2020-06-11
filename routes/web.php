@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', 'IndexController@index')->name('website.index');
+Route::get('/', 'IndexController@index')->name('website.index')->middleware('verified');
 
 // payement
 Route::get('/checkout', 'CheckoutController@checkout')->name('checkoutPage');
@@ -28,7 +28,7 @@ Route::get('load-cart-data', 'CartController@loadCartData')->name('load-cart');
 Route::get('empty-cart', 'CartController@emptyCart')->name('empty-cart');
 
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
