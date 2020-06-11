@@ -71,7 +71,8 @@ class DesignController extends Controller
         $maxPrice=$request->maxPrice;
         $maxarr=explode('$', $maxPrice);
         $max=(int)$maxarr[1];
-        $designs=[];
+        $userRole="";
+        $userExist=Auth::check();
         $newArray=[];
         // echo $maxPrice;
         if($filterType && !$category)
@@ -111,9 +112,15 @@ class DesignController extends Controller
             $design->{'designer'}=$design->designer->name;
             array_push($newArray,$design);
         }
-
+        if($userExist)
+        {;
+            $userRole=Auth::user()->role;
+            
+        }
         return response()->json([
-            'designs' => $newArray
+            'designs' => $newArray,
+            'user_exist'=>$userExist,
+            'user_role'=>$userRole
         ]);
     }
 

@@ -44,16 +44,36 @@
 		        },
 		        success: function (data) {
 		            console.log(data.designs);
+		            console.log(data.user_exist);
+		            console.log(data.user_role);
 		            let designs=data.designs;
+		            let product="";
 		            $('.designs').html("");
 		            designs.forEach((element) => {
 		            	$('.designs').append(`
-		            		<div class="col-lg-4 col-sm-6">
+		            	<div class="col-lg-4 col-sm-6">
 							<div class="product-item">
 								<div class="pi-pic">
-									<a href="design/${element.id}"><img src="/storage/${element.image}" alt="Design Image" id="designImage"></a>
-																	</div>
-
+									${ element.state != "sketch" ? '<div class="tag-sale">Sold</div>' : ''}
+									<a href="design/${element.id}">
+										<img src="/storage/${element.image}" alt="Design Image" id="designImage">
+									</a>
+									
+									<div class="pi-links">
+										${data.user_exist && data.user_role == "company" && element.state == "sketch" ? 
+										`<div class="pi-links">
+											<a href="javascript:void(0)" data-id="${element.id}" class="add-card">
+											<i class="flaticon-bag"></i><span>ADD TO CART</span>
+											</a>
+										</div>`
+										:''}
+										${data.user_exist && data.user_role == "user" && element.state == "sketch" ?
+										 `<a href="design/${element.id}" class="wishlist-btn">
+										 <i class="flaticon-heart"></i>
+										 </a>`
+										 :''}
+									</div>
+								</div>
 								<div class="pi-text">
 									<h6>&dollar;${element.price} </h6>
 									<h5>${element.title} </h5>
