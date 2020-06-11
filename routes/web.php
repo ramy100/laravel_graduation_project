@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', 'IndexController@index')->name('website.index')->middleware('verified');
+Route::get('/', 'IndexController@index')->name('website.index');
 
 // payement
 Route::get('/checkout', 'CheckoutController@checkout')->name('checkoutPage');
