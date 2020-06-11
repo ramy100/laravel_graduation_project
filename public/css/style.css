@@ -1316,7 +1316,7 @@ ol {
 	margin-bottom: 45px;
 }
 #selectable .ui-selecting { }
- #selectable .ui-selected { background: #b9b8b8; color: white; }
+#selectable .ui-selected ,#tags .ui-selected,#materials .ui-selected{ background: #b9b8b8; color: white; }
 .category-menu {
 	list-style: none;
 }

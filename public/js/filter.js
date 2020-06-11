@@ -133,4 +133,10 @@
 			$("#selectable li").click(function() {
 			  $(this).addClass("selected");
 			});
+			$("#tags li").click(function() {
+			  $(this).addClass("selected");
+			});
+			$("#materials li").click(function() {
+			  $(this).addClass("selected");
+			});
 		});
