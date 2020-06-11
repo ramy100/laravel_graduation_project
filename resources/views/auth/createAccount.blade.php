@@ -1,34 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-<style type="text/css">
-    .btn-register{
-        /*display: block !important;*/
-        
-        width: 300px;
-        display: inline-block;
-        border: none;
-        font-size: 14px;
-        font-weight: 600;
-        min-width: 100px;
-        padding: 18px 47px 14px;
-        border-radius: 50px;
-        text-transform: uppercase;
-        color: #fff;
-        line-height: normal;
-        cursor: pointer;
-        text-align: center;
-        margin: 30px auto ;
-    }
-    .ppp{
-        display: inline;
-    }
-    .company{
-        background-color: #0b96a0;
-        color: white;
-
-    }
-</style>
 <section class="testimonial py-5" id="testimonial">
     <div class="container">
         <div class="row " style="margin: 0 auto;width: 800px;">

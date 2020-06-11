@@ -42,15 +42,26 @@
 					</a>
 					@endif
 
+					<div class="pi-links">
+						<p>Designer : {{ $design->designer->name}}</p> 
+						 <p>Materials: 
+						@foreach($design->materials as $material) 
+							{{ $material->name }}
+							@if ( ! $loop->last)
+							 -
+							@endif
+						@endforeach</p> 
+						<p>Tag: {{$design->tag->name}}</p> 
+						<p>Category: {{$design->category}}</p>
+					</div>
+
 					@if($design->state == "sketch")
 					<h4 class="p-stock">Available: <span>{{$design->state}}</span></h4>
 					@else
 						<h4 class="p-stock"><span>Not Available</span></h4>
 					@endif
 
-					<div class="pi-links">
-						<p>Designer : {{ $design->designer->name}}</p> 
-					</div>
+					
 					<div class="pi-links">
 						<p class="votes">Total Votes : {{ $design->total_likes}}</p> 
 					</div>

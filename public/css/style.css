@@ -24,6 +24,32 @@ body {
    margin-right: 30px;
    float: right;
 } 
+.btn-register{
+        /*display: block !important;*/
+        
+        width: 300px;
+        display: inline-block;
+        border: none;
+        font-size: 14px;
+        font-weight: 600;
+        min-width: 100px;
+        padding: 18px 47px 14px;
+        border-radius: 50px;
+        text-transform: uppercase;
+        color: #fff;
+        line-height: normal;
+        cursor: pointer;
+        text-align: center;
+        margin: 30px auto ;
+    }
+    .ppp{
+        display: inline;
+    }
+    .company{
+        background-color: #0b96a0;
+        color: white;
+
+    }
 .show{
 	color: #f51167;
 			

@@ -273,7 +273,7 @@ class DesignController extends Controller
             $filePath = $file->store('Files','public');
             $design ->source_file=$filePath ;   
         }
-        $design->materials()->sync($request->Material, false);
+        $design->materials()->sync($request->Material);
         // Images
         if($request->hasFile('images'))
         {
