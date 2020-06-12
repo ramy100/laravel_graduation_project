@@ -26,8 +26,10 @@ class ProfileController extends Controller
     }
     public function store(Request $request)
     {
-                // print();
+        $this->validate($request,[
+            'about'=>'required|min:20'
 
+        ]);
         DB::table('profiles')
               ->where('user_id',Auth::id() )
               ->update(['about' => $request->about]);
