@@ -36,6 +36,28 @@ class DesignController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function category($type = null)
+    {
+        // $desings=Design::paginate(9);
+        if($type != null)
+        {
+            $desings=Design::all()->where('category','=',$type);
+            $maxPrice=Design::all()->max('price');
+            $minPrice=Design::all()->min('price');
+            $tags=Tag::all();
+            $materials=Material::all();
+            return view('designs.index',compact('materials','tags','desings','maxPrice','minPrice'));
+        }
+        
+        //
+    }
+
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

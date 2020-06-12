@@ -32,6 +32,7 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('design/category/{type?}', 'DesignController@category')->name('category');
 Route::post('design/comment', 'DesignController@comment');
 Route::post('/design/vote', 'DesignController@vote')->middleware('check-role:user');
 Route::post('design/filterBy', 'DesignController@filterBy');
