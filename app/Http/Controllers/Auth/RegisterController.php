@@ -47,9 +47,9 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function validator(array $data)
+    protected function validator(array $data,$role)
     {
-        return Validator::make($data, [
+        $validator_array=[
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -57,8 +57,11 @@ class RegisterController extends Controller
             'address' => ['sometimes','nullable','string', 'max:255' , 'min:10'],
             'about' => ['sometimes','nullable','string', 'max:255' , 'min:10'],
             'website' => ['sometimes','nullable'],
-            'document'=>['required','mimes:pdf']
-        ]);
+        ];
+        if($role == 'company'|| $role == 'designer'){
+            $validator_array['document']=['required','mimes:pdf'];
+        }
+        return Validator::make($data,$validator_array);
     }
 
     /**

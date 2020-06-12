@@ -29,7 +29,7 @@
 							{{-- <li>Pay when you get the package</li> --}}
 						</ul>
 						<div id="paypalform">
-							<button class="site-btn submit-order-btn">Place Order</button>
+							{{-- <button class="site-btn submit-order-btn">Place Order</button> --}}
 						</div>
 					</form>
 					

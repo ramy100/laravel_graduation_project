@@ -78,7 +78,7 @@
 								    Filter By
 								  </a> -->
 								 <select class="btn filter2 filter" role="menu" aria-labelledby="dropdownMenuLink">
-								 	<option selected disabled> Filter By</option>
+								 	<option selected disabled> Filter</option>
 								  	<option> <a class="dropdown-item " href="#" >Top Rated</a></option>
 								  	<option> <a class="dropdown-item " href="#" >Latest</a></option>
 								 </select>
@@ -121,7 +121,7 @@
 					</div>
 				</div>
 				<div class="row">
-						{!! $desings->links() !!}
+						{{-- {!! $desings->links() !!}  --}}
 				</div>
 			</div>
 		</div>

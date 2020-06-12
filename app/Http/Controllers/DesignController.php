@@ -25,7 +25,8 @@ class DesignController extends Controller
      */
     public function index()
     {
-        $desings=Design::paginate(9);
+        // $desings=Design::paginate(9);
+        $desings=Design::all();
         $maxPrice=Design::all()->max('price');
         $minPrice=Design::all()->min('price');
         $tags=Tag::all();
@@ -157,12 +158,13 @@ class DesignController extends Controller
     {
         //
         $design = Design::findOrFail($id);
-        $tag=$design->tag;
+        $tag=$design->tag->name;
         $voted="False";
         $designImages=DesignImage::all()->where('design_id','=',$id);
         // pass category
-        $RelatedDesigns=Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->get();
+        $RelatedDesigns=Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->where('id','!=',$design->id)->get();
         $votes=$design->votes;
+        // dd($RelatedDesigns);
         foreach ($votes as $vote) {
             if($vote->user_id == Auth::id())
             {
