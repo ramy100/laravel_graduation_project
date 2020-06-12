@@ -28,7 +28,9 @@ class DesignController extends Controller
         $desings=Design::paginate(9);
         $maxPrice=Design::all()->max('price');
         $minPrice=Design::all()->min('price');
-        return view('designs.index',compact('desings','maxPrice','minPrice'));
+        $tags=Tag::all();
+        $materials=Material::all();
+        return view('designs.index',compact('materials','tags','desings','maxPrice','minPrice'));
         //
     }
 
@@ -61,61 +63,6 @@ class DesignController extends Controller
         echo $design->total_likes;
     }
     
-    public function filterBy(Request $request)
-    {
-        $filterType=$request->filterType ;
-        $category=$request->category;
-        $minPrice=$request->minPrice;
-        $minarr=explode('$', $minPrice);
-        $min=(int)$minarr[1];
-        $maxPrice=$request->maxPrice;
-        $maxarr=explode('$', $maxPrice);
-        $max=(int)$maxarr[1];
-        $designs=[];
-        $newArray=[];
-        // echo $maxPrice;
-        if($filterType && !$category)
-        {  
-            if($filterType == 'Top Rated')
-            {
-                $designs=Design::all()->whereBetween('price',[$min,$max])->sortByDesc('total_likes');
-            }
-            else if($filterType == 'Latest')
-            {
-                $designs=Design::all()->whereBetween('price',[$min,$max])->sortByDesc('created_at');
-            }
-        }
-        else if(!$filterType && $category)
-        {
-             $designs=Design::all()->whereBetween('price',[$min,$max])->where('category',$category);
-
-        }
-        else if($filterType && $category)
-        {
-            if($filterType == 'Top Rated')
-            {
-                $designs=Design::all()->whereBetween('price',[$min,$max])->where('category',$category)->sortByDesc('total_likes');
-
-            }
-            else if($filterType == 'Latest')
-            {
-                $designs=Design::all()->whereBetween('price',[$min,$max])->where('category',$category)->sortByDesc('created_at');
-            }
-        }
-        else if(!$filterType && !$category)
-        {
-            $designs=Design::all()->whereBetween('price',[$min,$max]);
-        }
-        foreach($designs as $design){ 
-            $design->{'image'}=$design->images()->first()->image;
-            $design->{'designer'}=$design->designer->name;
-            array_push($newArray,$design);
-        }
-
-        return response()->json([
-            'designs' => $newArray
-        ]);
-    }
 
     
     public function comment(Request $request)
@@ -210,10 +157,11 @@ class DesignController extends Controller
     {
         //
         $design = Design::findOrFail($id);
-        $tag=$design->tag();
+        $tag=$design->tag;
         $voted="False";
         $designImages=DesignImage::all()->where('design_id','=',$id);
-        $RelatedDesigns=Design::whereHas('tag', function($query){$query->where('name','=','dress');})->get();
+        // pass category
+        $RelatedDesigns=Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->get();
         $votes=$design->votes;
         foreach ($votes as $vote) {
             if($vote->user_id == Auth::id())
@@ -318,5 +266,178 @@ class DesignController extends Controller
          $this->authorize('delete', $design);
         $design->delete();
         return redirect('designer/'.Auth::id())->with('success','Design deleted successfully ');
+    }
+
+    public function filterBy(Request $request)
+    {
+        $filterType=$request->filterType ;
+        $category=$request->category;
+        $minPrice=$request->minPrice;
+        $minarr=explode('$', $minPrice);
+        $min=(int)$minarr[1];
+        $maxPrice=$request->maxPrice;
+        $maxarr=explode('$', $maxPrice);
+        $max=(int)$maxarr[1];
+        $userRole="";
+        $tag=$request->tag;
+        $userExist=Auth::check();
+        $material=$request->material;
+        $newArray=[];
+        $designs=[];
+
+        if($filterType && !$category && !$tag && !$material )
+        {  
+            if($filterType == 'Top Rated')
+            {
+                $designs=Design::all()->whereBetween('price',[$min,$max])->sortByDesc('total_likes');
+            }
+            else if($filterType == 'Latest')
+            {
+                $designs=Design::all()->whereBetween('price',[$min,$max])->sortByDesc('created_at');
+            }
+        }
+        else if(!$filterType && $category && !$tag && !$material)
+        {
+             $designs=Design::all()->whereBetween('price',[$min,$max])->where('category',$category);
+
+        }
+        else if($filterType && $category && !$tag && !$material)
+        {
+            if($filterType == 'Top Rated')
+            {
+                $designs=Design::all()->whereBetween('price',[$min,$max])->where('category',$category)->sortByDesc('total_likes');
+
+            }
+            else if($filterType == 'Latest')
+            {
+                $designs=Design::all()->whereBetween('price',[$min,$max])->where('category',$category)->sortByDesc('created_at');
+            }
+        }
+        else if(!$filterType & !$category && !$tag && !$material)
+        {
+            $designs=Design::all()->whereBetween('price',[$min,$max]);
+        }
+
+        else if($filterType && $category && $tag && !$material)
+        {
+            if($filterType == 'Top Rated')
+            {
+               $designs= Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->where('category',$category)->whereBetween('price',[$min,$max])->get()->sortByDesc('total_likes');
+            }
+            else if($filterType == 'Latest')
+            {
+                $designs= Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->where('category',$category)->whereBetween('price',[$min,$max])->get()->sortByDesc('created_at');
+                
+            }
+        }
+        else if( !$filterType && $category && $tag && !$material)
+        {
+            $designs= Design::whereHas('tag', function($query) use ($tag){$query->where('name','=',$tag);})->where('category',$category)->whereBetween('price',[$min,$max])->get();
+        }
+        else if( $filterType && !$category && $tag && !$material)
+        {
+             if($filterType == 'Top Rated')
+            {
+               $designs= Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->whereBetween('price',[$min,$max])->get()->sortByDesc('total_likes');
+            }
+            else if($filterType == 'Latest')
+            {
+                $designs= Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->whereBetween('price',[$min,$max])->get()->sortByDesc('created_at');
+                
+            }
+        }
+        else if( !$filterType && !$category && $tag && !$material)
+        {
+            $designs= Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->whereBetween('price',[$min,$max])->get();
+        }
+
+        else if( !$filterType && !$category && !$tag && $material)
+        {
+
+            $designs= Design::whereHas('materials', function($query) use ($material) {$query->where('name','=',$material);})->whereBetween('price',[$min,$max])->get();
+        }
+        else if( $filterType && !$category && !$tag && $material)
+        {
+             if($filterType == 'Top Rated')
+            {
+               $designs= Design::whereHas('materials', function($query) use ($material) {$query->where('name','=',$material);})->whereBetween('price',[$min,$max])->get()->sortByDesc('total_likes');
+            }
+            else if($filterType == 'Latest')
+            {
+                $designs= Design::whereHas('materials', function($query) use ($material) {$query->where('name','=',$material);})->whereBetween('price',[$min,$max])->get()->sortByDesc('created_at');
+                
+            }
+        }
+        else if( !$filterType && $category && !$tag && $material)
+        {
+
+            $designs= Design::whereHas('materials', function($query) use ($material) {$query->where('name','=',$material);})->where('category',$category)->whereBetween('price',[$min,$max])->get();
+        }
+        else if( !$filterType && $category && !$tag && $material)
+        {
+
+            $designs= Design::whereHas('materials', function($query) use ($material) {$query->where('name','=',$material);})->where('category',$category)->whereBetween('price',[$min,$max])->get();
+        }
+        else if( $filterType && $category && !$tag && $material)
+        {
+             if($filterType == 'Top Rated')
+            {
+               $designs= Design::whereHas('materials', function($query) use ($material) {$query->where('name','=',$material);})->where('category',$category)->whereBetween('price',[$min,$max])->get()->sortByDesc('total_likes');
+            }
+            else if($filterType == 'Latest')
+            {
+                $designs= Design::whereHas('materials', function($query) use ($material) {$query->where('name','=',$material);})->where('category',$category)->whereBetween('price',[$min,$max])->get()->sortByDesc('created_at');
+                
+            }
+        }
+        else if( !$filterType && !$category && $tag && $material)
+        {
+            $designs= Design::whereHas('materials', function($query) use ($material) {$query->where('name','=',$material);})->whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->whereBetween('price',[$min,$max])->get();
+        }
+        else if( !$filterType && $category && $tag && $material)
+        {
+            $designs= Design::whereHas('materials', function($query) use ($material) {$query->where('name','=',$material);})->whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->where('category',$category)->whereBetween('price',[$min,$max])->get();
+        }
+        else if( $filterType && !$category && $tag && $material)
+        {
+            if($filterType == 'Top Rated')
+            {
+            $designs= Design::whereHas('materials', function($query) use ($material) {$query->where('name','=',$material);})->whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->whereBetween('price',[$min,$max])->get()->sortByDesc('total_likes');
+            }
+            else if($filterType == 'Latest')
+            {
+                $designs= Design::whereHas('materials', function($query) use ($material) {$query->where('name','=',$material);})->whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->whereBetween('price',[$min,$max])->get()->sortByDesc('created_at');
+            }
+        }
+        else if( $filterType && $category && $tag && $material)
+        {
+           
+            if($filterType == 'Top Rated')
+            {
+            $designs= Design::whereHas('materials', function($query) use ($material) {$query->where('name','=',$material);})->whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->whereBetween('price',[$min,$max])->where('category',$category)->get()->sortByDesc('total_likes');
+            }
+            else if($filterType == 'Latest')
+            {
+                $designs= Design::whereHas('materials', function($query) use ($material) {$query->where('name','=',$material);})->whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->whereBetween('price',[$min,$max])->where('category',$category)->get()->sortByDesc('created_at');
+            }
+        }
+
+            foreach($designs as $design){ 
+            $design->{'image'}=$design->images()->first()->image;
+            $design->{'designer'}=$design->designer->name;
+            array_push($newArray,$design);
+            }
+
+        
+        if($userExist)
+        {
+            $userRole=Auth::user()->role;
+            
+        }
+        return response()->json([
+            'designs' => $newArray,
+            'user_exist'=>$userExist,
+            'user_role'=>$userRole,
+        ]);
     }
 }

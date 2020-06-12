@@ -8,6 +8,7 @@
 			<div class="row">
 <!-- start filter  -->
 				<div class="col-lg-3 order-2 order-lg-1">
+					<!-- Categories -->
 					<div class="filter-widget">
 						<h2 class="fw-title">Categories</h2>
 						<ul class="category-menu" id = "selectable">
@@ -24,6 +25,27 @@
 							<option value="teenagers" >Teenagers</option>
 						</select> -->
 					</div>
+					<!-- tags -->
+					<div class="filter-widget">
+						<h2 class="fw-title">Tags</h2>
+						<ul class="category-menu" id = "tags">
+							@foreach ($tags as $tag)
+							<li><a href="#">{{$tag->name}}</a></li>
+							@endforeach
+						</ul>
+					</div>
+					
+					<!-- Materials -->
+					<div class="filter-widget">
+						<h2 class="fw-title">Materials</h2>
+						<ul class="category-menu" id = "materials">
+							@foreach ($materials as $material)
+							<li><a href="#">{{$material->name}}</a></li>
+							@endforeach
+						</ul>
+					</div>
+
+					<!-- price -->
 					<div class="filter-widget mb-0">
 						<h2 class="fw-title">refine by</h2>
 						<div class="price-range-wrap">
