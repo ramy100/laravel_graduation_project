@@ -7,7 +7,7 @@
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
         
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>MY DESIGN</title>
         
         <!-- Scripts -->
         <script src="{{ asset('js/app.js') }}" defer></script>
@@ -50,17 +50,31 @@
                     <div class="col-lg-2 text-center text-lg-left">
                         <!-- logo -->
                         <a href="/" class="site-logo">
-                            <img src="{{ asset('images/logo.png') }}" alt="">
+                            <img src="{{ asset('images/myDesign.png') }}" alt="">
                         </a>
                     </div>
                     <div class="col-xl-6 col-lg-5">
                         <form class="header-search-form">
-                            <input type="text" placeholder="Search on My Design ....">
+                            <input type="text" placeholder="Search by Tag or Category ....">
                             <button><i class="flaticon-search"></i></button>
                         </form>
                     </div>
                     <div class="col-xl-4 col-lg-5">
                         <div class="user-panel">
+                            @if($user && $user->role == "designer")
+                            <div style="display: inline;margin-right: 20px;"> 
+                            <a href="{{ route('designer.show',['designer'=>$user->id]) }}" style="color: black;"> Profile</a>
+                            </div>
+                            @elseif($user && $user->role == "company")
+                            <div style="display: inline;margin-right: 20px;"> 
+                            <a href="{{ route('company.show',['company'=>$user->id]) }}" style="color: black;"> Profile</a>
+                            </div>
+                            @elseif($user && $user->role == "user")
+                            <div style="display: inline;margin-right: 20px;"> 
+                                <a href="{{ route('user.show',['user'=>$user->id]) }}" style="color: black;"> Profile</a>
+                            </div>
+                            
+                            @endif
                             @guest
                                 <div class="up-item">
                                     <i class="flaticon-profile"></i>
@@ -109,21 +123,7 @@
                                     <a href="{{ route('website.cart') }}">Shopping Cart</a>
                                 </div>
                             @endif
-                            @if($user && $user->role == "designer")
-                            <div> 
-                                <a href="{{ route('designer.show',['designer'=>$user->id]) }}">Your Profile</a>
-                            </div>
-                            @elseif($user && $user->role == "company")
-                            <div> 
-                                <a href="{{ route('company.show',['company'=>$user->id]) }}">Your Profile</a>
-                            </div>
-                            @elseif($user && $user->role == "user")
-                            <div> 
-                                <a href="{{ route('user.show',['user'=>$user->id]) }}">Your Profile</a>
-                            </div>
-                           
                             
-                            @endif
                         </div>
                     </div>
                 </div>
@@ -134,10 +134,20 @@
                 <!-- menu -->
                 <ul class="main-menu">
                     <li><a href="/">Home</a></li>
-                    <li><a href="{{ route('designer.index')}}">Our Designers</a></li>
+                    <li><a href="{{ route('designer.index')}}">Designers</a></li>
                     <li><a href="{{ route('design.index')}}">Designs</a></li>
                     <li><a href="{{route('company.index')}}">Companies</a></li>
-                    <li><a href="#">Shoes</a>
+                    <li><a href="#">Shop</a></li>
+                    <li><a href="#">Categories</a>
+                        <ul class="sub-menu">
+                            <li><a href="#">Women</a></li>
+                            <li><a href="#">Men</a></li>
+                            <li><a href="#">Kids</a></li>
+                            <li><a href="#">Teenagers</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#">How it works</a></li>
+                   <!--  <li><a href="#">Shoes</a>
                         <ul class="sub-menu">
                             <li><a href="#">Sneakers</a></li>
                             <li><a href="#">Sandals</a></li>
@@ -155,7 +165,7 @@
                             <li><a href="./contact.html">Contact Page</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Blog</a></li> -->
                 </ul>
             </div>
         </nav>
@@ -166,84 +176,6 @@
 
     <!-- Footer section -->
     <section class="footer-section">
-        <div class="container">
-            <div class="footer-logo text-center">
-                <a href="index.html"><img src="{{ asset('images/logo-light.png') }}" alt=""></a>
-            </div>
-            <div class="row">
-                <div class="col-lg-3 col-sm-6">
-                    <div class="footer-widget about-widget">
-                        <h2>About</h2>
-                        <p>Donec vitae purus nunc. Morbi faucibus erat sit amet congue mattis. Nullam frin-gilla faucibus urna, id dapibus erat iaculis ut. Integer ac sem.</p>
-                        <img src="{{ asset('images/cards.png') }}" alt="">
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="footer-widget about-widget">
-                        <h2>Questions</h2>
-                        <ul>
-                            <li><a href="">About Us</a></li>
-                            <li><a href="">Track Orders</a></li>
-                            <li><a href="">Returns</a></li>
-                            <li><a href="">Jobs</a></li>
-                            <li><a href="">Shipping</a></li>
-                            <li><a href="">Blog</a></li>
-                        </ul>
-                        <ul>
-                            <li><a href="">Partners</a></li>
-                            <li><a href="">Bloggers</a></li>
-                            <li><a href="">Support</a></li>
-                            <li><a href="">Terms of Use</a></li>
-                            <li><a href="">Press</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="footer-widget about-widget">
-                        <h2>Questions</h2>
-                        <div class="fw-latest-post-widget">
-                            <div class="lp-item">
-                                <div class="lp-thumb set-bg" data-setbg="{{ asset('images/blog-thumbs/1.jpg') }}"></div>
-                                <div class="lp-content">
-                                    <h6>what shoes to wear</h6>
-                                    <span>Oct 21, 2018</span>
-                                    <a href="#" class="readmore">Read More</a>
-                                </div>
-                            </div>
-                            <div class="lp-item">
-                                <div class="lp-thumb set-bg" data-setbg="{{ asset('images/blog-thumbs/2.jpg') }}"></div>
-                                <div class="lp-content">
-                                    <h6>trends this year</h6>
-                                    <span>Oct 21, 2018</span>
-                                    <a href="#" class="readmore">Read More</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6">
-                    <div class="footer-widget contact-widget">
-                        <h2>Questions</h2>
-                        <div class="con-info">
-                            <span>C.</span>
-                            <p>Your Company Ltd </p>
-                        </div>
-                        <div class="con-info">
-                            <span>B.</span>
-                            <p>1481 Creekside Lane  Avila Beach, CA 93424, P.O. BOX 68 </p>
-                        </div>
-                        <div class="con-info">
-                            <span>T.</span>
-                            <p>+53 345 7953 32453</p>
-                        </div>
-                        <div class="con-info">
-                            <span>E.</span>
-                            <p>office@youremail.com</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div class="social-links-warp">
             <div class="container">
                 <div class="social-links">
@@ -257,7 +189,7 @@
                 </div>
 
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --> 
-<p class="text-white text-center mt-5">Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a></p>
+<p class="text-white text-center mt-5">Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved</p>
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 
             </div>

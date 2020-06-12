@@ -70,7 +70,7 @@
 					</div> -->
 
 					<!-- delete design -->
-					@if((Auth::user()) && (Auth::id() == $design->designer_id))
+					@if((Auth::user()) && (Auth::id() == $design->designer_id) && Auth::user()->role == "designer")
 					<form action="{{route('design.destroy',$design->id)}}" method="POST" style="display: inline;">
                             @method('DELETE')
                             @csrf
