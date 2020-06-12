@@ -1316,7 +1316,7 @@ ol {
 	margin-bottom: 45px;
 }
 #selectable .ui-selecting { }
- #selectable .ui-selected { background: #b9b8b8; color: white; }
+#selectable .ui-selected ,#tags .ui-selected,#materials .ui-selected{ background: #b9b8b8; color: white; }
 .category-menu {
 	list-style: none;
 }
@@ -1618,9 +1618,9 @@ ol {
 }
 
 .product-details .p-title {
-	font-size: 18px;
+	font-size: 22px;
 	font-weight: 700;
-	color: #414141;
+	color: #f51167;
 	text-transform: uppercase;
 	margin-bottom: 0;
 }
@@ -1633,7 +1633,7 @@ ol {
 }
 
 .product-details .p-stock {
-	font-size: 12px;
+	font-size: 20px;
 	color: #000;
 	font-weight: 700;
 	color: #414141;

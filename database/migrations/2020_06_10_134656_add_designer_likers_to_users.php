@@ -14,7 +14,7 @@ class AddDesignerLikersToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer('likes')->default(0);
+            $table->integer('likes')->default(0)->onDelete('cascade');
 
         });
     }

@@ -76,4 +76,7 @@ Route::get('paypal/ec-checkout-success', 'PayPalController@getExpressCheckoutSuc
 Route::get('paypal/ec-checkout-cancel', 'PayPalController@getExpressCheckoutCancel')->name('paypal.cancel');
 
 
-
+// user profile 
+Route::resource('user', 'UserProfileController')->except([
+    'create', 'store','update','edit'
+]);
