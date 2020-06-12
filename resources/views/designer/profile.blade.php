@@ -51,7 +51,7 @@
 					
                 </div>
                 </br> 
-				<div class="col-lg-6 product-details"style="margin-top: 100px;">
+				<div class="col-lg-6 product-details"style="margin-top: 80px;">
 					<h2 class="p-title"> {{ $designer_data->name }}</h2></br>
 					<h4 class="p-stock">followers  <span id = "followers">{{$likes}}</span></h4>
 					<h4 class="p-stock">Emial <span>{{$designer_data->email}}</span></h4>
@@ -70,20 +70,20 @@
 							<div id="collapse1" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
 								<div class="panel-body">
 									<p>{{$about[0]->about}}</p>
-										</br>
-									<h5 style="color: #f51167;">designs count</h5>
-									<h6>{{$design_count}}</h6>
 								</div>
 							</div>
 						</div>
 						<div class="panel">
 							<div class="panel-header" id="headingTwo">
-								<button class="panel-link" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">care details </button>
+								<button class="panel-link" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">Achievements</button>
 							</div>
 							<div id="collapse2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
 								<div class="panel-body">
-									<img src="asset{{('img/cards.png')}}" alt="">
-									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integer bibendum sodales arcu id te mpus. Ut consectetur lacus leo, non scelerisque nulla euismod nec.</p>
+								<h5 style="color: #f51167;">Designs</h5>
+								<h6>{{$design_count}}</h6>
+									</br>
+								<h5 style="color: #f51167;">Sold Designs</h5>
+								<h6>{{$prev_count}}</h6>
 								</div>
 							</div>
 						</div>
@@ -131,7 +131,29 @@
 				</div>
             @endforeach
 			</div>
+		</div>		
+		<!-- current designs section end -->
+	</br>
+</br>
+		<!-- previous work section start -->
+	<section class="related-product-section">
+		<div class="container">
+			<div class="section-title">
+				<h2>PREVIOUS DESIGNS</h2>
+			</div>
+			<div class="product-slider owl-carousel">
+            @foreach($prev_img as $pimage)
+				<div class="product-item">
+					<div class="pi-pic">
+					{{-- <h5>{{$pimage[0]}}</h5> --}}
+						<img src="{{asset ('storage/'.$pimage->image) }}" alt="">
+					</div>
+					</br>
+				</div>
+            @endforeach
+			</div>
 		</div>
+		<!-- previous work section end -->
 	</section>
 	@empty
 	<div style="height:300px;margin:auto;">

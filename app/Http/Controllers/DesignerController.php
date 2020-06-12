@@ -11,6 +11,7 @@ use \App\Design;
 use \App\DesignerRate;
 use \App\DesignImage;
 use App\Profile;
+use App\CompanyDesign;
 use Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -83,8 +84,14 @@ class DesignerController extends Controller
             $featured_image = DesignImage::where('design_id',$design->id)->get();
         array_push($fimage_array, $featured_image[0]); 
         }
+        $prev_works = Design::where(['designer_id'=>$id,'state'=>'sold'])->get();
+        $prev_work_count = $prev_works->count();
+        foreach($prev_works as $prev_work)
+        {
+            $prev_images = CompanyDesign::where('design_id',$prev_work->id)->get();
 
-        return view('designer.profile',['designer'=>$designer,'user'=>$user,'vote_exist'=>$vote_exist,'design_count'=>$current_designs,'featured_images'=>$fimage_array,'current_images'=>$cimage_array,'likes'=>$likes_count,'about'=>$about]);       
+        }            
+        return view('designer.profile',['designer'=>$designer,'user'=>$user,'vote_exist'=>$vote_exist,'design_count'=>$current_designs,'featured_images'=>$fimage_array,'current_images'=>$cimage_array,'likes'=>$likes_count,'about'=>$about,'prev_img'=>$prev_images,'prev_count'=>$prev_work_count]);       
     }    
     /**
      * Remove the specified resource from storage.
