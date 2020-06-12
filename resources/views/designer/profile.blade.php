@@ -7,7 +7,7 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-6" >
-						<div style="width:300px;height:400px;">
+						<div style="width:300px;height:400px;margin-bottom : 30px;">
 							<img class="product-big-img" style="width:300px;height:400px;"src="<?php echo asset("storage/$designer_data->image")?>" alt="{{ $designer_data->name }}">
 							</br>
 							<h3 style="text-align: center;">{{ $designer_data->name }}
@@ -19,24 +19,25 @@
 							</h3>
 						</div>
 						</br>
-						<div class="row" style="margin-top : 30px;">
-						@can('update',$designer_data)
-						@if($user->role == "designer")
-							<div class="col-lg-3" style="margin-right:15px;"  >
-							<a  href="{{ route('user.edit',$designer_data) }}" class="editDesign">Edit Profile</a>
-							</div> 
-						@endif
-						@endcan
-						@can('update',$designer_data)
-						@if($user->role == "designer")
-							<div class="col-lg-3" >
-							<a  href="{{ route('user.create',$designer_data) }}" class="editDesign">Add Piography</a>
-							</div> 
-						@endif
-						@endcan
-						@can('update',$designer_data)
-						@if($user->role == "designer")
+						<div class="row" >
+							@can('update',$designer_data)
+							@if($user->role == "designer")
+								<div class="col-lg-3" style="margin-right:15px;"  >
+								<a  href="{{ route('user.edit',$designer_data) }}" class="editDesign">Edit Profile</a>
+								</div> 
+							@endif
+							@endcan
+							@can('update',$designer_data)
+							@if($user->role == "designer")
+								<div class="col-lg-3" >
+								<a  href="{{ route('user.create',$designer_data) }}" class="editDesign">Add Piography</a>
+								</div> 
+							@endif
+							@endcan
 						</div>
+						@can('update',$designer_data)
+						@if($user->role == "designer")
+						
 						</br>
 						<div class="col-lg-3"style="margin-left:60px;" >
 							{!! Form::open(['route'=>['designer.destroy',$designer_data],'method'=>'delete']) !!} 
@@ -45,6 +46,8 @@
                         </div>
 						@endif
 						@endcan
+
+					
 					
                 </div>
                 </br> 
@@ -66,7 +69,7 @@
 							</div>
 							<div id="collapse1" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
 								<div class="panel-body">
-									<h6>{{$about[0]->about}}</h6>
+									<p>{{$about[0]->about}}</p>
 										</br>
 									<h5 style="color: #f51167;">designs count</h5>
 									<h6>{{$design_count}}</h6>

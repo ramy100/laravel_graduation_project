@@ -12,7 +12,6 @@ use \App\DesignerRate;
 use \App\DesignImage;
 use App\Profile;
 use Auth;
-
 use Illuminate\Support\Facades\DB;
 
 class DesignerController extends Controller
@@ -66,7 +65,6 @@ class DesignerController extends Controller
     {
         $user = Auth::user();
         $vote_exist =  DesignerRate::where(['designer_id'=> $id,'liker_id'=>Auth::id()])->get();
-        print($vote_exist);
         $about = Profile::where('user_id',$id)->get();
         $designer = User::where(['role'=>'designer','id'=>$id])->get();
         $current_designs = Design::where('designer_id', $id)->get()->count();
@@ -99,6 +97,7 @@ class DesignerController extends Controller
         $designer = User::find($id);
         $designer->delete();
         return redirect()->route('home');
+        // return redirect()->route('logout',$id);
     }
     
     public function savelikes(Request $request){
