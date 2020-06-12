@@ -236,10 +236,11 @@ $(window).on('load', function() {
 			data : {id: designer_id},
 			success:function(data){
 				console.log("success");
-				console.log(data);
+				console.log(data);	
+				let value = $("#followers").text(data.likes);
 				if(data.exist == 0)
 				{
-					$(event.target).removeClass("text-danger").addClass("text-dark");
+					$(event.target).removeClass("text-danger").addClass("text-dark");					
 	
 				}
 				else{

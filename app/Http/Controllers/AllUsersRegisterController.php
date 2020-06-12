@@ -99,7 +99,7 @@ class AllUsersRegisterController extends RegisterController
                     'document'=>$document_path,
                     'is_verified'=>'pending',
                 ]);
-                $user->createAsStripeCustomer();
+                // $user->createAsStripeCustomer();
             }
         } catch (\Throwable $th) {
             // delete user if an error arises and return server error

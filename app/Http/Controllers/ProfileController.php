@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Profile;
 use Auth; 
+use Illuminate\Support\Facades\DB;
 
 class ProfileController extends Controller
 {
     public function create()
     {
         $info = Profile::where('user_id',Auth::id())->get();
-        // var_dump($info);
-        if($info->count() == 0)
+        if($info[0]['about'] == NULL)
         {
             $profile = new Profile();
             return view('designer.about',compact('profile'));
@@ -26,10 +26,14 @@ class ProfileController extends Controller
     }
     public function store(Request $request)
     {
-        $profile = new Profile();
-        $profile->about = $request->about;
-        $profile->user_id = Auth::id();
-        $profile->save();
+        $this->validate($request,[
+            'about'=>'required|min:20'
+
+        ]);
+        DB::table('profiles')
+              ->where('user_id',Auth::id() )
+              ->update(['about' => $request->about]);
+        $profile = Profile::findOrFail(Auth::id());
         return redirect("designer/".$profile->user_id);
 
     }

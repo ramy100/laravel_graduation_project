@@ -1619,9 +1619,9 @@ ol {
 }
 
 .product-details .p-title {
-	font-size: 18px;
+	font-size: 22px;
 	font-weight: 700;
-	color: #414141;
+	color: #f51167;
 	text-transform: uppercase;
 	margin-bottom: 0;
 }
@@ -1634,7 +1634,7 @@ ol {
 }
 
 .product-details .p-stock {
-	font-size: 12px;
+	font-size: 20px;
 	color: #000;
 	font-weight: 700;
 	color: #414141;
