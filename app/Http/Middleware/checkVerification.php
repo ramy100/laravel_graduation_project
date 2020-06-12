@@ -20,6 +20,6 @@ class checkVerification
                 return $next($request);
             }
         }
-        return abort(403,'Unauthorized Access');
+        return abort(403,'Not A Verified Company Contact Support');
     }
 }
