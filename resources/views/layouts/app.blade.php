@@ -140,10 +140,10 @@
                     <li><a href="#">Shop</a></li>
                     <li><a href="#">Categories</a>
                         <ul class="sub-menu">
-                            <li><a href="#">Women</a></li>
-                            <li><a href="#">Men</a></li>
-                            <li><a href="#">Kids</a></li>
-                            <li><a href="#">Teenagers</a></li>
+                            <li><a href="/design/category/women">Women</a></li>
+                            <li><a href="/design/category/men">Men</a></li>
+                            <li><a href="/design/category/kids">Kids</a></li>
+                            <li><a href="/design/category/teenagers">Teenagers</a></li>
                         </ul>
                     </li>
                     <li><a href="#">How it works</a></li>
