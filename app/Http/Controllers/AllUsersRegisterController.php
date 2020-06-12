@@ -49,7 +49,7 @@ class AllUsersRegisterController extends RegisterController
         }
         
         // validating request data
-        $this->validator($request->all())->validate();
+        $this->validator($request->all(),$role)->validate();
         // creating a new user   
         event(new Registered($user = $this->create_new_user($request->all(),$role)));
 
@@ -104,7 +104,7 @@ class AllUsersRegisterController extends RegisterController
         } catch (\Throwable $th) {
             // delete user if an error arises and return server error
             DB::rollBack();
-            return abort(500);
+            // return abort(500);
         }
         // commit changes if every thing goes ok
         Db::commit();
