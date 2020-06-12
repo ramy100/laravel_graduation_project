@@ -26,8 +26,6 @@ class ProfileController extends Controller
     }
     public function store(Request $request)
     {
-                // print();
-
         DB::table('profiles')
               ->where('user_id',Auth::id() )
               ->update(['about' => $request->about]);

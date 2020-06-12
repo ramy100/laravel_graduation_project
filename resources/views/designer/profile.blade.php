@@ -125,9 +125,11 @@
 						<a href="{{route('design.show', ['design' => $cimage->design_id])}}"><img src="{{asset ('storage/'.$cimage->image) }}" alt=""></a>
 					</div>
 					</br>
+					@can('update',$designer_data)
 					@if($user->role == "designer")
 					<a  href="{{ route('featuredesign',$cimage->design_id) }}" class="btn btn-info">Add as a Featured</a>
 					@endif
+					@endcan
 				</div>
             @endforeach
 			</div>
@@ -142,6 +144,7 @@
 				<h2>PREVIOUS DESIGNS</h2>
 			</div>
 			<div class="product-slider owl-carousel">
+			@if($prev_img != null)	
             @foreach($prev_img as $pimage)
 				<div class="product-item">
 					<div class="pi-pic">
@@ -150,7 +153,8 @@
 					</div>
 					</br>
 				</div>
-            @endforeach
+			@endforeach
+			@endif
 			</div>
 		</div>
 		<!-- previous work section end -->

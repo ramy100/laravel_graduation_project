@@ -86,10 +86,16 @@ class DesignerController extends Controller
         }
         $prev_works = Design::where(['designer_id'=>$id,'state'=>'sold'])->get();
         $prev_work_count = $prev_works->count();
-        foreach($prev_works as $prev_work)
+        if($prev_work_count > 0 )
         {
-            $prev_images = CompanyDesign::where('design_id',$prev_work->id)->get();
-
+            foreach($prev_works as $prev_work)
+            {
+                $prev_images = CompanyDesign::where('design_id',$prev_work->id)->get();
+              
+            }
+        }
+        else{
+            $prev_images = null;
         }            
         return view('designer.profile',['designer'=>$designer,'user'=>$user,'vote_exist'=>$vote_exist,'design_count'=>$current_designs,'featured_images'=>$fimage_array,'current_images'=>$cimage_array,'likes'=>$likes_count,'about'=>$about,'prev_img'=>$prev_images,'prev_count'=>$prev_work_count]);       
     }    
