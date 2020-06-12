@@ -49,7 +49,7 @@ class AllUsersRegisterController extends RegisterController
         }
         
         // validating request data
-        $this->validator($request->all())->validate();
+        $this->validator($request->all(),$role)->validate();
         // creating a new user   
         event(new Registered($user = $this->create_new_user($request->all(),$role)));
 
@@ -99,7 +99,7 @@ class AllUsersRegisterController extends RegisterController
                     'document'=>$document_path,
                     'is_verified'=>'pending',
                 ]);
-                // $user->createAsStripeCustomer();
+                $user->createAsStripeCustomer();
             }
         } catch (\Throwable $th) {
             // delete user if an error arises and return server error
