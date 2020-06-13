@@ -42,6 +42,13 @@
 </head>
 <body>
     <div id="app">
+        @auth
+            @if (Auth::user()->email_verified_at === null)
+            <div class="alert alert-success" role="alert">
+                <strong>Your email is not verified yet please check your email</strong>
+            </div>
+            @endif
+        @endauth
         <!-- Header section -->
     <header class="header-section">
         <div class="header-top">
