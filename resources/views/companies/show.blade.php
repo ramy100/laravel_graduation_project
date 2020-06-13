@@ -8,6 +8,10 @@
 			@can('update', $company)
 			<a name="" id="" class="btn btn-primary" href="{{ route('user.edit',$company) }}" role="button">Edit Profile</a>
 			@endcan
+			<a name="" id="" class="btn btn-primary" href="{{ route('company.shop',$company) }}" role="button">{{$company->name}}'s Shop</a>
+			@can('make_company_design',$company)
+			<a name="" id="" class="btn btn-primary" href="{{ route('company_design.create') }}" role="button">Add {{$company->name}} Design</a>
+			@endcan
 		</div>
 	</div>
 	<!-- Page info end -->
