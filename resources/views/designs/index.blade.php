@@ -12,10 +12,10 @@
 					<div class="filter-widget">
 						<h2 class="fw-title">Categories</h2>
 						<ul class="category-menu" id = "selectable">
-							<li selected><a href="#">women</a></li>
-							<li><a href="#">men</a></li>
-							<li><a href="#">kids</a></li>
-							<li><a href="#">teenagers</a></li>
+							<li class=" {{ $categoryFiltered && $categoryType == 'women' ? 'ui-selected':''}} "><a href="#">women</a></li>
+							<li class=" {{ $categoryFiltered && $categoryType == 'men' ? 'ui-selected':''}} "><a href="#">men</a></li>
+							<li class=" {{ $categoryFiltered && $categoryType == 'kids' ? 'ui-selected':''}} "><a href="#">kids</a></li>
+							<li class=" {{ $categoryFiltered  && $categoryType == 'teenagers' ? 'ui-selected':''}} "><a href="#">teenagers</a></li>
 						</ul>
 						<!-- <select class="category-menu filter1 filter" >
 							<option value="" selected disabled>Category</option>

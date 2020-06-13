@@ -31,7 +31,9 @@ class DesignController extends Controller
         $minPrice=Design::all()->min('price');
         $tags=Tag::all();
         $materials=Material::all();
-        return view('designs.index',compact('materials','tags','desings','maxPrice','minPrice'));
+        $categoryFiltered=False;
+        $categoryType="";
+        return view('designs.index',compact('categoryType','categoryFiltered','materials','tags','desings','maxPrice','minPrice'));
         //
     }
 
@@ -50,7 +52,9 @@ class DesignController extends Controller
             $minPrice=Design::all()->min('price');
             $tags=Tag::all();
             $materials=Material::all();
-            return view('designs.index',compact('materials','tags','desings','maxPrice','minPrice'));
+            $categoryFiltered=True;
+            $categoryType=$type;
+            return view('designs.index',compact('categoryType','categoryFiltered','materials','tags','desings','maxPrice','minPrice'));
         }
         
         //
