@@ -8,7 +8,7 @@ class CompanyDesign extends Model
 {
     //
     protected $fillable = [
-        'design_id', 'link', 'image' , 'company_id'
+        'design_id', 'link', 'image' , 'company_id','title','price'
     ];
 
     public function company()

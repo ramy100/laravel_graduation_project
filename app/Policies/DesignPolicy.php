@@ -64,6 +64,23 @@ class DesignPolicy
     }
 
     /**
+     * Determine whether the user can update the model.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Design  $design
+     * @return mixed
+     */
+    public function create_company_design(User $user, Design $design)
+    {
+        //
+        return $user->id === $design->company_id
+                ? Response::allow()
+                : Response::deny('U dont own this design');
+    }
+
+    
+
+    /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\User  $user
