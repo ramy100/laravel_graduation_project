@@ -23,6 +23,9 @@
 							<div class="alert alert-danger">No Designs Yet!</div>
 						@endforelse
 				</div>
+			</div class="row">
+			<div>
+				{!! $designs->links() !!}
 			</div>
 		</div>
 </section>

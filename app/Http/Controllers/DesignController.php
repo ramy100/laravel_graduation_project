@@ -40,7 +40,7 @@ class DesignController extends Controller
     public function search(Request $request)
     {
         $SearchWord=$request->word;
-        $designs=Design::whereHas('tag', function($query) use ($SearchWord) {$query->where(DB::raw('lower(name)'), "LIKE", "%".strtolower($SearchWord)."%");})->orWhere(DB::raw('lower(category)'), "LIKE", "%".strtolower($SearchWord)."%")->get();
+        $designs=Design::whereHas('tag', function($query) use ($SearchWord) {$query->where(DB::raw('lower(name)'), "LIKE", "%".strtolower($SearchWord)."%");})->orWhere(DB::raw('lower(category)'), "LIKE", "%".strtolower($SearchWord)."%")->paginate(9);
         return view('designs.SearchResult',compact('designs'));
         //
     }
