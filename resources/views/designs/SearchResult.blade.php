@@ -23,8 +23,8 @@
 							<div class="alert alert-danger">No Designs Yet!</div>
 						@endforelse
 				</div>
-			</div class="row">
-			<div>
+			</div >
+			<div class="row " style="margin-left: 100px;">
 				{!! $designs->links() !!}
 			</div>
 		</div>
