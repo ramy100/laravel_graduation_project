@@ -69,7 +69,7 @@
 					
 					
 				</div>
-<!-- filter end -->
+
 				<div class="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0">
 					<div class="row">
 						<div class="col-lg-12 mb-2">
@@ -84,6 +84,7 @@
 								 </select>
 							</div>
 						</div>
+<!-- filter end -->
 					<div class="col-lg-12 mb-2 row designs">
 						@forelse($desings as $design)
 						<div class="col-lg-4 col-sm-6">
