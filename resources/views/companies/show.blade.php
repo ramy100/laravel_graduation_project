@@ -69,7 +69,7 @@
 		</div>
 	</section>
 	<!-- letest design section -->
-    <section class="top-letest-product-section">
+    {{-- <section class="top-letest-product-section">
         <div class="container">
             <div class="section-title">
                 <h2>Our Designs</h2>
@@ -93,6 +93,6 @@
 				<!-- <div class="alert alert-danger">No Designs Yet!</div> -->
 			@endforelse
 		</div>
-    </section>
+    </section> --}}
 	<!-- letest design section end -->
 @endsection

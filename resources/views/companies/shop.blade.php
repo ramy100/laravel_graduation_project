@@ -17,7 +17,7 @@
 			<div class="row">
 
 
-				<div class="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0">
+				<div class="col-lg-12  order-1 order-lg-2 mb-5 mb-lg-0">
 					<div class="row">
 						<div class="col-lg-12 mb-2">
 							<div class="dropdown show">
@@ -48,7 +48,7 @@
 							</div>
 						</div>
 						@empty
-						<div class="alert alert-danger">No Designs Yet!</div>
+						<div class="alert alert-danger text-center col-12"><span>No Designs Yet!</span></div>
 						@endforelse
 						
 				</div>
