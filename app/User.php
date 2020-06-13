@@ -49,6 +49,11 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(CompanyDesign::class,'company_id');
     }
+
+    public function purchased_designs()
+    {
+        return $this->hasMany(Design::class,'company_id');
+    }
     
     public function designer_rates()
     {

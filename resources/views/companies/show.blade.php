@@ -14,7 +14,7 @@
 	<section class="category-section spad">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0">
+				<div class="col-lg-12  order-1 order-lg-2 mb-5 mb-lg-0">
 					<div class="row">
 						<div class="col-3">
 							<img class="img-fluid" style="width: 100%; height:100%;" src="{{asset('storage/'.$company->image)}}" alt="">

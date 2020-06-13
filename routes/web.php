@@ -51,6 +51,8 @@ Route::post('/register/admin','AllUsersRegisterController@register')->name('admi
 Route::post('/register/company','AllUsersRegisterController@register')->name('company.registeration');
 Route::post('/register/designer','AllUsersRegisterController@register')->name('designer.registeration');
 Route::get('company/{user}/shop','CompanyController@shop')->name('company.shop');
+Route::get('company/design/create','CompanyController@show_create_design_form')->name('company_design.create');
+Route::post('company/design/create','CompanyController@create_design')->name('company_design.store');
 Route::resource('company', 'CompanyController')->except([
     'create', 'store','update','edit'
 ]);
