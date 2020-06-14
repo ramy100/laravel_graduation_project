@@ -110,7 +110,9 @@
 									</div>
 								</div>
 								<div class="pi-text">
-									<h6>&dollar;${element.price} </h6>
+									${data.user_exist && data.user_role != "user" ?
+									 `<h6>&dollar;${element.price} </h6>`:''}
+									
 									<h5>${element.title} </h5>
 									<p>By ${element.designer.name}</p>
 								</div>

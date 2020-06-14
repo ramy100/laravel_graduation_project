@@ -33,7 +33,9 @@
 				</div>
 				<div class="col-lg-6 product-details">
 					<h2 class="p-title ">{{$design->title}}</h2>
+					@if((Auth::user())&&(Auth::user()->role != "user"))
 					<h3 class="p-price" style="display: inline;">&dollar;{{$design->price}} </h3>
+					@endif
 					<input type="hidden" name="designId" value="{{ $design->id }}" id="designId">
 
 					<!-- vote -->
@@ -130,7 +132,9 @@
 							<a href="{{route('design.show', ['design' => $design->id])}}"><img id="designImage" src="{{asset ('storage/'.$design->images->first()->image) }}" alt=""></a>
 						</div>
 						<div class="pi-text ">
+							@if((Auth::user())&&(Auth::user()->role != "user"))
 							<h6>&dollar;{{ $design->price }}</h6>
+							@endif
 							<p>{{ $design->title }} </p>
 						</div>
 					</div>
