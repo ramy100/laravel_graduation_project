@@ -25,6 +25,7 @@
 			      }	    
 		});
 		$( "#selectable" ).selectable({
+				
 		    	 stop: function() {
 			        domselected = $("#selectable .ui-selected").map(function() {
                         return $(this).text();
@@ -128,8 +129,10 @@
 				getValues(); }
 			});
 
-		$( document ).ready(function() {		
-			
+		$( document ).ready(function() {	
+			domselected = $("#selectable .ui-selected").map(function() {
+                        return $(this).text();
+                    });	
 			$("#selectable li").click(function() {
 			  $(this).addClass("selected");
 			});

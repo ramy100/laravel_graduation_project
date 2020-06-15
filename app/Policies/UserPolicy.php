@@ -46,6 +46,20 @@ class UserPolicy
                 ? Response::allow()
                 : Response::deny('Unauthorized User');
     }
+
+    /**
+     * Determine whether the user can create company design.
+     *
+     * @param  \App\User  $user
+     * @return mixed
+     */
+    public function make_company_design(User $user,User $company)
+    {
+        //
+        return $user->id === $company->id
+                ? Response::allow()
+                : Response::deny('Unauthorized User');
+    }
     
     /**
      * Determine whether the user can update the model.

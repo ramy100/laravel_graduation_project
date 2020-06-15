@@ -71,7 +71,7 @@ class AllUsersRegisterController extends RegisterController
 
     protected function create_new_user(array $data,$role)
     {
-        try {
+        // try {
             DB::beginTransaction();
             if(array_key_exists("image",$data))
                 $image_path = $data['image']->store('uploads', 'public');
@@ -101,11 +101,11 @@ class AllUsersRegisterController extends RegisterController
                 ]);
                 $user->createAsStripeCustomer();
             }
-        } catch (\Throwable $th) {
-            // delete user if an error arises and return server error
-            DB::rollBack();
-            return abort(500);
-        }
+        // } catch (\Throwable $th) {
+        //     // delete user if an error arises and return server error
+        //     DB::rollBack();
+        //     return abort(500);
+        // }
         // commit changes if every thing goes ok
         Db::commit();
         return $user;

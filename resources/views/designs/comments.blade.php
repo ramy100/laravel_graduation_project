@@ -6,7 +6,7 @@
             <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
               <div class="g-mb-15">
                 <h5 class="h5 g-color-gray-dark-v1 mb-0">{{$comment->user->name}}</h5>
-                <span class="g-color-gray-dark-v4 g-font-size-12">{{ date('d-m-Y g:ia', strtotime($comment->created_at)) }}</span>
+                <span class="g-color-gray-dark-v4 g-font-size-12">{{ date('Y-m-d h:i:s', strtotime($comment->created_at)) }}</span>
               </div>
               <p>{{ $comment->body }}</p>
               <ul class="list-inline d-sm-flex my-0">
@@ -21,7 +21,7 @@
         </div>
 	</div>
 	@empty
-		<div style="text-align: center;margin:10px auto;">No Comments Yet!</div>
+		<div style="text-align: center;margin:10px auto;" class="NoComment">No Comments Yet!</div>
 	@endforelse
 </div>
 @if (Auth::check())

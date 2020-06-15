@@ -15,8 +15,8 @@ class AddDocumentColumnToProfiles extends Migration
     {
         Schema::table('profiles', function (Blueprint $table) {
             //
-            $table->string('document');
-            $table->enum('is_verified',['pending','accepted','rejected']);
+            $table->string('document')->default('no document');
+            $table->enum('is_verified',['pending','accepted','rejected'])->default('pending');
         });
     }
 

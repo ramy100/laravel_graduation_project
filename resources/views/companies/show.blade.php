@@ -8,13 +8,17 @@
 			@can('update', $company)
 			<a name="" id="" class="btn btn-primary" href="{{ route('user.edit',$company) }}" role="button">Edit Profile</a>
 			@endcan
+			<a name="" id="" class="btn btn-primary" href="{{ route('company.shop',$company) }}" role="button">{{$company->name}}'s Shop</a>
+			@can('make_company_design',$company)
+			<a name="" id="" class="btn btn-primary" href="{{ route('company_design.create') }}" role="button">Add {{$company->name}} Design</a>
+			@endcan
 		</div>
 	</div>
 	<!-- Page info end -->
 	<section class="category-section spad">
 		<div class="container">
 			<div class="row">
-				<div class="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0">
+				<div class="col-lg-12  order-1 order-lg-2 mb-5 mb-lg-0">
 					<div class="row">
 						<div class="col-3">
 							<img class="img-fluid" style="width: 100%; height:100%;" src="{{asset('storage/'.$company->image)}}" alt="">
@@ -65,7 +69,7 @@
 		</div>
 	</section>
 	<!-- letest design section -->
-    <section class="top-letest-product-section">
+    {{-- <section class="top-letest-product-section">
         <div class="container">
             <div class="section-title">
                 <h2>Our Designs</h2>
@@ -89,6 +93,6 @@
 				<!-- <div class="alert alert-danger">No Designs Yet!</div> -->
 			@endforelse
 		</div>
-    </section>
+    </section> --}}
 	<!-- letest design section end -->
 @endsection

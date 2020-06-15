@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class CompanyDesign extends Model
 {
     //
+    protected $fillable = [
+        'design_id', 'link', 'image' , 'company_id','title','price'
+    ];
+
     public function company()
     {
         return $this->belongsTo(User::class,'company_id');
