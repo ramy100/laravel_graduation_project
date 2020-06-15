@@ -83,3 +83,8 @@ Route::get('paypal/ec-checkout-cancel', 'PayPalController@getExpressCheckoutCanc
 Route::resource('user', 'UserProfileController')->except([
     'create', 'store','update','edit'
 ]);
+
+
+Route::get('admin/{role}/{state}','AdminController@list_users')->where(['role'=>'designer|company','state'=>'accepted|rejected|pending']);
+Route::post('admin/{role}/{state}','AdminController@change_verification')->where('role','designer|company');
+Route::get('admin/pending/{user}','AdminController@view_user_document')->name('admin.view_user');
