@@ -56,7 +56,9 @@ Route::resource('company', 'CompanyController')->except([
 Route::resource('user','AllUsersUpdateController')->only([
     'update','edit'
 ]);
-Route::get('/featuredesign/{design}','DesignerController@featuredesign')->name('featuredesign');
+Route::post('/featuredesign','DesignerController@featuredesign')->name('featuredesign');
+Route::post('/deletefeaturedesign','DesignerController@featuredesign')->name('deletefeaturedesign');
+// Route::get('/featuredesign/{design}','DesignerController@featuredesign')->name('featuredesign');
 Route::post('savelikes', 'DesignerController@savelikes')->name('savelikes');
 Route::resource('designer', 'DesignerController')->except([
     'create','store'

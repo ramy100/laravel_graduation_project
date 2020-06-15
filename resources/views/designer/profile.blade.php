@@ -100,14 +100,20 @@
 			<div class="section-title">
 				<h2>FEATURED DESIGNS</h2>
 			</div>
-			<div class="product-slider owl-carousel">   
-			    @foreach($featured_images as $fimage)
-				<div class="product-item">
-					<div>
-					<a href="{{route('design.show', ['design' => $fimage->design_id])}}"><img src="{{asset ('storage/'.$fimage->image) }}" alt=""></a>
-					</div>
-				</div>			
-            @endforeach
+			{{-- <div class="product-slider owl-carousel" >    --}}
+			<div class="row" id="featuresection">
+				@foreach($featured_images as $fimage)
+					<div class="col-lg-3 col-sm-6">
+						<div class="product-item" >
+							<a href="{{route('design.show', ['design'=>$fimage->design_id])}}"><img style="width:250px;height:300px;" src="{{asset ('storage/'.$fimage->image) }}" alt=""></a>
+							@can('update',$designer_data)
+								@if($user->role == "designer"&& $fimage->design->featured )
+								<span class="glyphicon glyphicon-trash"id="{{$fimage->design_id}}"></span>
+								@endif
+							@endcan
+						</div>
+					</div>		
+            	@endforeach
 			</div>
 		</div>
 	</section>
@@ -116,27 +122,35 @@
 	<section class="related-product-section">
 		<div class="container">
 			<div class="section-title">
-				<h2>CURRENT DESIGNS</h2>
+				<h2>CURRENT DESIGNS</h2> 
 			</div>
+				{{-- <div class="col-lg-3 col-sm-6">
+					<div class="product-item"> --}}
 			<div class="product-slider owl-carousel">
-            @foreach($current_images as $cimage)
-				<div class="product-item">
-					<div class="pi-pic">
-						<a href="{{route('design.show', ['design' => $cimage->design_id])}}"><img src="{{asset ('storage/'.$cimage->image) }}" alt=""></a>
-					</div>
-					</br>
-					@can('update',$designer_data)
-					@if($user->role == "designer")
-					<a  href="{{ route('featuredesign',$cimage->design_id) }}" class="btn btn-info">Add as a Featured</a>
-					@endif
-					@endcan
-				</div>
-            @endforeach
+				{{-- @foreach($designs as $design) --}}
+			@foreach($current_images as $cimage)
+						<div class="product-item">
+						<div class="pi-pic">
+							<a href="{{route('design.show', ['design' => $cimage->design_id])}}"><img style="width:250px;height:300px;"src="{{asset ('storage/'.$cimage->image) }}" alt=""></a>
+						</div>
+						</br>
+						@can('update',$designer_data)
+						@if($user->role == "designer"&& ! $cimage->design->featured )
+						{{-- <a  href="{{ route('featuredesign',$cimage->design_id) }}" class="btn btn-info featured">Add as a Featured</a> --}}
+						<button class="btn btn-info featured" id="{{$cimage->design_id}}">Add as a Featured</button>
+								{{-- @else
+									<button type="button" class="btn btn-danger"value="{{$cimage->design_id}}">x</button>
+								@endif --}}			
+						@endif
+						@endcan
+					</div>			
+			@endforeach
 			</div>
 		</div>		
-		<!-- current designs section end -->
+	</section>
+	<!-- current designs section end -->
 	</br>
-</br>
+	</br>
 		<!-- previous work section start -->
 	<section class="related-product-section">
 		<div class="container">
@@ -148,21 +162,22 @@
             @foreach($prev_img as $pimage)
 				<div class="product-item">
 					<div class="pi-pic">
-					{{-- <h5>{{$pimage[0]}}</h5> --}}
-						<img src="{{asset ('storage/'.$pimage->image) }}" alt="">
+						<img style="height:300px;width:250px;"src="{{asset ('storage/'.$pimage->image) }}" alt="">
 					</div>
 					</br>
 				</div>
 			@endforeach
+			@else 
+			<h3 style="text-align:center;color:navy;">There are no designs sold yet</h3>
 			@endif
 			</div>
 		</div>
-		<!-- previous work section end -->
-	</section>
+	</section>		
+	<!-- previous work section end -->
+
 	@empty
 	<div style="height:300px;margin:auto;">
 	<h3 style="text-align:center;color:navy;">This Designer Doesn't Exist</h3>
 	</div>
 	@endforelse
-	<!-- current designs section end -->
-	@endsection
+@endsection

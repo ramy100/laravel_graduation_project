@@ -86,18 +86,20 @@ class DesignerController extends Controller
         }
         $prev_works = Design::where(['designer_id'=>$id,'state'=>'sold'])->get();
         $prev_work_count = $prev_works->count();
+            //var_dump($prev_works);
         if($prev_work_count > 0 )
         {
             foreach($prev_works as $prev_work)
             {
                 $prev_images = CompanyDesign::where('design_id',$prev_work->id)->get();
-              
+
             }
+            //var_dump($prev_images);
         }
         else{
             $prev_images = null;
         }            
-        return view('designer.profile',['designer'=>$designer,'user'=>$user,'vote_exist'=>$vote_exist,'design_count'=>$current_designs,'featured_images'=>$fimage_array,'current_images'=>$cimage_array,'likes'=>$likes_count,'about'=>$about,'prev_img'=>$prev_images,'prev_count'=>$prev_work_count]);       
+        return view('designer.profile',['designer'=>$designer,'user'=>$user,'vote_exist'=>$vote_exist,'design_count'=>$current_designs,'featured_images'=>$fimage_array,'current_images'=>$cimage_array,'likes'=>$likes_count,'about'=>$about,'prev_img'=>$prev_images,'prev_count'=>$prev_work_count,'designs'=>$designs]);       
     }    
     /**
      * Remove the specified resource from storage.
@@ -142,11 +144,28 @@ class DesignerController extends Controller
             }
         return response()->json(['success'=>'Got Simple Ajax Request.','likes'=>$likes,'input'=>$id,'exist'=>$exist]);
     }
-    public function featuredesign($design)
+    public function featuredesign(Request $request)
     {
-        $specific_design = Design::find($design);
-        $specific_design->featured = 1;
-        $specific_design->save();
-        return Redirect::back()->with('success','Design added successfuly');
+        $specific_design = Design::find($request->get('id'));
+        if ($specific_design->featured == 0)
+        {
+            $specific_design->featured = 1;
+            $specific_design->save();
+            $feature = 1;
+        }
+        $featured_image = DesignImage::where('design_id',$specific_design->id)->first();
+
+        
+        return response()->json(['success'=>'Got Simple Ajax Request','design_data'=>$specific_design,'design_image'=>$featured_image]);
+        
+    }
+    public function deletefeaturedesign(Request $request)
+    {
+        $unfeatured_design = Design::find($request->get('id'));      
+        $unfeatured_design->featured = 0;
+        $unfeatured_design->save();
+        $feature = 0;
+        return response()->json(['success'=>'Got Simple Ajax Request','k'=>$unfeatured_design,'unfeatured_design'=>$unfeatured_design,'feature'=>$feature]);
+
     }
 }
