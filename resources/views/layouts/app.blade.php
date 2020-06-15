@@ -76,7 +76,7 @@
                     <div class="col-xl-4 col-lg-5">
                         <div class="user-panel">
                             @auth
-                                 <div class="up-item notifications">
+                                 <div class="up-item notifications" onclick="MarkAsRead({{Auth::user()->unreadNotifications->count() }})">
                                         <a id="Notifications" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" > <i class="fa fa-globe" aria-hidden="true"></i>
                                         </a>
                                         @if (Auth::user()->unreadNotifications->count()  >0)
@@ -84,7 +84,7 @@
                                         @endif
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Notifications">
                                             @foreach (Auth::user()->unreadNotifications as $notification)
-                                            <a class="dropdown-item" href="{{ route('logout') }}">
+                                            <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['id']]) }}">
                                               {{$notification->data['company']}} has bought your {{ $notification->data['design']['title'] }} design
                                             </a>
                                             @endforeach
@@ -252,8 +252,19 @@
 
 
     <script>
+        function MarkAsRead(count)
+            {
+                if(count>0)
+                {
+                     $.get('/notification/MarkAsRead', function(data, status){
+                        alert("Data: " + data + "\nStatus: " + status);
+                        $('#Notification-count').html(data);
+                      }) ;
+                }
+            }
         $(document).ready(function(){
-
+            
+            
             $(document).on('click', '.add-card', function(){
                 var design_id = $(this).data('id');
                 $.post('{{ route('add-to-cart') }}', {"_token": "{{ csrf_token() }}","id": design_id}, function(response){
