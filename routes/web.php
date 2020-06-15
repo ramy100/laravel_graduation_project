@@ -32,6 +32,7 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::post('comment/{id}/commentReply', 'DesignController@commentReply');
 Route::get('/search', 'DesignController@search')->name('search');
 Route::get('design/category/{type?}', 'DesignController@category')->name('category');
 Route::post('design/comment', 'DesignController@comment');

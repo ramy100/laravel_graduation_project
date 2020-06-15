@@ -25,6 +25,8 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300i,400,400i,700,700i" rel="stylesheet">
 
+    <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet"> -->
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}"/>
@@ -34,6 +36,11 @@
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+    <style type="text/css">
+        #Notifications::after {
+            content: none;
+        }
+    </style>
 
 
     @yield('styles')
@@ -68,20 +75,37 @@
                     </div>
                     <div class="col-xl-4 col-lg-5">
                         <div class="user-panel">
-                            @if($user && $user->role == "designer")
-                            <div style="display: inline;margin-right: 20px;"> 
-                            <a href="{{ route('designer.show',['designer'=>$user->id]) }}" style="color: black;"> Profile</a>
-                            </div>
-                            @elseif($user && $user->role == "company")
-                            <div style="display: inline;margin-right: 20px;"> 
-                            <a href="{{ route('company.show',['company'=>$user->id]) }}" style="color: black;"> Profile</a>
-                            </div>
-                            @elseif($user && $user->role == "user")
-                            <div style="display: inline;margin-right: 20px;"> 
-                                <a href="{{ route('user.show',['user'=>$user->id]) }}" style="color: black;"> Profile</a>
-                            </div>
-                            
-                            @endif
+                            @auth
+                                 <div class="up-item notifications">
+                                        <a id="Notifications" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" > <i class="fa fa-globe" aria-hidden="true"></i>
+                                        </a>
+                                        @if (Auth::user()->unreadNotifications->count()  >0)
+                                        <span id="Notification-count">{{ Auth::user()->unreadNotifications->count() }}</span>
+                                        @endif
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Notifications">
+                                            @foreach (Auth::user()->unreadNotifications as $notification)
+                                            <a class="dropdown-item" href="{{ route('logout') }}">
+                                              {{$notification->data['company']}} has bought your {{ $notification->data['design']['title'] }} design
+                                            </a>
+                                            @endforeach
+
+                                        </div>
+                                    </div>
+                                @if( $user->role == "designer")
+                                <div style="display: inline;margin-right: 20px;"> 
+                                <a href="{{ route('designer.show',['designer'=>$user->id]) }}" style="color: black;"> Profile</a>
+                                </div>
+                                @elseif($user->role == "company")
+                                <div style="display: inline;margin-right: 20px;"> 
+                                <a href="{{ route('company.show',['company'=>$user->id]) }}" style="color: black;"> Profile</a>
+                                </div>
+                                @elseif( $user->role == "user")
+                                <div style="display: inline;margin-right: 20px;"> 
+                                    <a href="{{ route('user.show',['user'=>$user->id]) }}" style="color: black;"> Profile</a>
+                                </div>
+                                
+                                @endif
+                            @endauth
                             @guest
                                 <div class="up-item">
                                     <i class="flaticon-profile"></i>
@@ -103,6 +127,7 @@
                                     @endif
                                 </div>
                             @else
+                                
                                 <div class="up-item">
                                     <a id="navbarDropdown" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>

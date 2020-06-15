@@ -15,6 +15,7 @@ use App\Http\Requests\StoreDesignsRequest;
 use App\DesignComment;
 use Redirect;
 use DB;
+use App\Notifications\UserNotifications;
 
 class DesignController extends Controller
 {
@@ -99,6 +100,10 @@ class DesignController extends Controller
     }
     
 
+    public function commentReply(Request $request,$id)
+    {
+        echo $id;
+    }
     
     public function comment(Request $request)
     {
@@ -112,6 +117,7 @@ class DesignController extends Controller
         ]);
         $comment->{'user_image'}=$comment->user->image;
         $comment->{'user_name'}=$comment->user->name;
+        // Auth::user()->notify(new UserNotifications($comment));
          return response()->json([
             'comment' => $comment
         ]);
