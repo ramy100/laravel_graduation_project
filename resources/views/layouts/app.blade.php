@@ -61,8 +61,8 @@
                         </a>
                     </div>
                     <div class="col-xl-6 col-lg-5">
-                        <form class="header-search-form">
-                            <input type="text" placeholder="Search by Tag or Category ....">
+                        <form class="header-search-form" method="GET" action="{{ route('search') }}">
+                            <input type="text" placeholder="Search by Tag or Category ...." name="word">
                             <button><i class="flaticon-search"></i></button>
                         </form>
                     </div>
@@ -144,7 +144,6 @@
                     <li><a href="{{ route('designer.index')}}">Designers</a></li>
                     <li><a href="{{ route('design.index')}}">Designs</a></li>
                     <li><a href="{{route('company.index')}}">Companies</a></li>
-                    <li><a href="#">Shop</a></li>
                     <li><a href="#">Categories</a>
                         <ul class="sub-menu">
                             <li><a href="/design/category/women">Women</a></li>

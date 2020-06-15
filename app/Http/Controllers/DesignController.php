@@ -31,7 +31,17 @@ class DesignController extends Controller
         $minPrice=Design::all()->min('price');
         $tags=Tag::all();
         $materials=Material::all();
-        return view('designs.index',compact('materials','tags','desings','maxPrice','minPrice'));
+        $categoryFiltered=False;
+        $categoryType="";
+        return view('designs.index',compact('categoryType','categoryFiltered','materials','tags','desings','maxPrice','minPrice'));
+        //
+    }
+
+    public function search(Request $request)
+    {
+        $SearchWord=$request->word;
+        $designs=Design::whereHas('tag', function($query) use ($SearchWord) {$query->where(DB::raw('lower(name)'), "LIKE", strtolower($SearchWord)."%");})->orWhere(DB::raw('lower(category)'), "LIKE", strtolower($SearchWord)."%")->paginate(9);
+        return view('designs.SearchResult',compact('designs'));
         //
     }
 
@@ -50,7 +60,9 @@ class DesignController extends Controller
             $minPrice=Design::all()->min('price');
             $tags=Tag::all();
             $materials=Material::all();
-            return view('designs.index',compact('materials','tags','desings','maxPrice','minPrice'));
+            $categoryFiltered=True;
+            $categoryType=$type;
+            return view('designs.index',compact('categoryType','categoryFiltered','materials','tags','desings','maxPrice','minPrice'));
         }
         
         //

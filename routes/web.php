@@ -32,6 +32,7 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/search', 'DesignController@search')->name('search');
 Route::get('design/category/{type?}', 'DesignController@category')->name('category');
 Route::post('design/comment', 'DesignController@comment');
 Route::post('/design/vote', 'DesignController@vote')->middleware('check-role:user');
@@ -67,24 +68,35 @@ Route::resource('designer', 'DesignerController')->except([
 
 
 // Routes for both tags and material resources
-Route::resource('admin/tag', 'TagController');
-Route::resource('admin/material', 'MaterialController');
 Route::resource('user','ProfileController')->only([
-     'create','store'
-]);
-
-//paypal routes
-Route::get('paypal/ec-checkout', 'PayPalController@getExpressCheckout')->name('checkout');
-Route::get('paypal/ec-checkout-success', 'PayPalController@getExpressCheckoutSuccess')->name('paypal.success');
-Route::get('paypal/ec-checkout-cancel', 'PayPalController@getExpressCheckoutCancel')->name('paypal.cancel');
-
-
-// user profile 
-Route::resource('user', 'UserProfileController')->except([
-    'create', 'store','update','edit'
-]);
-
-
-Route::get('admin/{role}/{state}','AdminController@list_users')->where(['role'=>'designer|company','state'=>'accepted|rejected|pending']);
-Route::post('admin/{role}/{state}','AdminController@change_verification')->where('role','designer|company');
-Route::get('admin/pending/{user}','AdminController@view_user_document')->name('admin.view_user');
+    'create','store'
+    ]);
+    
+    //paypal routes
+    Route::get('paypal/ec-checkout', 'PayPalController@getExpressCheckout')->name('checkout');
+    Route::get('paypal/ec-checkout-success', 'PayPalController@getExpressCheckoutSuccess')->name('paypal.success');
+    Route::get('paypal/ec-checkout-cancel', 'PayPalController@getExpressCheckoutCancel')->name('paypal.cancel');
+    
+    
+    // user profile 
+    Route::resource('user', 'UserProfileController')->except([
+        'create', 'store','update','edit'
+        ]);
+        
+        
+        // Admin dashboard
+    Route::group([ 'prefix' => 'admin'], function(){
+        
+        Route::get('login', 'AdminAuthController@login')->name('admin-login');
+        Route::post('do-login', 'AdminAuthController@adminLogin')->name('adminDologin');
+        
+        Route::group(['middleware' => 'admin'], function(){
+            Route::get('/', 'AdminAuthController@index')->name('dashboard');
+            Route::post('logout', 'AdminAuthController@logMeOut')->name('admin.logout');
+            Route::resource('tag', 'TagController');
+            Route::resource('material', 'MaterialController');
+            Route::get('{role}/{state}','AdminController@list_users')->where(['role'=>'designer|company','state'=>'accepted|rejected|pending'])->name('list_users');
+            Route::post('{role}/{state}','AdminController@change_verification')->where(['role'=>'designer|company','state'=>'accepted|rejected|pending']);
+            Route::get('pending/{user}','AdminController@view_user_document')->name('admin.view_user');
+    });
+});

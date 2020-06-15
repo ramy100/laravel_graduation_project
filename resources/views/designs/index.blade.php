@@ -12,10 +12,10 @@
 					<div class="filter-widget">
 						<h2 class="fw-title">Categories</h2>
 						<ul class="category-menu" id = "selectable">
-							<li selected><a href="#">women</a></li>
-							<li><a href="#">men</a></li>
-							<li><a href="#">kids</a></li>
-							<li><a href="#">teenagers</a></li>
+							<li class=" {{ $categoryFiltered && $categoryType == 'women' ? 'ui-selected':''}} "><a href="#">women</a></li>
+							<li class=" {{ $categoryFiltered && $categoryType == 'men' ? 'ui-selected':''}} "><a href="#">men</a></li>
+							<li class=" {{ $categoryFiltered && $categoryType == 'kids' ? 'ui-selected':''}} "><a href="#">kids</a></li>
+							<li class=" {{ $categoryFiltered  && $categoryType == 'teenagers' ? 'ui-selected':''}} "><a href="#">teenagers</a></li>
 						</ul>
 						<!-- <select class="category-menu filter1 filter" >
 							<option value="" selected disabled>Category</option>
@@ -69,7 +69,7 @@
 					
 					
 				</div>
-<!-- filter end -->
+
 				<div class="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0">
 					<div class="row">
 						<div class="col-lg-12 mb-2">
@@ -84,6 +84,7 @@
 								 </select>
 							</div>
 						</div>
+<!-- filter end -->
 					<div class="col-lg-12 mb-2 row designs">
 						@forelse($desings as $design)
 						<div class="col-lg-4 col-sm-6">
