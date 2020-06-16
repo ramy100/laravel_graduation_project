@@ -73,10 +73,15 @@ class AdminController extends Controller
      */
     public function get_payment_chart_data()
     {
-        $orders=Order::pluck('created_at','total');
+
+        $orders = Order::select('created_at','total')
+        ->get()
+        ->groupBy(function($item){ return $item->created_at->format('d'); })->map(function ($row) {
+            return $row->sum('total');
+        });
         $chart = Chartisan::build()
-        ->labels($orders->values()->toArray())
-        ->dataset('Sample 1', $orders->keys()->toArray())
+        ->labels($orders->keys()->toArray())
+        ->dataset('Sample 1', $orders->values()->toArray())
         ->toJSON();
         return $chart;
     }
