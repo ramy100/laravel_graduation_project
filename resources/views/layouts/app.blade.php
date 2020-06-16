@@ -89,21 +89,20 @@
                     <div class="col-xl-4 col-lg-5">
                         <div class="user-panel">
                             @auth
-                                <div class="up-item notifications" onclick="MarkAsRead()">
-                                        <a id="Notifications" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" > <i class="fa fa-globe" aria-hidden="true"></i>
+                                <div class="up-item notifications" >
+                                        <a id="Notifications" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="MarkAsRead()"> <i class="fa fa-globe" aria-hidden="true"></i>
                                         </a>
                                         <input type="hidden" name="count" id="count" value="{{Auth::user()->unreadNotifications->count() }}" >
 
                                         <span id="Notification-count" class="{{ (Auth::user()->unreadNotifications->count()  <= 0) ? ' hideNotification': '' }} ">{{ Auth::user()->unreadNotifications->count() }}</span>
 
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Notifications" id="notificationList">
-                                            @forelse (Auth::user()->unreadNotifications as $notification)
+                                            @foreach (Auth::user()->unreadNotifications as $notification)
                                             <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['id']]) }}">
                                               {{$notification->data['company']}} has bought your {{ $notification->data['design']['title'] }} design
                                             </a>
-                                            @empty
-                                                <p>No unread notifications</p>
-                                            @endforelse
+                
+                                            @endforeach
 
                                         </div>
                                 </div>
@@ -288,20 +287,21 @@
                 if(Laravel.userId) {
                 window.Echo.private(`App.User.${Laravel.userId}`)
                 .notification((notification) => {
+                if(notification['type'] === "App\Notifications\designerNotifications")
+                {
                    alert("notification");
                    count=$('#Notification-count').html();
                    count=parseInt(count)+1;
-                   console.log(count);
                    $('#Notification-count').html(count);
                    $('#count').val(count);
-                   console.log($('#count').val());
                     $('#Notification-count').removeClass("hideNotification");
                    $('#notificationList').append(`
                     <a class="dropdown-item" href="#">
                                               ${notification['company']} has bought your ${notification['design']['title']} design
                                             </a>
                     `);
-                   console.log(notification);
+                }
+                   // console.log(notification['type']);
                 });
             }
             $(document).on('click', '.add-card', function(){
