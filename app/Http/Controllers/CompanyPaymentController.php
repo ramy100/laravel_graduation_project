@@ -38,7 +38,7 @@ class CompanyPaymentController extends Controller
         }
 
         // try charging user
-        // try {
+        try {
             $user->charge($total_amount_in_cents, $payment_method);
             $designs=Design::find($items_ids);
             foreach ($designs as $design) {
@@ -47,11 +47,11 @@ class CompanyPaymentController extends Controller
                 $designer->notify(new designerNotifications($company_name,$design));
             }
             // var_dump($items_ids );
-        // } catch (\Throwable $th) {
-        //     // if payment fails rollback and return fail message
-        //     DB::rollBack();
-        //     return $this->create_order_record_with_message($user->id,$total_amount,'fail in paying','payment failed','danger');
-        // }
+        } catch (\Throwable $th) {
+            // if payment fails rollback and return fail message
+            DB::rollBack();
+            return $this->create_order_record_with_message($user->id,$total_amount,'fail in paying','payment failed','danger');
+        }
 
 
         // if payment succeed -> commit database changes and clear cart and return success message

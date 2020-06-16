@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+
+	@if (session('success'))
+        <div class="alert alert-success" style="margin:0 auto;">
+            {{ session('success') }}
+        </div>
+    @endif
 <section class="category-section spad">
 		<div class="container">
 			<div class="row">
@@ -14,12 +20,8 @@
 									</div>
 									
 									<div class="pi-text">
-										@if((Auth::user())&&(Auth::user()->role != "user"))
-										<h6 style="font-family: monospace;">&dollar;{{$design->price}}</h6>
-										@endif
 										<a href="{{route('design.show',$design->id)}}" style="color: black;">{{$design->title}}</a>
-
-										
+										<a href="{{asset ('storage/'.$design->source_file) }}" download="{{$design->source_file}}">Download</a>
 									</div>
 								</div>
 							</div>
@@ -33,5 +35,4 @@
 			</div>
 		</div>
 </section>
-
 @endsection

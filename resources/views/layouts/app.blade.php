@@ -287,10 +287,10 @@
                 if(Laravel.userId) {
                 window.Echo.private(`App.User.${Laravel.userId}`)
                 .notification((notification) => {
-                if(notification['type'] === "App\Notifications\designerNotifications")
-                {
+                // if(notification['type'] === "App\Notifications\designerNotifications")
+                // {
                    alert("notification");
-                   count=$('#Notification-count').html();
+                   count= $('#count').val();
                    count=parseInt(count)+1;
                    $('#Notification-count').html(count);
                    $('#count').val(count);
@@ -300,8 +300,8 @@
                                               ${notification['company']} has bought your ${notification['design']['title']} design
                                             </a>
                     `);
-                }
-                   // console.log(notification['type']);
+                // }
+                   console.log(notification['type']);
                 });
             }
             $(document).on('click', '.add-card', function(){
