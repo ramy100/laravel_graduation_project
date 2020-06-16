@@ -173,12 +173,16 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
+        App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+
        
         // paypal service provider
         Srmklive\PayPal\Providers\PayPalServiceProvider::class,
+
+        //pusher broadcast provider
+        App\Providers\BroadcastServiceProvider::class,
     ],
 
     /*

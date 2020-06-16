@@ -15,6 +15,7 @@ use App\Http\Requests\StoreDesignsRequest;
 use App\DesignComment;
 use Redirect;
 use DB;
+use App\Notifications\UserNotifications;
 
 class DesignController extends Controller
 {
@@ -99,6 +100,10 @@ class DesignController extends Controller
     }
     
 
+    public function commentReply(Request $request,$id)
+    {
+        echo $id;
+    }
     
     public function comment(Request $request)
     {
@@ -112,6 +117,7 @@ class DesignController extends Controller
         ]);
         $comment->{'user_image'}=$comment->user->image;
         $comment->{'user_name'}=$comment->user->name;
+        // Auth::user()->notify(new UserNotifications($comment));
          return response()->json([
             'comment' => $comment
         ]);
@@ -176,6 +182,28 @@ class DesignController extends Controller
                         'image' => $filename
                     ]);
             }
+
+            $users = User::all();
+            $designer=$design->designer;
+            print($designer->id);
+            
+                $followers = DesignerRate::where('designer_id',$designer->id)->get();
+                // var_dump($followers);
+                foreach($followers as $follower)
+                {
+                    $user = User::find($follower->liker_id);
+                    print($designer); 
+                    $user->notify(new UserNotifications($design,$designer));
+                }
+            
+            // if(!$follower->isFollowing($user->id)) {
+            //     $follower->follow($user->id);
+    
+            //     // sending a notification
+            //     $user->notify(new UserFollowed($follower));
+    
+            //     return back()->withSuccess("You are now friends with {$user->name}");
+            // }
             return redirect("design/".$design->id)->with('success','Design added successfuly');
             
         }

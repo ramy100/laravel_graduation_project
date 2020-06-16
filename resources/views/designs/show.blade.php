@@ -33,7 +33,9 @@
 				</div>
 				<div class="col-lg-6 product-details">
 					<h2 class="p-title ">{{$design->title}}</h2>
+					@if((Auth::user())&&(Auth::user()->role != "user"))
 					<h3 class="p-price" style="display: inline;">&dollar;{{$design->price}} </h3>
+					@endif
 					<input type="hidden" name="designId" value="{{ $design->id }}" id="designId">
 
 					<!-- vote -->
@@ -130,7 +132,9 @@
 							<a href="{{route('design.show', ['design' => $design->id])}}"><img id="designImage" src="{{asset ('storage/'.$design->images->first()->image) }}" alt=""></a>
 						</div>
 						<div class="pi-text ">
+							@if((Auth::user())&&(Auth::user()->role != "user"))
 							<h6>&dollar;{{ $design->price }}</h6>
+							@endif
 							<p>{{ $design->title }} </p>
 						</div>
 					</div>
@@ -145,4 +149,38 @@
 @push('scripts')
 	<script src="{{ asset('js/vote.js') }}"></script>
 	<script src="{{ asset('js/comments.js') }}"></script>
+	<script type="text/javascript">
+		formId='';
+		function CommentReply(id){
+			formId=id;
+			console.log('#'+id);
+				$('#'+id).toggleClass('displayForm');
+		}
+		$('#'+formId > 'form').submit(function( event ) {
+				event.preventDefault();
+				let comment_id = $('#'+formId > 'input[type=hidden]').val();
+			  	let Reply_body=$('#'+formId > 'input[type=text]').val();
+			  	console.log(comment_id);
+			  	console.log(Reply_body);
+
+			//    	$.ajaxSetup({
+			// 		headers: {
+			// 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			// 		}
+			// 	});
+			// 	$.ajax({
+			// 		type: 'POST',
+			// 		url: 'http://localhost:8000/comment/'+comment_id+'/commentReply',
+			// 		data: {
+			// 		    // 'comment_id':comment_id,
+			// 		    'Reply_body':Reply_body
+			// 		},
+			// 		success: function (data) {
+			// 			console.log(data);
+			// 		},
+			// 		error: function (XMLHttpRequest) {
+		 //        }
+			// });
+		});
+	</script>
 @endpush

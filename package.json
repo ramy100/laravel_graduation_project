@@ -24,6 +24,8 @@
     },
     "dependencies": {
         "bootstrap-select": "^1.13.17",
+        "laravel-echo": "^1.8.0",
+        "pusher-js": "^6.0.3",
         "selectize": "^0.12.6"
     }
 }

@@ -14,7 +14,9 @@
 									</div>
 									
 									<div class="pi-text">
+										@if((Auth::user())&&(Auth::user()->role != "user"))
 										<h6 style="font-family: monospace;">&dollar;{{$design->price}}</h6>
+										@endif
 										<a href="{{route('design.show',$design->id)}}" style="color: black;">{{$design->title}}</a>
 									</div>
 								</div>

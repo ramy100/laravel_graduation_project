@@ -32,6 +32,9 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/notifications', 'IndexController@notifications');
+Route::get('/notification/MarkAsRead', 'IndexController@MarkAsRead');
+Route::post('comment/{id}/commentReply', 'DesignController@commentReply');
 Route::get('/search', 'DesignController@search')->name('search');
 Route::get('design/category/{type?}', 'DesignController@category')->name('category');
 Route::post('design/comment', 'DesignController@comment');
@@ -86,3 +89,9 @@ Route::get('paypal/ec-checkout-cancel', 'PayPalController@getExpressCheckoutCanc
 Route::resource('user', 'UserProfileController')->except([
     'create', 'store','update','edit'
 ]);
+
+
+Route::get('test', function () {
+    event(new App\Events\StatusNotification('Someone'));
+    return "Event has been sent!";
+});

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Design;
 use App\Tag;
 use App\User;
+use Auth;
+
 class IndexController extends Controller
 {
     public function index(){
@@ -20,6 +22,16 @@ class IndexController extends Controller
         return view('welcome', compact('latestDesigns', 'tags', 'topDesigns', 'companies', 'role'));
     }
 
+     public function notifications()
+    {
+        return auth()->user()->unreadNotifications()->limit(5)->get()->toArray();
+    }
+    
+    public function MarkAsRead()
+    {
+    	Auth::user()->unreadNotifications->markAsRead();
+    	echo Auth::user()->unreadNotifications->count();
+    }
    
     
 }

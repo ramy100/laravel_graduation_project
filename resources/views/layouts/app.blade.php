@@ -25,6 +25,8 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300i,400,400i,700,700i" rel="stylesheet">
 
+    <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet"> -->
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}"/>
@@ -37,9 +39,22 @@
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <style type="text/css">
+        #Notifications::after {
+            content: none;
+        }
+    </style>
 
+   
+@if(!auth()->guest())
 
+        <script>
+            window.Laravel.userId = <?php echo auth()->user()->id; ?>
+        </script>
+
+    @endif
     @yield('styles')
+     
 
 
 </head>
@@ -71,20 +86,73 @@
                     </div>
                     <div class="col-xl-4 col-lg-5">
                         <div class="user-panel">
-                            @if($user && $user->role == "designer")
-                            <div style="display: inline;margin-right: 20px;"> 
-                            <a href="{{ route('designer.show',['designer'=>$user->id]) }}" style="color: black;"> Profile</a>
-                            </div>
-                            @elseif($user && $user->role == "company")
-                            <div style="display: inline;margin-right: 20px;"> 
-                            <a href="{{ route('company.show',['company'=>$user->id]) }}" style="color: black;"> Profile</a>
-                            </div>
-                            @elseif($user && $user->role == "user")
-                            <div style="display: inline;margin-right: 20px;"> 
-                                <a href="{{ route('user.show',['user'=>$user->id]) }}" style="color: black;"> Profile</a>
-                            </div>
-                            
-                            @endif
+                             @auth
+                             {{-- Ghada code  --}}
+                                {{-- <div class="up-item notifications" onclick="MarkAsRead({{Auth::user()->unreadNotifications->count() }})">
+                                        <a id="Notifications" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" > <i class="fa fa-globe" aria-hidden="true"></i>
+                                        </a>
+                                        @if (Auth::user()->unreadNotifications->count()  >0)
+                                        <span id="Notification-count">{{ Auth::user()->unreadNotifications->count() }}</span>
+                                        @endif
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Notifications">
+                                            @foreach (Auth::user()->unreadNotifications as $notification)
+                                            <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['id']]) }}">
+                                              {{$notification->data['company']}} has bought your {{ $notification->data['design']['title'] }} design
+                                            </a>
+                                            @endforeach
+
+                                        </div>  
+                                    </div> --}}
+                                    {{-- event pusher way --}}
+                                    {{-- <div class="collapse navbar-collapse">
+                                        <ul class="nav navbar-nav">
+                                          <li class="dropdown dropdown-notifications">
+                                            <a href="#notifications-panel" class="dropdown-toggle" data-toggle="dropdown">
+                                              <i data-count="0" class="glyphicon glyphicon-bell notification-icon"></i>
+                                            </a>
+                              
+                                            <div class="dropdown-container">
+                                              <div class="dropdown-toolbar">
+                                                <div class="dropdown-toolbar-actions">
+                                                  <a href="#">Mark all as read</a>
+                                                </div>
+                                                <h3 class="dropdown-toolbar-title">Notifications (<span class="notif-count">0</span>)</h3>
+                                              </div>
+                                              <ul class="dropdown-menu">
+                                              </ul>
+                                              <div class="dropdown-footer text-center">
+                                                <a href="#">View All</a>
+                                              </div>
+                                            </div>
+                                          </li>
+                                          <li><a href="#">Timeline</a></li>
+                                          <li><a href="#">Friends</a></li>
+                                        </ul>
+                                      </div> --}}
+                                  {{-- start asmaa code --}}
+                                    <li class="dropdown">
+                                        <a class="dropdown-toggle" id="notifications" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            <span class="glyphicon glyphicon-user"></span>
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="notificationsMenu" id="notificationsMenu">
+                                            <li class="dropdown-header">No notifications</li>
+                                        </ul>
+                                    </li> 
+                                    {{-- end asmaa code --}}
+                                @if( $user->role == "designer")
+                                <div style="display: inline;margin-right: 20px;"> 
+                                <a href="{{ route('designer.show',['designer'=>$user->id]) }}" style="color: black;"> Profile</a>
+                                </div>
+                                @elseif($user->role == "company")
+                                <div style="display: inline;margin-right: 20px;"> 
+                                <a href="{{ route('company.show',['company'=>$user->id]) }}" style="color: black;"> Profile</a>
+                                </div>
+                                @elseif( $user->role == "user")
+                                <div style="display: inline;margin-right: 20px;"> 
+                                    <a href="{{ route('user.show',['user'=>$user->id]) }}" style="color: black;"> Profile</a>
+                                </div>
+                                @endif
+                            @endauth
                             @guest
                                 <div class="up-item">
                                     <i class="flaticon-profile"></i>
@@ -106,6 +174,7 @@
                                     @endif
                                 </div>
                             @else
+                                
                                 <div class="up-item">
                                     <a id="navbarDropdown" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -228,8 +297,19 @@
         crossorigin="anonymous"></script>  
 
     <script>
+        function MarkAsRead(count)
+            {
+                if(count>0)
+                {
+                     $.get('/notification/MarkAsRead', function(data, status){
+                        alert("Data: " + data + "\nStatus: " + status);
+                        $('#Notification-count').html(data);
+                      }) ;
+                }
+            }
         $(document).ready(function(){
-
+            
+            
             $(document).on('click', '.add-card', function(){
                 var design_id = $(this).data('id');
                 $.post('{{ route('add-to-cart') }}', {"_token": "{{ csrf_token() }}","id": design_id}, function(response){
@@ -249,8 +329,64 @@
 
         });
     </script>
+     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+     <script src="//js.pusher.com/3.1/pusher.min.js"></script>
+     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+ 
+     <script type="text/javascript">
+       var notificationsWrapper   = $('.dropdown-notifications');
+       var notificationsToggle    = notificationsWrapper.find('a[data-toggle]');
+       var notificationsCountElem = notificationsToggle.find('i[data-count]');
+       var notificationsCount     = parseInt(notificationsCountElem.data('count'));
+       var notifications          = notificationsWrapper.find('ul.dropdown-menu');
+ 
+       if (notificationsCount <= 0) {
+         notificationsWrapper.hide();
+       }
+ 
+       // Enable pusher logging - don't include this in production
+       // Pusher.logToConsole = true;
+ 
+       var pusher = new Pusher('API_KEY_HERE', {
+         encrypted: true
+       });
+ 
+       // Subscribe to the channel we specified in our Laravel Event
+       var channel = pusher.subscribe('status-liked');
+ 
+       // Bind a function to a Event (the full Laravel class)
+       channel.bind('App\\Events\\StatusNotifin', function(data) {
+         var existingNotifications = notifications.html();
+         var avatar = Math.floor(Math.random() * (71 - 20 + 1)) + 20;
+         var newNotificationHtml = `
+           <li class="notification active">
+               <div class="media">
+                 <div class="media-left">
+                   <div class="media-object">
+                     <img src="https://api.adorable.io/avatars/71/`+avatar+`.png" class="img-circle" alt="50x50" style="width: 50px; height: 50px;">
+                   </div>
+                 </div>
+                 <div class="media-body">
+                   <strong class="notification-title">`+data.message+`</strong>
+                   <!--p class="notification-desc">Extra description can go here</p-->
+                   <div class="notification-meta">
+                     <small class="timestamp">about a minute ago</small>
+                   </div>
+                 </div>
+               </div>
+           </li>
+         `;
+         notifications.html(newNotificationHtml + existingNotifications);
+ 
+         notificationsCount += 1;
+         notificationsCountElem.attr('data-count', notificationsCount);
+         notificationsWrapper.find('.notif-count').text(notificationsCount);
+         notificationsWrapper.show();
+       });
+     </script>
 
      @stack('scripts')
+
 
 </body>
 </html>
