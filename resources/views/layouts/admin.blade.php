@@ -18,7 +18,6 @@
 
   <!-- Custom styles for this template-->
   <link href="{{ asset('dashboard/css/sb-admin-2.min.css') }}" rel="stylesheet">
-  @stack('scripts')
 </head>
 
 <body id="page-top">
@@ -419,5 +418,6 @@
   <script src="{{ asset('dashboard/js/demo/chart-pie-demo.js') }}"></script>
 
 </body>
+@stack('scripts')
 
 </html>

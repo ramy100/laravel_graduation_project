@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Order;
 use App\User;
+use Chartisan\PHP\Chartisan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -62,6 +64,30 @@ class AdminController extends Controller
     public function create()
     {
         //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function get_payment_chart_data()
+    {
+        $orders=Order::pluck('created_at','total');
+        $chart = Chartisan::build()
+        ->labels($orders->values()->toArray())
+        ->dataset('Sample 1', $orders->keys()->toArray())
+        ->toJSON();
+        return $chart;
+    }
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function view_payment_chart()
+    {
+        return view('dashboard.payment_chart');
     }
 
     /**

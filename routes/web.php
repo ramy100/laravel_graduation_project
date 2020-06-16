@@ -98,5 +98,7 @@ Route::resource('user','ProfileController')->only([
             Route::get('{role}/{state}','AdminController@list_users')->where(['role'=>'designer|company','state'=>'accepted|rejected|pending'])->name('list_users');
             Route::post('{role}/{state}','AdminController@change_verification')->where(['role'=>'designer|company','state'=>'accepted|rejected|pending']);
             Route::get('pending/{user}','AdminController@view_user_document')->name('admin.view_user');
+            Route::get('charts/dodo','AdminController@get_payment_chart_data')->name('admin.get_payment_chart_data');
+            Route::get('charts/payment','AdminController@view_payment_chart')->name('admin.view_payment_chart');
     });
 });
