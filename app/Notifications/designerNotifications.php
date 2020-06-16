@@ -6,11 +6,12 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class designerNotifications extends Notification
 {
     use Queueable;
-    protected $company_name,$design;
+    public $company_name,$design;
     /**
      * Create a new notification instance.
      *
@@ -31,7 +32,7 @@ class designerNotifications extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database','broadcast'];
     }
 
     // /**
@@ -62,6 +63,21 @@ class designerNotifications extends Notification
             'design'=>$this->design
           
         ];
+    }
+
+    /**
+     * Get the array representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
+    public function toBroadcast($notifiable)
+    {
+         return new BroadcastMessage([
+        'company' => $this->company_name,
+        'design'=>$this->design
+        ]);
+        
     }
 
 
