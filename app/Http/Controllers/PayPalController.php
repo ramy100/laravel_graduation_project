@@ -19,10 +19,8 @@ class PayPalController extends Controller
 
     public function getExpressCheckout(){
         $cart = $this->getCheckoutData();
-        // dd($cart);
         try {
             $response = $this->provider->setExpressCheckout($cart);
-            // dd($response);
             return redirect($response['paypal_link']);
         } catch (\Exception $e) {
             $invoice = $this->makeOrder('Invalid');
