@@ -6,7 +6,8 @@ window.$ = window.jQuery = require('jquery');
 var notifications = [];
 
 const NOTIFICATION_TYPES = {
-    Payment: 'App\\Notifications\\designerNotifications'
+    Payment: 'App\\Notifications\\designerNotifications',
+    User: 'App\\Notifications\\UserNotifications'
 };
         
         import Echo from "laravel-echo";

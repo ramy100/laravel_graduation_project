@@ -182,6 +182,20 @@ class DesignController extends Controller
                         'image' => $filename
                     ]);
             }
+
+            $designer=$design->designer;
+            $followers = DesignerRate::where('designer_id',$designer->id)->get();
+                foreach($followers as $follower)
+                {
+                    $user = User::find($follower->liker_id);
+                    // print($user); 
+                    if($designer->id != $user->id)
+                    {
+                        $user->notify(new UserNotifications($design,$designer));
+                    }
+                
+                    
+                }
             return redirect("design/".$design->id)->with('success','Design added successfuly');
             
         }

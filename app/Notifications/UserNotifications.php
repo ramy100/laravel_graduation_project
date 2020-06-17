@@ -6,18 +6,22 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 
 class UserNotifications extends Notification
 {
     use Queueable;
+    public $design,$designer;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($design,$designer)
     {
+        $this->design=$design;
+        $this->designer=$designer;
 
         //
     }
@@ -30,7 +34,7 @@ class UserNotifications extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+       return ['database','broadcast'];
     }
 
     // /**
@@ -54,12 +58,23 @@ class UserNotifications extends Notification
      * @return array
      */
     public function toDatabase($notifiable)
-    {
+    {   print("////////********************////////////////***************************");
+        // var_dump($this->designer);
         return [
+            'design_id' => $this->design->id,
+            'designer_name' => $this->designer->name,
+
             
         ];
     }
-
+    public function toBroadcast($notifiable)
+    {   print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+        // var_dump($this->designer);
+        return new BroadcastMessage([
+            'design_id' => $this->design->id,
+            'designer_name' => $this->designer->name,  
+            ]);
+    }
 
     /**
      * Get the array representation of the notification.

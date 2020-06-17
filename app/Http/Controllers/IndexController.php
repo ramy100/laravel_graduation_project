@@ -22,10 +22,10 @@ class IndexController extends Controller
         return view('welcome', compact('latestDesigns', 'tags', 'topDesigns', 'companies', 'role'));
     }
 
-     public function notifications()
-    {
-        return auth()->user()->unreadNotifications()->limit(5)->get()->toArray();
-    }
+    //  public function notifications()
+    // {
+    //     return auth()->user()->unreadNotifications()->limit(5)->get()->toArray();
+    // }
     
     public function MarkAsRead()
     {

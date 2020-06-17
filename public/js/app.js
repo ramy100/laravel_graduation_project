@@ -43259,7 +43259,8 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 var notifications = [];
 var NOTIFICATION_TYPES = {
-  Payment: 'App\\Notifications\\designerNotifications'
+  Payment: 'App\\Notifications\\designerNotifications',
+  User: "App\\Notifications\\UserNotifications"
 };
 
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
