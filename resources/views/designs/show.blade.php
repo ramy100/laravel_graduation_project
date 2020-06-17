@@ -155,26 +155,23 @@
 	<script src="{{ asset('js/comments.js') }}"></script>
 	<script type="text/javascript">
 		formId='';
-		let form=false;
 		function CommentReply(id){
 			formId=id;
 			console.log('#'+id);
 				$('#'+id).toggleClass('displayForm');
-			let form=$('#'+formId).children('form')[0];
-			form=true;
-			console.log(form);
+			// let form=$('#'+formId).children('form')[0];
 			return false;
 		}
-		if(form)
-		{
-			$('#'+formId).children('form')[0].submit(function( event ) {
-				event.preventDefault();
-				console.log('form');
+		// if(form)
+		// {
+		// 	$('#'+formId).children('form')[0].submit(function( event ) {
+		// 		event.preventDefault();
+		// 		console.log('form');
 				
-				let comment_id = $('#'+formId > 'input[type=hidden]').val();
-			  	let Reply_body=$('#'+formId > 'input[type=text]').val();
-			  	console.log(comment_id);
-			  	console.log(Reply_body);
+		// 		let comment_id = $('#'+formId > 'input[type=hidden]').val();
+		// 	  	let Reply_body=$('#'+formId > 'input[type=text]').val();
+		// 	  	console.log(comment_id);
+		// 	  	console.log(Reply_body);
 
 			//    	$.ajaxSetup({
 			// 		headers: {
@@ -194,8 +191,8 @@
 			// 		error: function (XMLHttpRequest) {
 		 //        }
 			// });
-		});
-		}
+		// });
+		// }
 		
 	</script>
 @endpush
