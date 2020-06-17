@@ -1,17 +1,10 @@
 @extends('layouts.admin')
 
 @section('content')
-    <div class="container">
-        <div id="chart" style="height: 300px;"></div>
-
-    </div>
+    {!! $chart->container() !!}
 @endsection
 @push('scripts')
-    <!-- Charting library -->
-    <script src="https://unpkg.com/chart.js/dist/Chart.min.js"></script>
-    <!-- Chartisan -->
-    <script src="https://unpkg.com/@chartisan/chartjs/dist/chartisan_chartjs.js"></script>
-    <script>
+    {{-- <script>
         const chart = new Chartisan({
           el: '#chart',
           url: 'http://localhost:8000/admin/charts/paymentdata',
@@ -23,5 +16,6 @@
             .title('This is a sample chart using chartisan!')
             .datasets([{ type: 'line', fill: false }, 'bar']),
         })
-      </script>
+      </script> --}}
+      {!! $chart->script() !!}
 @endpush

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\PaymentChart;
 use App\Order;
 use App\User;
-use Chartisan\PHP\Chartisan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
 class AdminController extends Controller
 {
     /**
@@ -67,32 +66,21 @@ class AdminController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function get_payment_chart_data()
-    {
-
-        $orders = Order::select('created_at','total')
-        ->get()
-        ->groupBy(function($item){ return $item->created_at->format('d'); })->map(function ($row) {
-            return $row->sum('total');
-        });
-        $chart = Chartisan::build()
-        ->labels($orders->keys()->toArray())
-        ->dataset('Sample 1', $orders->values()->toArray())
-        ->toJSON();
-        return $chart;
-    }
-    /**
-     * Show the form for creating a new resource.
+     * Show the Payment Chart.
      *
      * @return \Illuminate\Http\Response
      */
     public function view_payment_chart()
     {
-        return view('dashboard.payment_chart');
+        $orders = Order::select('created_at','total')
+        ->get()
+        ->groupBy(function($item){ return $item->created_at->format('d/M/Y'); })->map(function ($row) {
+            return $row->sum('total');
+        });
+        $chart = new PaymentChart;
+        $chart->labels($orders->keys());
+        $chart->dataset('daily Profit','line',$orders->values());
+        return view('dashboard.payment_chart',compact('chart'));
     }
 
     /**
