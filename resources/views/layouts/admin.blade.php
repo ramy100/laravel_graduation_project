@@ -19,7 +19,6 @@
   <!-- Custom styles for this template-->
   <link href="{{ asset('dashboard/css/sb-admin-2.min.css') }}" rel="stylesheet">
 
-  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
 
 </head>
 
@@ -67,6 +66,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Our Charts:</h6>
             <a class="collapse-item" href="{{route('likes')}}">Likes</a>
+            <a class="collapse-item" href="{{route('admin.view_payment_chart')}}">Payments</a>
             <a class="collapse-item" href="cards.html">Cards</a>
           </div>
         </div>
@@ -238,14 +238,14 @@
               <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-                <span class="badge badge-danger badge-counter">3+</span>
+              <span class="badge badge-danger badge-counter">{{ Auth::guard('admin')->user()->unreadNotifications->count() }}</span>
               </a>
               <!-- Dropdown - Alerts -->
               <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
-                  Alerts Center
+                  Notifications
                 </h6>
-                <a class="dropdown-item d-flex align-items-center" href="#">
+                {{-- <a class="dropdown-item d-flex align-items-center" href="#">
                   <div class="mr-3">
                     <div class="icon-circle bg-primary">
                       <i class="fas fa-file-alt text-white"></i>
@@ -255,19 +255,25 @@
                     <div class="small text-gray-500">December 12, 2019</div>
                     <span class="font-weight-bold">A new monthly report is ready to download!</span>
                   </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
-                  <div class="mr-3">
-                    <div class="icon-circle bg-success">
-                      <i class="fas fa-donate text-white"></i>
+                </a> --}}
+                @forelse (Auth::guard('admin')->user()->notifications as $notification)
+                  <a class="dropdown-item d-flex align-items-center" href={{ $notification->data['route'] }}>
+                    <div class="mr-3">
+                      <div class="icon-circle bg-success">
+                        <i class="fas fa-check text-white"></i>
+                      </div>
                     </div>
+                    <div>
+                      <div class="small text-gray-500">{{$notification->created_at}}</div>
+                        {{ $notification->data['message'] }}
+                    </div>
+                  </a>
+                @empty
+                  <div class="alert alert-danger" role="alert">
+                    <strong>No Pending Notifications</strong>
                   </div>
-                  <div>
-                    <div class="small text-gray-500">December 7, 2019</div>
-                    $290.29 has been deposited into your account!
-                  </div>
-                </a>
-                <a class="dropdown-item d-flex align-items-center" href="#">
+                @endforelse
+                {{-- <a class="dropdown-item d-flex align-items-center" href="#">
                   <div class="mr-3">
                     <div class="icon-circle bg-warning">
                       <i class="fas fa-exclamation-triangle text-white"></i>
@@ -278,7 +284,7 @@
                     Spending Alert: We've noticed unusually high spending for your account.
                   </div>
                 </a>
-                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
+                <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a> --}}
               </div>
             </li>
 
