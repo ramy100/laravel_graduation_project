@@ -12,7 +12,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 class UserNotifications extends Notification implements ShouldQueue
 {
     use Queueable;
-    protected $design,$designer;
+    public $design,$designer;
 
 
     /**
@@ -22,6 +22,8 @@ class UserNotifications extends Notification implements ShouldQueue
      */
     public function __construct($design,$designer)
     {
+        $this->design=$design;
+        $this->designer=$designer;
 
         $this->design=$design;
         $this->designer=$designer;
@@ -59,8 +61,8 @@ class UserNotifications extends Notification implements ShouldQueue
      * @return array
      */
     public function toDatabase($notifiable)
-    {   print("////////********************////////////////***************************");
-        // var_dump($this->designer);
+    {   
+        
         return [
             'design_id' => $this->design->id,
             'designer_name' => $this->designer->name,
@@ -69,8 +71,7 @@ class UserNotifications extends Notification implements ShouldQueue
         ];
     }
     public function toBroadcast($notifiable)
-    {   print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
-        // var_dump($this->designer);
+    {  
         return new BroadcastMessage([
             'design_id' => $this->design->id,
             'designer_name' => $this->designer->name,  

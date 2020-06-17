@@ -43260,7 +43260,7 @@ window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jqu
 var notifications = [];
 var NOTIFICATION_TYPES = {
   Payment: 'App\\Notifications\\designerNotifications',
-  Newdesign: "App\\Notifications\\UserNotifications"
+  User: "App\\Notifications\\UserNotifications"
 };
 
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({

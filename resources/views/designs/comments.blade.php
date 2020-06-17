@@ -29,7 +29,7 @@
               <p>{{ $comment->body }}</p>
               <ul class="list-inline d-sm-flex my-0">
                 <li class="list-inline-item ml-auto">
-                  <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" href="#!" onclick="CommentReply({{$comment->id}})">
+                  <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" href="#" onclick="return CommentReply({{$comment->id}})">
                     <i class="fa fa-reply g-pos-rel g-top-1 g-mr-3"></i>
                     Reply
                   </a>
@@ -38,9 +38,11 @@
 
             </div>
         </div>
+
+        <!-- comment reply -->
         <!-- <div class="status-upload col-md-8"> -->
                 <div style="margin:10px 0;margin-left: 65px;" class="ReplyForm displayForm" id="{{$comment->id}}">
-                  <form method="POST" action="#" >
+                  <form  action="#" >
                     {{ csrf_field() }}
                     <input type="hidden" name="commentId" id="commentId" value="{{$comment->id}}">
                      <div style="display: inline;width: 100px;">

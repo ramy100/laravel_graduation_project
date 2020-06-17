@@ -7,7 +7,7 @@ var notifications = [];
 const NOTIFICATION_TYPES = {
     Payment: 'App\\Notifications\\designerNotifications',
     
-    Newdesign: 'App\\Notifications\\UserNotifications'
+    User: 'App\\Notifications\\UserNotifications'
 };
         
         import Echo from "laravel-echo";

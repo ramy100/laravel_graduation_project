@@ -182,17 +182,11 @@ class DesignController extends Controller
                         'image' => $filename
                     ]);
             }
-
-            // $users = User::all();
             $designer=$design->designer;
-            // print($designer->id);
-            
                 $followers = DesignerRate::where('designer_id',$designer->id)->get();
-                // var_dump($followers);
                 foreach($followers as $follower)
                 {
                     $user = User::find($follower->liker_id);
-                    // print($user); 
                     if($designer->id != $user->id)
                     {
                         $user->notify(new UserNotifications($design,$designer));

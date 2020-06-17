@@ -21,7 +21,7 @@ Route::post('/checkout/credit', 'CompanyPaymentController@credit_card_checkout')
 Route::get('/checkout/credit', 'CompanyPaymentController@show_payment_form')->name('pay.credit.card.form');
 
 // cart routes
-Route::get('/result', 'CartController@cart')->name('website.result');
+Route::get('/result', 'CartController@result')->name('website.result');
 Route::get('/cart', 'CartController@cart')->name('website.cart');
 Route::post('add-to-cart', 'CartController@addToCart')->name('add-to-cart');
 Route::post('remove-from-cart', 'CartController@removeFromCart')->name('remove-from-cart');
