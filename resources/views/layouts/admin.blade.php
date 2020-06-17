@@ -8,7 +8,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-
+  <!-- CSRF Token -->
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <title>My Design - Dashboard</title>
 
   <!-- Custom fonts for this template-->
@@ -17,10 +18,8 @@
 
   <!-- Custom styles for this template-->
   <link href="{{ asset('dashboard/css/sb-admin-2.min.css') }}" rel="stylesheet">
-  
-  <!-- tallwindcss for charts -->
-  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
 
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
 
 </head>
 
@@ -86,6 +85,48 @@
             <a class="collapse-item" href="{{ route('material.index') }}">Material</a>
             <a class="collapse-item" href="utilities-animation.html">Animations</a>
             <a class="collapse-item" href="utilities-other.html">Other</a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#companies" aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-table"></i>
+          <span>Companies</span>
+        </a>
+        <div id="companies" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Info Section:</h6>
+            <a class="collapse-item" href="{{ route('list_users',['company','pending']) }}">Pending Companies </a>
+            <a class="collapse-item" href="{{ route('list_users',['company','accepted']) }}">Accepted Companies </a>
+            <a class="collapse-item" href="{{ route('list_users',['company','rejected']) }}">Rejected Companies </a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#designers" aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-table"></i>
+          <span>Designers</span>
+        </a>
+        <div id="designers" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Info Section:</h6>
+            <a class="collapse-item" href="{{ route('list_users',['designer','pending']) }}">Pending Designers </a>
+            <a class="collapse-item" href="{{ route('list_users',['designer','accepted']) }}">Accepted Designers </a>
+            <a class="collapse-item" href="{{ route('list_users',['designer','rejected']) }}">Rejected Designers </a>
+          </div>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#designs" aria-expanded="true" aria-controls="collapseUtilities">
+            <i class="fas fa-fw fa-table"></i>
+          <span>Designs</span>
+        </a>
+        <div id="designs" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Info Section:</h6>
+            <a class="collapse-item" href="{{ route('list_designs',['pending']) }}">Pending Designs </a>
+            <a class="collapse-item" href="{{ route('list_designs',['accepted']) }}">Accepted Designs </a>
+            <a class="collapse-item" href="{{ route('list_designs',['rejected']) }}">Rejected Designs </a>
           </div>
         </div>
       </li>
@@ -422,5 +463,6 @@
   <!-- highcharts cdn -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
 </body>
+@stack('scripts')
 
 </html>
