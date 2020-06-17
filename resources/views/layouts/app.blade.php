@@ -284,6 +284,7 @@
                      $.get('/notification/MarkAsRead', function(data, status){
                         // alert("Data: " + data + "\nStatus: " + status);
                         $('#Notification-count').html(0);
+                        $('#count').val(0);
                          $('#Notification-count').addClass("hideNotification");
    
                       }) ;
@@ -312,6 +313,7 @@
                 else if(notification['type'] === 'App\\Notifications\\UserNotifications')
                     {
                         count= $('#count').val();
+                        console.log(count);
                    count=parseInt(count)+1;
                    $('#Notification-count').html(count);
                    $('#count').val(count);

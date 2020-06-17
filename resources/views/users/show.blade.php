@@ -66,7 +66,7 @@
 						<div class="product-item">
 							<div class="pi-pic">
 								<a href="{{route('design.show', ['design' => $vote->design->id])}}"> 
-									<img src="{{ asset('storage/'.$vote->design->images()->first()->image) }}" alt="">
+									<img width="180" height="260" src="{{ asset('storage/'.$vote->design->images()->first()->image) }}" alt="">
 								</a>
 								<div class="pi-links">
 									<a href="javascript:void(0)" class="wishlist-btn"><i class="flaticon-heart"></i></a>
