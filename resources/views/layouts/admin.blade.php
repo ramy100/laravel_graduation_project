@@ -17,6 +17,10 @@
 
   <!-- Custom styles for this template-->
   <link href="{{ asset('dashboard/css/sb-admin-2.min.css') }}" rel="stylesheet">
+  
+  <!-- tallwindcss for charts -->
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+
 
 </head>
 
@@ -57,13 +61,13 @@
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
-          <span>Components</span>
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>Charts</span></a>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <h6 class="collapse-header">Custom Components:</h6>
-            <a class="collapse-item" href="buttons.html">Buttons</a>
+            <h6 class="collapse-header">Our Charts:</h6>
+            <a class="collapse-item" href="{{route('likes')}}">Likes</a>
             <a class="collapse-item" href="cards.html">Cards</a>
           </div>
         </div>
@@ -415,6 +419,8 @@
   <script src="{{ asset('dashboard/js/demo/chart-area-demo.js') }}"></script>
   <script src="{{ asset('dashboard/js/demo/chart-pie-demo.js') }}"></script>
 
+  <!-- highcharts cdn -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
 </body>
 
 </html>

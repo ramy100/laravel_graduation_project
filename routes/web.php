@@ -95,5 +95,6 @@ Route::resource('user','ProfileController')->only([
             Route::post('logout', 'AdminAuthController@logMeOut')->name('admin.logout');
             Route::resource('tag', 'TagController');
             Route::resource('material', 'MaterialController');
+            Route::get('design-chart', 'AdminController@likesChart')->name('likes');
     });
 });
