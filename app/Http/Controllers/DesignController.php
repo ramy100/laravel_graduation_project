@@ -185,15 +185,18 @@ class DesignController extends Controller
 
             $users = User::all();
             $designer=$design->designer;
-            print($designer->id);
+            // print($designer->id);
             
                 $followers = DesignerRate::where('designer_id',$designer->id)->get();
-                // var_dump($followers);
+                var_dump($followers);
                 foreach($followers as $follower)
                 {
                     $user = User::find($follower->liker_id);
-                    print($designer); 
-                    $user->notify(new UserNotifications($design,$designer));
+                    print($user); 
+                    if($designer->id != $user->id)
+                    {
+                        $user->notify(new UserNotifications($design,$designer));
+                    }
                 }
             
             // if(!$follower->isFollowing($user->id)) {

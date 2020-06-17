@@ -71,19 +71,23 @@
 						<a href="">3 reviews</a>|<a href="">Add your review</a>
 					</div> -->
 
-					<!-- delete design -->
-					@if((Auth::user()) && (Auth::id() == $design->designer_id) && Auth::user()->role == "designer")
-					<form action="{{route('design.destroy',$design->id)}}" method="POST" style="display: inline;">
-                            @method('DELETE')
-                            @csrf
-                        <button class="deleteDesign btn-danger" onclick="return confirm('Are you sure?')"  type="submit">Delete</button>
-                    </form>
-                    	<a class=" editDesign " href="{{route('design.edit',$design->id)}}"  >Edit</a>
-                    @elseif((Auth::user()) && (Auth::user()->role == "company") && ($design->state == "sketch") )
+					
+					@if(Auth::check() && $design->state == "sketch" )
+						@if((Auth::id() == $design->designer_id) && Auth::user()->role == "designer")
+						<!-- delete design -->
+						<form action="{{route('design.destroy',$design->id)}}" method="POST" style="display: inline;">
+	                            @method('DELETE')
+	                            @csrf
+	                        <button class="deleteDesign btn-danger" onclick="return confirm('Are you sure?')"  type="submit">Delete</button>
+	                    </form>
+	                    <!-- edit design -->
+	                    <a class=" editDesign " href="{{route('design.edit',$design->id)}}"  >Edit</a>
+	                    @elseif((Auth::user()->role == "company") )
 
-                    <!-- buy design -->
-                    	<a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card site-btn mb-2"  >ADD TO CART</a>		
-                    @endif
+	                    <!-- buy design -->
+	                    	<a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card site-btn mb-2"  >ADD TO CART</a>		
+	                    @endif
+	                @endif
 					<div id="accordion" class="accordion-area">
 						<div class="panel">
 							<div class="panel-header" id="headingOne">

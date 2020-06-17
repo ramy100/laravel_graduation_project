@@ -43,14 +43,22 @@
         #Notifications::after {
             content: none;
         }
+        .hideNotification{
+            display: none;
+        }
     </style>
 
-   
-@if(!auth()->guest())
+    <script type="text/javascript">
+        window.Laravel = <?php echo json_encode([
+            'csrfToken' => csrf_token(),
+        ]); ?>
 
-        <script>
-            window.Laravel.userId = <?php echo auth()->user()->id; ?>
-        </script>
+    </script>
+    @if(!auth()->guest())
+
+    <script>
+        window.Laravel.userId = <?php echo auth()->user()->id; ?>
+    </script>
 
     @endif
     @yield('styles')
@@ -86,59 +94,33 @@
                     </div>
                     <div class="col-xl-4 col-lg-5">
                         <div class="user-panel">
-                             @auth
-                             {{-- Ghada code  --}}
-                                {{-- <div class="up-item notifications" onclick="MarkAsRead({{Auth::user()->unreadNotifications->count() }})">
-                                        <a id="Notifications" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" > <i class="fa fa-globe" aria-hidden="true"></i>
+                            @auth
+                                <div class="up-item notifications" >
+                                        <a id="Notifications" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="MarkAsRead()"> <i class="fa fa-globe" aria-hidden="true"></i>
                                         </a>
-                                        @if (Auth::user()->unreadNotifications->count()  >0)
-                                        <span id="Notification-count">{{ Auth::user()->unreadNotifications->count() }}</span>
-                                        @endif
-                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Notifications">
-                                            @foreach (Auth::user()->unreadNotifications as $notification)
-                                            <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['id']]) }}">
-                                              {{$notification->data['company']}} has bought your {{ $notification->data['design']['title'] }} design
-                                            </a>
-                                            @endforeach
+                                        <input type="hidden" name="count" id="count" value="{{Auth::user()->unreadNotifications->count() }}" >
 
-                                        </div>  
-                                    </div> --}}
-                                    {{-- event pusher way --}}
-                                    {{-- <div class="collapse navbar-collapse">
-                                        <ul class="nav navbar-nav">
-                                          <li class="dropdown dropdown-notifications">
-                                            <a href="#notifications-panel" class="dropdown-toggle" data-toggle="dropdown">
-                                              <i data-count="0" class="glyphicon glyphicon-bell notification-icon"></i>
-                                            </a>
-                              
-                                            <div class="dropdown-container">
-                                              <div class="dropdown-toolbar">
-                                                <div class="dropdown-toolbar-actions">
-                                                  <a href="#">Mark all as read</a>
-                                                </div>
-                                                <h3 class="dropdown-toolbar-title">Notifications (<span class="notif-count">0</span>)</h3>
-                                              </div>
-                                              <ul class="dropdown-menu">
-                                              </ul>
-                                              <div class="dropdown-footer text-center">
-                                                <a href="#">View All</a>
-                                              </div>
-                                            </div>
-                                          </li>
-                                          <li><a href="#">Timeline</a></li>
-                                          <li><a href="#">Friends</a></li>
-                                        </ul>
-                                      </div> --}}
-                                  {{-- start asmaa code --}}
-                                    <li class="dropdown">
-                                        <a class="dropdown-toggle" id="notifications" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            <span class="glyphicon glyphicon-user"></span>
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="notificationsMenu" id="notificationsMenu">
-                                            <li class="dropdown-header">No notifications</li>
-                                        </ul>
-                                    </li> 
-                                    {{-- end asmaa code --}}
+                                        <span id="Notification-count" class="{{ (Auth::user()->unreadNotifications->count()  <= 0) ? ' hideNotification': '' }} ">{{ Auth::user()->unreadNotifications->count() }}</span>
+
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Notifications" id="notificationList">
+                                            @foreach (Auth::user()->unreadNotifications as $notification)
+                                            @if($notification['type'] === "App\Notifications\designerNotifications")
+                                                <a class="dropdown-item" href="#">
+                                                    {{$notification->data['designer']['name']}}
+                                               has bought your design
+                                                </a>
+                                            @else
+                                                <a class="dropdown-item" href="#">
+                                                has added a new design
+                                                </a>
+
+                                            @endif
+                                               <pre> {{$notification->data}}</pre>
+
+                                            @endforeach 
+
+                                        </div>
+                                </div>
                                 @if( $user->role == "designer")
                                 <div style="display: inline;margin-right: 20px;"> 
                                 <a href="{{ route('designer.show',['designer'=>$user->id]) }}" style="color: black;"> Profile</a>
@@ -291,25 +273,58 @@
     <script src="{{ asset('js/main.js') }}"></script>
 
 
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
         integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
         crossorigin="anonymous"></script>  
 
     <script>
-        function MarkAsRead(count)
+        function MarkAsRead()
             {
+                console.log("hi");
+                count=$('#count').val();
                 if(count>0)
                 {
+                    console.log("click");
                      $.get('/notification/MarkAsRead', function(data, status){
-                        alert("Data: " + data + "\nStatus: " + status);
-                        $('#Notification-count').html(data);
+                        // alert("Data: " + data + "\nStatus: " + status);
+                        $('#Notification-count').html(0);
+                         $('#Notification-count').addClass("hideNotification");
+   
                       }) ;
                 }
             }
+
         $(document).ready(function(){
-            
-            
+            console.log(Laravel.userId);
+                if(Laravel.userId) {
+                window.Echo.private(`App.User.${Laravel.userId}`)
+                .notification((notification) => {
+                
+                   alert("notification");
+                   count= $('#count').val();
+                   count=parseInt(count)+1;
+                   $('#Notification-count').html(count);
+                   $('#count').val(count);
+                    $('#Notification-count').removeClass("hideNotification");
+                //   if(notification['type'] === "App\Notifications\designerNotifications")
+                // { 
+                //     $('#notificationList').append(`
+                //     <a class="dropdown-item" href="#">
+                //                               ${notification['company']} has bought your ${notification['design']['title']} design
+                //                             </a>
+                //     `);
+                // }
+                //     else
+                //     {
+                        $('#notificationList').append(`
+                    <a class="dropdown-item" href="#">
+                    ${notification['designer']['name']} has just added a new design
+                    </a>
+                    `);
+                    // }
+                   console.log(notification['type']);
+                });
+            }
             $(document).on('click', '.add-card', function(){
                 var design_id = $(this).data('id');
                 $.post('{{ route('add-to-cart') }}', {"_token": "{{ csrf_token() }}","id": design_id}, function(response){

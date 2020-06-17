@@ -21,6 +21,7 @@ Route::post('/checkout/credit', 'CompanyPaymentController@credit_card_checkout')
 Route::get('/checkout/credit', 'CompanyPaymentController@show_payment_form')->name('pay.credit.card.form');
 
 // cart routes
+Route::get('/result', 'CartController@cart')->name('website.result');
 Route::get('/cart', 'CartController@cart')->name('website.cart');
 Route::post('add-to-cart', 'CartController@addToCart')->name('add-to-cart');
 Route::post('remove-from-cart', 'CartController@removeFromCart')->name('remove-from-cart');
@@ -32,7 +33,7 @@ Auth::routes(['verify' => true]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/notifications', 'IndexController@notifications');
+// Route::get('/notifications', 'IndexController@notifications');
 Route::get('/notification/MarkAsRead', 'IndexController@MarkAsRead');
 Route::post('comment/{id}/commentReply', 'DesignController@commentReply');
 Route::get('/search', 'DesignController@search')->name('search');
