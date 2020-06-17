@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Charts\PaymentChart;
+use App\Design;
 use App\Order;
 use App\User;
 use Illuminate\Http\Request;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 class AdminController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the Users.
      *
      * @return \Illuminate\Http\Response
      */
@@ -23,7 +24,16 @@ class AdminController extends Controller
         return view('dashboard.verify_users',compact('pending_users','role','state'));
     }
 
-
+    /**
+     * Display a listing of the Designs.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function list_designs($state)
+    {
+        $designs=Design::where('is_verified','=',$state)->paginate(5);
+        return view('dashboard.verify_designs',compact('designs','state'));
+    }
     /**
      * Display the document.
      *
@@ -38,11 +48,21 @@ class AdminController extends Controller
     }
 
     /**
+     * Display the Design document.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function view_design_document(Request $request,Design $design)
+    {
+        return response()->file(public_path().'/storage/'.$design->source_file);
+    }
+
+    /**
      * Display the document.
      *
      * @return \Illuminate\Http\Response
      */
-    public function change_verification(Request $request,$role)
+    public function change_user_verification(Request $request,$role)
     {
         
         try {
@@ -52,6 +72,22 @@ class AdminController extends Controller
             return response('failed to change status',500);
         }
         return response($request->status ." ". $user->name ,200);
+
+    }
+
+    /**
+     * Display the document.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function change_Design_verification(Request $request)
+    {
+        try {
+            Design::where('id','=',$request->design_id)->update(['is_verified'=>$request->status]);
+        } catch (\Throwable $th) {
+            return response('failed to change status',500);
+        }
+        return response($request->status ,200);
 
     }
 
