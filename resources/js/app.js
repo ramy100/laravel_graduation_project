@@ -4,6 +4,20 @@ window._ = require('lodash');
 window.$ = window.jQuery = require('jquery');
 
 var notifications = [];
+const NOTIFICATION_TYPES = {
+    Payment: 'App\\Notifications\\designerNotifications',
+    
+    Newdesign: 'App\\Notifications\\UserNotifications'
+};
+        
+        import Echo from "laravel-echo";
+
+        window.Echo = new Echo({
+            broadcaster: 'pusher',
+            key:'934f94342496700052a5',
+            cluster: 'eu',
+            encrypted: false
+        });
 
 // const NOTIFICATION_TYPES = {
 // <<<<<<< HEAD
@@ -66,20 +80,7 @@ var notifications = [];
 //     return text;
 // }
 // =======
-const NOTIFICATION_TYPES = {
-    Payment: 'App\\Notifications\\designerNotifications',
-    
-    Newdesign: 'App\\Notifications\\UserNotifications'
-};
-        
-        import Echo from "laravel-echo";
 
-        window.Echo = new Echo({
-            broadcaster: 'pusher',
-            key:'934f94342496700052a5',
-            cluster: 'eu',
-            encrypted: false
-        });
         // var notifications = [];
         // $(document).ready(function(){
         //     window.Echo.private(`App.User.${Laravel.userId}`)

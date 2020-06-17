@@ -43257,7 +43257,18 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-var notifications = []; // const NOTIFICATION_TYPES = {
+var notifications = [];
+var NOTIFICATION_TYPES = {
+  Payment: 'App\\Notifications\\designerNotifications',
+  Newdesign: "App\\Notifications\\UserNotifications"
+};
+
+window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
+  broadcaster: 'pusher',
+  key: '934f94342496700052a5',
+  cluster: 'eu',
+  encrypted: false
+}); // const NOTIFICATION_TYPES = {
 // <<<<<<< HEAD
 //     follow: 'App\\Notifications\\UserNotifications'
 // };
@@ -43314,17 +43325,7 @@ var notifications = []; // const NOTIFICATION_TYPES = {
 //     return text;
 // }
 // =======
-
-var NOTIFICATION_TYPES = {
-  Payment: 'App\\Notifications\\designerNotifications'
-};
-
-window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
-  broadcaster: 'pusher',
-  key: 'f6281f4e9f8d2a800dd2',
-  cluster: 'eu',
-  encrypted: false
-}); // var notifications = [];
+// var notifications = [];
 // $(document).ready(function(){
 //     window.Echo.private(`App.User.${Laravel.userId}`)
 //     .notification((notification) => {
@@ -43377,7 +43378,7 @@ window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/d
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
   key: "934f94342496700052a5",
-  cluster: "mt1",
+  cluster: "eu",
   forceTLS: true
 });
 

@@ -183,30 +183,23 @@ class DesignController extends Controller
                     ]);
             }
 
-            $users = User::all();
+            // $users = User::all();
             $designer=$design->designer;
             // print($designer->id);
             
                 $followers = DesignerRate::where('designer_id',$designer->id)->get();
-                var_dump($followers);
+                // var_dump($followers);
                 foreach($followers as $follower)
                 {
                     $user = User::find($follower->liker_id);
-                    print($user); 
+                    // print($user); 
                     if($designer->id != $user->id)
                     {
                         $user->notify(new UserNotifications($design,$designer));
                     }
+                
+                    
                 }
-            
-            // if(!$follower->isFollowing($user->id)) {
-            //     $follower->follow($user->id);
-    
-            //     // sending a notification
-            //     $user->notify(new UserFollowed($follower));
-    
-            //     return back()->withSuccess("You are now friends with {$user->name}");
-            // }
             return redirect("design/".$design->id)->with('success','Design added successfuly');
             
         }

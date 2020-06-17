@@ -14,7 +14,9 @@
 								@if($vote_exist->count() > 0)
 									<i class="flaticon-heart text-danger" value="{{$designer_data->id}}"></i>
 								@else
-									<i class="flaticon-heart text-dark" value="{{$designer_data->id}}"></i>
+									@if($designer_data->id != Auth::id())
+										<i class="flaticon-heart text-dark" value="{{$designer_data->id}}"></i>
+									@endif
 								@endif
 							</h3>
 						</div>
@@ -167,10 +169,10 @@
 					</br>
 				</div>
 			@endforeach
-			@else 
-			<h3 style="text-align:center;color:navy;">There are no designs sold yet</h3>
-			@endif
 			</div>
+			@else 
+				<h3 style="text-align:center;color:navy;">There are no designs sold yet</h3>
+			@endif
 		</div>
 	</section>		
 	<!-- previous work section end -->

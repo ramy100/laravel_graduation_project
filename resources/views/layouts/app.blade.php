@@ -103,21 +103,23 @@
                                         <span id="Notification-count" class="{{ (Auth::user()->unreadNotifications->count()  <= 0) ? ' hideNotification': '' }} ">{{ Auth::user()->unreadNotifications->count() }}</span>
 
                                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Notifications" id="notificationList">
+                                           
+                                           
+                                            @if( $user->role == "designer") 
                                             @foreach (Auth::user()->unreadNotifications as $notification)
-                                            @if($notification['type'] === "App\Notifications\designerNotifications")
-                                                <a class="dropdown-item" href="#">
-                                                    {{$notification->data['designer']['name']}}
-                                               has bought your design
-                                                </a>
-                                            @else
-                                                <a class="dropdown-item" href="#">
-                                                has added a new design
-                                                </a>
-
-                                            @endif
-                                               <pre> {{$notification->data}}</pre>
-
+                                            <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['id']]) }}">
+                                              {{$notification->data['company']}} has bought your {{ $notification->data['design']['title'] }} design
+                                            </a>
                                             @endforeach 
+                                            @elseif($user->role == "user")
+                                            @foreach (Auth::user()->unreadNotifications as $notification)
+                                            <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design_id']]) }}">
+                                              {{$notification->data['desiner_name']}} has added a new design
+                                            </a>
+                                            @endforeach
+                                            @endif
+                                          
+                                           
 
                                         </div>
                                 </div>
@@ -299,29 +301,29 @@
                 if(Laravel.userId) {
                 window.Echo.private(`App.User.${Laravel.userId}`)
                 .notification((notification) => {
-                
+                    if(notification['type'] === 'App\\Notifications\\designerNotifications')
+                    {
                    alert("notification");
                    count= $('#count').val();
                    count=parseInt(count)+1;
                    $('#Notification-count').html(count);
                    $('#count').val(count);
                     $('#Notification-count').removeClass("hideNotification");
-                //   if(notification['type'] === "App\Notifications\designerNotifications")
-                // { 
-                //     $('#notificationList').append(`
-                //     <a class="dropdown-item" href="#">
-                //                               ${notification['company']} has bought your ${notification['design']['title']} design
-                //                             </a>
-                //     `);
-                // }
-                //     else
-                //     {
-                        $('#notificationList').append(`
+                
+                    $('#notificationList').append(`
                     <a class="dropdown-item" href="#">
-                    ${notification['designer']['name']} has just added a new design
-                    </a>
+                                              ${notification['company']} has bought your ${notification['design']['title']} design
+                                            </a>
                     `);
-                    // }
+                   }else if(notification['type'] === 'App\\Notifications\\UserNotifications')
+                    {
+                        $('#notificationList').append(`
+                        <a class="dropdown-item" href="#">
+                        ${notification['designer_name']} has just added a new design
+                        </a>
+                        `);
+                    }
+            
                    console.log(notification['type']);
                 });
             }

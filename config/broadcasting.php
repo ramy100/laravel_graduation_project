@@ -37,8 +37,8 @@ return [
             'app_id' => env('PUSHER_APP_ID'),
             'options' => [
                     'cluster' => 'eu',
-                  /*  'useTLS' => true,
-                'cluster' => env('PUSHER_APP_CLUSTER'),*/
+                  /*  'useTLS' => true,*/
+                // 'cluster' => env('PUSHER_APP_CLUSTER'),
                 'encrypted' => true,
                 'curl_options' => [
                         CURLOPT_SSL_VERIFYHOST => 0,
