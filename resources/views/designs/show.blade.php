@@ -162,37 +162,48 @@
 			// let form=$('#'+formId).children('form')[0];
 			return false;
 		}
-		// if(form)
-		// {
-		// 	$('#'+formId).children('form')[0].submit(function( event ) {
-		// 		event.preventDefault();
-		// 		console.log('form');
-				
-		// 		let comment_id = $('#'+formId > 'input[type=hidden]').val();
-		// 	  	let Reply_body=$('#'+formId > 'input[type=text]').val();
-		// 	  	console.log(comment_id);
-		// 	  	console.log(Reply_body);
+		function ReplyComment()
+		{
+			let comment_id = $('#'+formId).children('form').children( 'input[name=commentId]')[0].value;
+			let Reply_body=$('#'+formId).children('form').children("div").children( 'input[type=text]')[0].value;
+			console.log(comment_id);
+			console.log(Reply_body);
+			   	$.ajaxSetup({
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					}
+				});
+				$.ajax({
+					type: 'POST',
+					url: 'http://localhost:8000/comment/'+comment_id+'/commentReply',
+					data: {
+					    // 'comment_id':comment_id,
+					    'Reply_body':Reply_body
+					},
+					success: function (data) {
+						console.log(data);
+						let form=$('#'+formId).children('form')[0];
+						let reply=`<div class="media g-mb-30 media-comment mb-2 replies">
+				            <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="/storage/${data.user.image}" alt="Image Description">
+				            <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
+				              <div class="g-mb-15">
+				                <h5 class="h5 g-color-gray-dark-v1 mb-0">${data.user.name}</h5>
+				                <span class="g-color-gray-dark-v4 g-font-size-12">${new Date(data.reply.created_at).toISOString().replace(/T/, ' ').replace(/\..+/, '')}</span>
+				              </div>
+				              <p>${data.reply.body}</p>
+				            </div>
+				        </div>`;
+						$(reply).insertBefore($(form));
+						$('#'+formId).children('form').children("div").children( 'input[type=text]')[0].value="";
+						
 
-			//    	$.ajaxSetup({
-			// 		headers: {
-			// 			'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-			// 		}
-			// 	});
-			// 	$.ajax({
-			// 		type: 'POST',
-			// 		url: 'http://localhost:8000/comment/'+comment_id+'/commentReply',
-			// 		data: {
-			// 		    // 'comment_id':comment_id,
-			// 		    'Reply_body':Reply_body
-			// 		},
-			// 		success: function (data) {
-			// 			console.log(data);
-			// 		},
-			// 		error: function (XMLHttpRequest) {
-		 //        }
-			// });
-		// });
-		// }
+					},
+					error: function (XMLHttpRequest) {
+		        }
+			});
+
+		}
+					
 		
 	</script>
 @endpush

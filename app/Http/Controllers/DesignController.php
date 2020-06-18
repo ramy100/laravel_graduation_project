@@ -13,6 +13,7 @@ use App\DesignerRate;
 use App\DesignVote;
 use App\Http\Requests\StoreDesignsRequest;
 use App\DesignComment;
+use App\CommentReply;
 use Redirect;
 use DB;
 use App\Notifications\UserNotifications;
@@ -102,7 +103,19 @@ class DesignController extends Controller
 
     public function commentReply(Request $request,$id)
     {
-        echo $id;
+        $body=$request->Reply_body;
+        // $comment=DesignComment::find($id);
+        $user_id=Auth::id();
+        $reply=CommentReply::create(['body' => $body,
+        'user_id'=>$user_id,
+        'comment_id' => $id
+        ]);
+        $user=Auth::user();
+        return response()->json([
+            'reply' => $reply,
+            'user' => $user
+        ]);
+        // echo $reply;
     }
     
     public function comment(Request $request)
