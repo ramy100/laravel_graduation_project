@@ -74,25 +74,41 @@ Route::resource('designer', 'DesignerController')->except([
 
 
 // Routes for both tags and material resources
-Route::resource('admin/tag', 'TagController');
-Route::resource('admin/material', 'MaterialController');
 Route::resource('user','ProfileController')->only([
-     'create','store'
-]);
-
-//paypal routes
-Route::get('paypal/ec-checkout', 'PayPalController@getExpressCheckout')->name('checkout');
-Route::get('paypal/ec-checkout-success', 'PayPalController@getExpressCheckoutSuccess')->name('paypal.success');
-Route::get('paypal/ec-checkout-cancel', 'PayPalController@getExpressCheckoutCancel')->name('paypal.cancel');
-
-
-// user profile 
-Route::resource('user', 'UserProfileController')->except([
-    'create', 'store','update','edit'
-]);
-
-
-Route::get('test', function () {
-    event(new App\Events\StatusNotification('Someone'));
-    return "Event has been sent!";
+    'create','store'
+    ]);
+    
+    //paypal routes
+    Route::get('paypal/ec-checkout', 'PayPalController@getExpressCheckout')->name('checkout');
+    Route::get('paypal/ec-checkout-success', 'PayPalController@getExpressCheckoutSuccess')->name('paypal.success');
+    Route::get('paypal/ec-checkout-cancel', 'PayPalController@getExpressCheckoutCancel')->name('paypal.cancel');
+    
+    
+    // user profile 
+    Route::resource('user', 'UserProfileController')->except([
+        'create', 'store','update','edit'
+        ]);
+        
+        
+        // Admin dashboard
+    Route::group([ 'prefix' => 'admin'], function(){
+        
+        Route::get('login', 'AdminAuthController@login')->name('admin-login');
+        Route::post('do-login', 'AdminAuthController@adminLogin')->name('adminDologin');
+        
+        Route::group(['middleware' => 'admin'], function(){
+            Route::get('/', 'AdminAuthController@index')->name('dashboard');
+            Route::post('logout', 'AdminAuthController@logMeOut')->name('admin.logout');
+            Route::resource('tag', 'TagController');
+            Route::resource('material', 'MaterialController');
+            Route::get('design-chart', 'AdminController@likesChart')->name('likes');
+            Route::get('{role}/{state}','AdminController@list_users')->where(['role'=>'designer|company','state'=>'accepted|rejected|pending'])->name('list_users');
+            Route::get('design/{state}','AdminController@list_designs')->where(['state'=>'accepted|rejected|pending'])->name('list_designs');
+            Route::post('design/{state}','AdminController@change_design_verification')->where(['state'=>'accepted|rejected|pending']);
+            Route::post('{role}/{state}','AdminController@change_user_verification')->where(['role'=>'designer|company','state'=>'accepted|rejected|pending']);
+            Route::get('user/document/{user}','AdminController@view_user_document')->name('admin.view_user_document');
+            Route::get('design/{design}/document','AdminController@view_design_document')->name('admin.view_design_document');
+            Route::get('charts/paymentdata','AdminController@get_payment_chart_data')->name('admin.get_payment_chart_data');
+            Route::get('charts/payment','AdminController@view_payment_chart')->name('admin.view_payment_chart');
+    });
 });

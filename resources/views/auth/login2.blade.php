@@ -68,17 +68,6 @@
                                 </a>
                                 @endif
                             </div>
-                            <div class="col text-center mt-2">
-                                <a href="{{ route('social.oauth', 'facebook') }}" class="btn btn-primary btn-lg">
-                                    Login with Facebook
-                                </a>
-                                {{-- <a href="{{ route('social.oauth', 'twitter') }}" class="btn btn-info btn-block">
-                                    Login with Twitter
-                                </a> --}}
-                                <a href="{{ route('social.oauth', 'google') }}" class="btn btn-danger btn-lg">
-                                        Login with Google
-                                </a>
-                            </div>
                         </div>
                     </form>
                 </div>

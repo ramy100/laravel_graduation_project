@@ -106,13 +106,13 @@
                                            
                                             @if( Auth::user()->role == "designer") 
                                                 @foreach (Auth::user()->unreadNotifications as $notification)
-                                                <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['id']]) }}">
+                                                <a class="dropdown-item" href="{{ route('design.show',['id'=>$notification->data['design']['id']]) }}">
                                                   {{$notification->data['company']}} has bought your {{ $notification->data['design']['title'] }} design
                                                 </a>
                                             @endforeach 
                                             @elseif(Auth::user()->role == "user")
                                             @foreach (Auth::user()->unreadNotifications as $notification)
-                                            <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design_id']]) }}">
+                                            <a class="dropdown-item" href="{{ route('design.show',['id'=>$notification->data['design_id']]) }}">
                                               {{$notification->data['designer_name']}} has added a new design
                                             </a>
                                             @endforeach
@@ -286,6 +286,7 @@
                      $.get('/notification/MarkAsRead', function(data, status){
                         // alert("Data: " + data + "\nStatus: " + status);
                         $('#Notification-count').html(0);
+                        $('#count').val(0);
                          $('#Notification-count').addClass("hideNotification");
    
                       }) ;
@@ -315,6 +316,7 @@
                 else if(notification['type'] === 'App\\Notifications\\UserNotifications')
                     {
                         count= $('#count').val();
+                        console.log(count);
                    count=parseInt(count)+1;
                    $('#Notification-count').html(count);
                    $('#count').val(count);

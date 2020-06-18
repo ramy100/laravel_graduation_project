@@ -7,7 +7,7 @@
             {{ session('success') }}
         </div>
     @endif
-    <h5>Here's the source pattron files for the designs you bought ,download it .</h5>
+    <h5 style="margin: 20px auto;text-align: center;">Here is the source pattron files for the designs you have just bought ,download it .</h5>
 <section class="category-section spad">
 		<div class="container">
 			<div class="row">
