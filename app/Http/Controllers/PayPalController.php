@@ -21,6 +21,7 @@ class PayPalController extends Controller
         $cart = $this->getCheckoutData();
         try {
             $response = $this->provider->setExpressCheckout($cart);
+            dd($response);
             return redirect($response['paypal_link']);
         } catch (\Exception $e) {
             $invoice = $this->makeOrder('Invalid');
@@ -35,10 +36,11 @@ class PayPalController extends Controller
             return [
                 'name'=> $item['name'],
                 'price'=> $item['price'],
+                'desc'  => 'Description for product',
                 'quantity' => $item['quantity']
             ];
         }, Cart::session(auth()->id())->getContent()->toarray());
-
+        // dd($items);
         $data['items'] = $items;
         $data['return_url'] = route('paypal.success');
         $data['cancel_url'] = route("paypal.cancel");

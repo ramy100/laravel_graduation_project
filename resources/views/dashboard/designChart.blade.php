@@ -3,11 +3,11 @@
 @section('content')
 <div class="container">
     <h1>Likes Graph</h1>
-    <div class="flex">
-        <div class="w-1/2">
+    <div class="row">
+        <div class="col">
             {!! $designsChart->container() !!}
         </div>
-        <div class="w-1/2">
+        <div class="col">
             {!! $designersChart->container() !!}
         </div>
     </div>
