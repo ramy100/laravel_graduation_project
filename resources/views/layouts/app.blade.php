@@ -25,6 +25,8 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300i,400,400i,700,700i" rel="stylesheet">
 
+    <!-- <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet"> -->
+
     <!-- Stylesheets -->
     <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}"/>
@@ -34,8 +36,26 @@
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+    <style type="text/css">
+        #Notifications::after {
+            content: none;
+        }
+        .hideNotification{
+            display: none;
+        }
+    </style>
 
+    <script type="text/javascript">
+        window.Laravel = <?php echo json_encode([
+            'csrfToken' => csrf_token(),
+        ]); ?>
 
+    </script>
+     @if(!auth()->guest())
+        <script>
+            window.Laravel.userId = <?php echo auth()->user()->id; ?>
+        </script>
+    @endif
     @yield('styles')
 
 
@@ -68,20 +88,47 @@
                     </div>
                     <div class="col-xl-4 col-lg-5">
                         <div class="user-panel">
-                            @if($user && $user->role == "designer")
-                            <div style="display: inline;margin-right: 20px;"> 
-                            <a href="{{ route('designer.show',['designer'=>$user->id]) }}" style="color: black;"> Profile</a>
-                            </div>
-                            @elseif($user && $user->role == "company")
-                            <div style="display: inline;margin-right: 20px;"> 
-                            <a href="{{ route('company.show',['company'=>$user->id]) }}" style="color: black;"> Profile</a>
-                            </div>
-                            @elseif($user && $user->role == "user")
-                            <div style="display: inline;margin-right: 20px;"> 
-                                <a href="{{ route('user.show',['user'=>$user->id]) }}" style="color: black;"> Profile</a>
-                            </div>
-                            
-                            @endif
+                            @auth
+                                <div class="up-item notifications" >
+                                        <a id="Notifications" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" onclick="MarkAsRead()"> <i class="fa fa-globe" aria-hidden="true"></i>
+                                        </a>
+                                        <input type="hidden" name="count" id="count" value="{{Auth::user()->unreadNotifications->count() }}" >
+
+                                        <span id="Notification-count" class="{{ (Auth::user()->unreadNotifications->count()  <= 0) ? ' hideNotification': '' }} ">{{ Auth::user()->unreadNotifications->count() }}</span>
+
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Notifications" id="notificationList">
+                                            @if( Auth::user()->role == "designer") 
+                                                @foreach (Auth::user()->unreadNotifications as $notification)
+                                                <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['id']]) }}">
+                                                  {{$notification->data['company']}} has bought your {{ $notification->data['design']['title'] }} design
+                                                </a>
+                    
+                                                @endforeach
+                                            @elseif( Auth::user()->role == "user")
+                                                @foreach (Auth::user()->unreadNotifications as $notification)
+                                                <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design_id']]) }}">
+                                                  {{$notification->data['designer_name']}} has added a new design
+                                                </a>
+                                                @endforeach
+                                            @endif
+
+                                        </div>
+                                </div>
+                                @if( $user->role == "designer")
+                                <div style="display: inline;margin-right: 20px;"> 
+                                <a href="{{ route('designer.show',['designer'=>$user->id]) }}" style="color: black;"> Profile</a>
+                                </div>
+                                @elseif($user->role == "company")
+                                <div style="display: inline;margin-right: 20px;"> 
+                                <a href="{{ route('company.show',['company'=>$user->id]) }}" style="color: black;"> Profile</a>
+                                </div>
+                                @elseif( $user->role == "user")
+                                <div style="display: inline;margin-right: 20px;"> 
+                                    <a href="{{ route('user.show',['user'=>$user->id]) }}" style="color: black;"> Profile</a>
+                                </div>
+                                
+                                @endif
+                            @endauth
                             @guest
                                 <div class="up-item">
                                     <i class="flaticon-profile"></i>
@@ -103,6 +150,7 @@
                                     @endif
                                 </div>
                             @else
+                                
                                 <div class="up-item">
                                     <a id="navbarDropdown" class="dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>
@@ -219,7 +267,6 @@
     <script src="{{ asset('js/main.js') }}"></script>
 
 
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
         integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
         crossorigin="anonymous"></script>
@@ -227,8 +274,60 @@
 
 
     <script>
-        $(document).ready(function(){
+        function MarkAsRead()
+            {
+                console.log("hi");
+                count=$('#count').val();
+                if(count>0)
+                {
+                    console.log("click");
+                     $.get('/notification/MarkAsRead', function(data, status){
+                        // alert("Data: " + data + "\nStatus: " + status);
+                        $('#Notification-count').html(0);
+                        $('#count').val(0);
+                         $('#Notification-count').addClass("hideNotification");
+   
+                      }) ;
+                }
+            }
 
+        $(document).ready(function(){
+            console.log(Laravel.userId);
+                if(Laravel.userId) {
+                window.Echo.private(`App.User.${Laravel.userId}`)
+                .notification((notification) => {
+                if(notification['type'] === 'App\\Notifications\\designerNotifications')
+                {
+                   // alert("notification");
+                   count= $('#count').val();
+                   count=parseInt(count)+1;
+                   $('#Notification-count').html(count);
+                   $('#count').val(count);
+                    $('#Notification-count').removeClass("hideNotification");
+                   $('#notificationList').append(`
+                    <a class="dropdown-item" href="#">
+                                              ${notification['company']} has bought your ${notification['design']['title']} design
+                                            </a>
+                    `);
+                }
+                else if(notification['type'] === 'App\\Notifications\\UserNotifications')
+                    {
+                        count= $('#count').val();
+                        console.log(count);
+                   count=parseInt(count)+1;
+                   $('#Notification-count').html(count);
+                   $('#count').val(count);
+                    $('#Notification-count').removeClass("hideNotification");
+
+                        $('#notificationList').append(`
+                        <a class="dropdown-item" href="#">
+                        ${notification['designer_name']} has just added a new design
+                        </a>
+                        `);
+                    }
+                   console.log(notification['type']);
+                });
+            }
             $(document).on('click', '.add-card', function(){
                 var design_id = $(this).data('id');
                 $.post('{{ route('add-to-cart') }}', {"_token": "{{ csrf_token() }}","id": design_id}, function(response){

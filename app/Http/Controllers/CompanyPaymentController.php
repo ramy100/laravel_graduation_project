@@ -10,7 +10,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-
+use App\Notifications\designerNotifications;
 
 class CompanyPaymentController extends Controller
 {
@@ -30,6 +30,7 @@ class CompanyPaymentController extends Controller
         // try changing in database record first
         try {
             $this->change_company_ids_for_designs($items_ids,$user->id,$total_amount_in_cents);
+
         } catch (\Throwable $th) {
             // if database fails to update rollback and stop transaction and return fail message
             DB::rollBack();
@@ -37,20 +38,27 @@ class CompanyPaymentController extends Controller
         }
 
         // try charging user
-        try {
+        // try {
             $user->charge($total_amount_in_cents, $payment_method);
-        } catch (\Throwable $th) {
-            // if payment fails rollback and return fail message
-            DB::rollBack();
-            return $this->create_order_record_with_message($user->id,$total_amount,'fail in paying','payment failed','danger');
-        }
+            $designs=Design::find($items_ids);
+            foreach ($designs as $design) {
+                $designer=$design->designer;
+                $company_name=$design->company->name;
+                $designer->notify(new designerNotifications($company_name,$design));
+            }
+            // var_dump($items_ids );
+        // } catch (\Throwable $th) {
+        //     // if payment fails rollback and return fail message
+        //     DB::rollBack();
+        //     return $this->create_order_record_with_message($user->id,$total_amount,'fail in paying','payment failed','danger');
+        // }
 
 
         // if payment succeed -> commit database changes and clear cart and return success message
         DB::commit();
         Cart::session($user->id)->clear();
         return response([
-            'url'=> redirect()->route('website.cart')->with(['status'=>'Payment Success','color'=>'success'])->getTargetUrl(),
+            'url'=> redirect()->route('website.result')->with(['status'=>'Payment Success','color'=>'success','designs'=>$designs])->getTargetUrl(),
         ]);
     }
 

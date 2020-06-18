@@ -13,8 +13,10 @@ use App\DesignerRate;
 use App\DesignVote;
 use App\Http\Requests\StoreDesignsRequest;
 use App\DesignComment;
+use App\CommentReply;
 use Redirect;
 use DB;
+use App\Notifications\UserNotifications;
 
 class DesignController extends Controller
 {
@@ -99,6 +101,22 @@ class DesignController extends Controller
     }
     
 
+    public function commentReply(Request $request,$id)
+    {
+        $body=$request->Reply_body;
+        // $comment=DesignComment::find($id);
+        $user_id=Auth::id();
+        $reply=CommentReply::create(['body' => $body,
+        'user_id'=>$user_id,
+        'comment_id' => $id
+        ]);
+        $user=Auth::user();
+        return response()->json([
+            'reply' => $reply,
+            'user' => $user
+        ]);
+        // echo $reply;
+    }
     
     public function comment(Request $request)
     {
@@ -112,6 +130,7 @@ class DesignController extends Controller
         ]);
         $comment->{'user_image'}=$comment->user->image;
         $comment->{'user_name'}=$comment->user->name;
+        // Auth::user()->notify(new UserNotifications($comment));
          return response()->json([
             'comment' => $comment
         ]);
@@ -176,6 +195,20 @@ class DesignController extends Controller
                         'image' => $filename
                     ]);
             }
+
+            $designer=$design->designer;
+            $followers = DesignerRate::where('designer_id',$designer->id)->get();
+                foreach($followers as $follower)
+                {
+                    $user = User::find($follower->liker_id);
+                    // print($user); 
+                    if($designer->id != $user->id)
+                    {
+                        $user->notify(new UserNotifications($design,$designer));
+                    }
+                
+                    
+                }
             return redirect("design/".$design->id)->with('success','Design added successfuly');
             
         }

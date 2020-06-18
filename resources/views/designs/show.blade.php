@@ -33,7 +33,9 @@
 				</div>
 				<div class="col-lg-6 product-details">
 					<h2 class="p-title ">{{$design->title}}</h2>
+					@if((Auth::user())&&(Auth::user()->role != "user"))
 					<h3 class="p-price" style="display: inline;">&dollar;{{$design->price}} </h3>
+					@endif
 					<input type="hidden" name="designId" value="{{ $design->id }}" id="designId">
 
 					<!-- vote -->
@@ -69,19 +71,23 @@
 						<a href="">3 reviews</a>|<a href="">Add your review</a>
 					</div> -->
 
-					<!-- delete design -->
-					@if((Auth::user()) && (Auth::id() == $design->designer_id) && Auth::user()->role == "designer")
-					<form action="{{route('design.destroy',$design->id)}}" method="POST" style="display: inline;">
-                            @method('DELETE')
-                            @csrf
-                        <button class="deleteDesign btn-danger" onclick="return confirm('Are you sure?')"  type="submit">Delete</button>
-                    </form>
-                    	<a class=" editDesign " href="{{route('design.edit',$design->id)}}"  >Edit</a>
-                    @elseif((Auth::user()) && (Auth::user()->role == "company") && ($design->state == "sketch") )
+					
+					@if(Auth::check() && $design->state == "sketch" )
+						@if((Auth::id() == $design->designer_id) && Auth::user()->role == "designer")
+						<!-- delete design -->
+						<form action="{{route('design.destroy',$design->id)}}" method="POST" style="display: inline;">
+	                            @method('DELETE')
+	                            @csrf
+	                        <button class="deleteDesign btn-danger" onclick="return confirm('Are you sure?')"  type="submit">Delete</button>
+	                    </form>
+	                    <!-- edit design -->
+	                    <a class=" editDesign " href="{{route('design.edit',$design->id)}}"  >Edit</a>
+	                    @elseif((Auth::user()->role == "company") )
 
-                    <!-- buy design -->
-                    	<a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card site-btn mb-2"  >ADD TO CART</a>		
-                    @endif
+	                    <!-- buy design -->
+	                    	<a href="javascript:void(0)" data-id="{{ $design->id }}" class="add-card site-btn mb-2"  >ADD TO CART</a>		
+	                    @endif
+	                @endif
 					<div id="accordion" class="accordion-area">
 						<div class="panel">
 							<div class="panel-header" id="headingOne">
@@ -130,7 +136,9 @@
 							<a href="{{route('design.show', ['design' => $design->id])}}"><img id="designImage" src="{{asset ('storage/'.$design->images->first()->image) }}" alt=""></a>
 						</div>
 						<div class="pi-text ">
+							@if((Auth::user())&&(Auth::user()->role != "user"))
 							<h6>&dollar;{{ $design->price }}</h6>
+							@endif
 							<p>{{ $design->title }} </p>
 						</div>
 					</div>
@@ -145,4 +153,57 @@
 @push('scripts')
 	<script src="{{ asset('js/vote.js') }}"></script>
 	<script src="{{ asset('js/comments.js') }}"></script>
+	<script type="text/javascript">
+		formId='';
+		function CommentReply(id){
+			formId=id;
+			console.log('#'+id);
+				$('#'+id).toggleClass('displayForm');
+			// let form=$('#'+formId).children('form')[0];
+			return false;
+		}
+		function ReplyComment()
+		{
+			let comment_id = $('#'+formId).children('form').children( 'input[name=commentId]')[0].value;
+			let Reply_body=$('#'+formId).children('form').children("div").children( 'input[type=text]')[0].value;
+			console.log(comment_id);
+			console.log(Reply_body);
+			   	$.ajaxSetup({
+					headers: {
+						'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+					}
+				});
+				$.ajax({
+					type: 'POST',
+					url: 'http://localhost:8000/comment/'+comment_id+'/commentReply',
+					data: {
+					    // 'comment_id':comment_id,
+					    'Reply_body':Reply_body
+					},
+					success: function (data) {
+						console.log(data);
+						let form=$('#'+formId).children('form')[0];
+						let reply=`<div class="media g-mb-30 media-comment mb-2 replies">
+				            <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="/storage/${data.user.image}" alt="Image Description">
+				            <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
+				              <div class="g-mb-15">
+				                <h5 class="h5 g-color-gray-dark-v1 mb-0">${data.user.name}</h5>
+				                <span class="g-color-gray-dark-v4 g-font-size-12">${new Date(data.reply.created_at).toISOString().replace(/T/, ' ').replace(/\..+/, '')}</span>
+				              </div>
+				              <p>${data.reply.body}</p>
+				            </div>
+				        </div>`;
+						$(reply).insertBefore($(form));
+						$('#'+formId).children('form').children("div").children( 'input[type=text]')[0].value="";
+						
+
+					},
+					error: function (XMLHttpRequest) {
+		        }
+			});
+
+		}
+					
+		
+	</script>
 @endpush

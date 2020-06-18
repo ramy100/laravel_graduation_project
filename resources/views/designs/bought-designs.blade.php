@@ -1,11 +1,19 @@
 @extends('layouts.app')
 
 @section('content')
+
+	@if (session('success'))
+        <div class="alert alert-success" style="margin:0 auto;">
+            {{ session('success') }}
+        </div>
+    @endif
+    <h5 style="margin: 20px auto;text-align: center;">Here is the source pattron files for the designs you have just bought ,download it .</h5>
 <section class="category-section spad">
 		<div class="container">
 			<div class="row">
 				<div class="col-lg-10 mb-2 row" style="margin: 0 auto;">
-						@forelse($designs as $design)
+					
+						 @forelse($designs as $design)
 							<div class="col-lg-4 col-sm-6">
 								<div class="product-item">
 									<div class="pi-pic">
@@ -14,24 +22,19 @@
 									</div>
 									
 									<div class="pi-text">
-										@if((Auth::user())&&(Auth::user()->role != "user"))
-										<h6 style="font-family: monospace;">&dollar;{{$design->price}}</h6>
-										@endif
 										<a href="{{route('design.show',$design->id)}}" style="color: black;">{{$design->title}}</a>
-
-										
+										<div>
+										<a href="{{asset ('storage/'.$design->source_file) }}" download="{{$design->source_file}}">Download</a>
+										</div>
 									</div>
+									
 								</div>
 							</div>
 						@empty
 							<div class="alert alert-danger">No Designs Yet!</div>
-						@endforelse
+						@endforelse 
 				</div>
 			</div >
-			<div class="row " style="margin-left: 100px;">
-				{!! $designs->links() !!}
-			</div>
 		</div>
 </section>
-
 @endsection

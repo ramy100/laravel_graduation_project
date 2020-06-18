@@ -11,6 +11,10 @@ class User extends Authenticatable implements MustVerifyEmail
     use Notifiable;
     use Billable;
 
+    public function receivesBroadcastNotificationsOn()
+    {
+        return 'App.User.' . $this->id;
+    }
     /**
      * The attributes that are mass assignable.
      *
