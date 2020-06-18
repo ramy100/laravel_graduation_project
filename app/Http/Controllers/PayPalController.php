@@ -7,7 +7,10 @@ use Srmklive\PayPal\Services\ExpressCheckout;
 use Cart;
 use App\Order;
 use App\SubOrder;
+use App\Design;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\designerNotifications;
+
 class PayPalController extends Controller
 {
 
@@ -21,6 +24,7 @@ class PayPalController extends Controller
         $cart = $this->getCheckoutData();
         try {
             $response = $this->provider->setExpressCheckout($cart);
+            // dd($response);
             return redirect($response['paypal_link']);
         } catch (\Exception $e) {
             $invoice = $this->makeOrder('Invalid');
@@ -35,10 +39,11 @@ class PayPalController extends Controller
             return [
                 'name'=> $item['name'],
                 'price'=> $item['price'],
+                'desc'  => 'Description for product',
                 'quantity' => $item['quantity']
             ];
         }, Cart::session(auth()->id())->getContent()->toarray());
-
+        // dd($items);
         $data['items'] = $items;
         $data['return_url'] = route('paypal.success');
         $data['cancel_url'] = route("paypal.cancel");
@@ -67,8 +72,20 @@ class PayPalController extends Controller
             $status = $payment_status['PAYMENTINFO_0_PAYMENTSTATUS'];
         }
         $check = $this->makeOrder($status);
+
+        //notfiy
+        $cart = Cart::session(auth()->id())->getContent();
+        $designs_ids = $cart->keys();
+        $designs = Design::find($designs_ids);
+        foreach ($designs as $design) {
+            $designer=$design->designer;
+            $company_name=$design->company->name;
+            $designer->notify(new designerNotifications($company_name,$design));
+        }
+
         Cart::clear();
-        return redirect('/cart')->with('message', 'success transaction');
+        
+        return redirect('/result')->with(['status'=>'Payment Success','color'=>'success','designs'=>$designs]);
     }
 
     public function makeOrder($status){

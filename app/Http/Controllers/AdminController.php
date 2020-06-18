@@ -22,10 +22,11 @@ class AdminController extends Controller
 
         $designsChart->labels($designsR->keys());
         $designsChart->dataset('Designs likes', 'bar', $designsR->values())
-            ->backgroundColor('rgba(100,100,100,.5)');
+            ->backgroundColor('#89CFF0');
 
         $designersChart->labels($designersR->keys());
-        $designersChart->dataset('Designers likes', 'bar', $designersR->values());
+        $designersChart->dataset('Designers likes', 'bar', $designersR->values())
+            ->backgroundColor('#b76e79');
         // dd($designsChart);
         return view('dashboard.designChart', compact('designsChart','designersChart'));
     }
