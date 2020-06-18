@@ -109,7 +109,9 @@
 								</div>
 
 								<div class="pi-text">
+									@if((Auth::user())&&(Auth::user()->role != "user"))
 									<h6>&dollar;{{$design->price}}</h6>
+									@endif
 									<h5>{{$design->title}}</h5>
 									<p>By {{$design->designer->name}}</p>
 								</div>

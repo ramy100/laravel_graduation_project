@@ -1,3 +1,21 @@
+<style type="text/css">
+  .send-icon i{
+  font-size: 20px;
+  background: #f3f3f3;
+  padding: 6px 5px;
+  border-radius: 50%;
+  color: #74C2E1;
+  height: 35px;
+  width: 35px;
+}
+.displayForm{
+  display: none;
+}
+
+/*.ReplyForm{
+  display:block;
+}*/
+</style>
 <div class="panel-body row comments">
 	@forelse ($comments as $comment)
     <div class="col-md-12">
@@ -11,15 +29,45 @@
               <p>{{ $comment->body }}</p>
               <ul class="list-inline d-sm-flex my-0">
                 <li class="list-inline-item ml-auto">
-                  <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" href="#!">
+                  <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" href="#" onclick="return CommentReply({{$comment->id}})">
                     <i class="fa fa-reply g-pos-rel g-top-1 g-mr-3"></i>
                     Reply
                   </a>
                 </li>
               </ul>
+
             </div>
         </div>
-	</div>
+
+        <!-- comment reply -->
+        <!-- <div class="status-upload col-md-8"> -->
+      <div style="margin:10px 0;margin-left: 65px;" class="ReplyForm displayForm" id="{{$comment->id}}">
+        @foreach ($comment->replies as $reply)
+        <div class="media g-mb-30 media-comment mb-2 replies">
+            <img class="d-flex g-width-50 g-height-50 rounded-circle g-mt-3 g-mr-15" src="{{asset('storage/'.$reply->user->image)}}" alt="Image Description">
+            <div class="media-body u-shadow-v18 g-bg-secondary g-pa-30">
+              <div class="g-mb-15">
+                <h5 class="h5 g-color-gray-dark-v1 mb-0">{{$reply->user->name}}</h5>
+                <span class="g-color-gray-dark-v4 g-font-size-12">{{ date('Y-m-d h:i:s', strtotime($reply->created_at)) }}</span>
+              </div>
+              <p>{{ $reply->body }}</p>
+            </div>
+        </div>
+        @endforeach      
+              <!-- Reply Form -->
+                  <form  action="#" >
+                    {{ csrf_field() }}
+                    <input type="hidden" name="commentId" id="commentId" value="{{$comment->id}}">
+                     <div style="display: inline;width: 100px;">
+                      <input type="text" class="form-control reply_body" placeholder="write a reply ..." style="width: 440px;display: inline;">
+                    </div>
+                    <div class="send-icon" style="display: inline;">
+                      <button onclick="ReplyComment()" type="button"> <i class="reply fa fa-paper-plane" aria-hidden="true" style="color: #f51167;"></i></button>
+                    </div>
+              <!-- </div> -->
+                  </form>
+               </div>   
+        </div>
 	@empty
 		<div style="text-align: center;margin:10px auto;" class="NoComment">No Comments Yet!</div>
 	@endforelse

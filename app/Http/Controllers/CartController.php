@@ -16,6 +16,12 @@ class CartController extends Controller
         $this->middleware('check-role:company');
         // $this->middleware('check-verification:accepted');
     }
+    public function result(Request $request){
+        
+       // dd();
+       $designs=session('designs');
+        return view('designs.bought-designs', compact('designs'));
+    }
 
     public function cart(){
         
