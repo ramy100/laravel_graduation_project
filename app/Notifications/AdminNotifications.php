@@ -3,22 +3,23 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class PendingCompany extends Notification
+class AdminNotifications extends Notification
 {
     use Queueable;
+    public $role;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($role)
     {
         //
+        $this->role=$role;
     }
 
     /**
@@ -56,8 +57,8 @@ class PendingCompany extends Notification
     {
         return [
             'type'=>"pending.company",
-            'message'=>'New Pending Company',
-            'route'=>route('list_users',['company','pending'])
+            'message'=>'New Pending '.$this->role,
+            'route'=>route('list_users',[$this->role,'pending'])
         ];
     }
 

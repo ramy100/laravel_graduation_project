@@ -18,8 +18,13 @@
 
   <!-- Custom styles for this template-->
   <link href="{{ asset('dashboard/css/sb-admin-2.min.css') }}" rel="stylesheet">
-
-
+  <style>
+    .unread{
+      background-color: #EDF2FA;
+    }
+  </style>
+  <script src="https://js.pusher.com/6.0/pusher.min.js"></script>
+  
 </head>
 
 <body id="page-top">
@@ -235,13 +240,13 @@
 
             <!-- Nav Item - Alerts -->
             <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" onclick=mark_as_read() role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-bell fa-fw"></i>
                 <!-- Counter - Alerts -->
-              <span class="badge badge-danger badge-counter">{{ Auth::guard('admin')->user()->unreadNotifications->count() }}</span>
+              <span class="badge badge-danger badge-counter" id="notifications-count">{{ Auth::guard('admin')->user()->unreadNotifications->count() }}</span>
               </a>
               <!-- Dropdown - Alerts -->
-              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" id='notifications' aria-labelledby="alertsDropdown">
                 <h6 class="dropdown-header">
                   Notifications
                 </h6>
@@ -256,8 +261,8 @@
                     <span class="font-weight-bold">A new monthly report is ready to download!</span>
                   </div>
                 </a> --}}
-                @forelse (Auth::guard('admin')->user()->notifications as $notification)
-                  <a class="dropdown-item d-flex align-items-center" href={{ $notification->data['route'] }}>
+                @forelse (Auth::guard('admin')->user()->unreadNotifications as $notification)
+                  <a class="dropdown-item d-flex align-items-center unread notification-item" href={{ $notification->data['route'] }}>
                     <div class="mr-3">
                       <div class="icon-circle bg-success">
                         <i class="fas fa-check text-white"></i>
@@ -269,8 +274,8 @@
                     </div>
                   </a>
                 @empty
-                  <div class="alert alert-danger" role="alert">
-                    <strong>No Pending Notifications</strong>
+                  <div class="alert alert-danger" id="no-notifications" role="alert">
+                    <strong>No Unread Notifications</strong>
                   </div>
                 @endforelse
                 {{-- <a class="dropdown-item d-flex align-items-center" href="#">
@@ -470,5 +475,55 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" charset="utf-8"></script>
 </body>
 @stack('scripts')
+<script>
+  // on load dont display number if count is 0
+  $(function(){
+    if($('#notifications-count').text() == 0){
+      $('#notifications-count').css({display:'none'});
+    }
+  })
+  
+  // marking all notifications as read if count is more than 0 
+  // change color if count is 0
+  function mark_as_read() {
+    if( $('#notifications-count').text() == 0){
+      $('.notification-item').removeClass('unread');
+    }else{
+      $.get('/admin/notification/markasread', function(data, status){
+        $('#notifications-count').text(0).css({display:'none'});
+      });
+    }
+  }
+  // Enable pusher logging - don't include this in production
+  Pusher.logToConsole = true;
 
+  const pusher = new Pusher("{{env('PUSHER_APP_KEY')}}", {
+    cluster: "{{env('PUSHER_APP_CLUSTER')}}"
+  });
+
+  function get_notification_element(route,message,time) {
+    return $(`
+      <a class="dropdown-item d-flex align-items-center unread notification-item" href=${route} >
+        <div class="mr-3">
+          <div class="icon-circle bg-success">
+            <i class="fas fa-check text-white"></i>
+          </div>
+        </div>
+        <div>
+          <div class="small text-gray-500">${time}</div>
+            ${message}
+        </div>
+      </a>
+    `)
+  }
+  // subscripe to admin channels
+  const channel = pusher.subscribe('admin-channel');
+  // bind to admin event
+  // add notification item when one is recieved and hide no notifications alert
+  channel.bind('admin-event', function(data) {
+    $('#notifications-count').text(parseInt($('#notifications-count').text())+1).css({display:'inline-block'});
+    $('#no-notifications').css({display:'none'});
+    $('#notifications>h6').after(get_notification_element(data['route'],data['message'],data['time']));
+  });
+</script>
 </html>

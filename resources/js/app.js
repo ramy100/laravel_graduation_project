@@ -14,8 +14,8 @@ const NOTIFICATION_TYPES = {
 
         window.Echo = new Echo({
             broadcaster: 'pusher',
-            key:'f6281f4e9f8d2a800dd2',
-            cluster: 'eu',
+            key:process.env.MIX_PUSHER_APP_KEY,
+            cluster: process.env.MIX_PUSHER_APP_CLUSTER,
             encrypted: false
         });
         // var notifications = [];
