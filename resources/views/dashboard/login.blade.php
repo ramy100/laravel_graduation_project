@@ -53,7 +53,6 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                      {{-- <input type="email" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..."> --}}
                     </div>
                     <div class="form-group">
                         <input id="password" type="password" class="form-control form-control-user @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="Password">
@@ -62,7 +61,6 @@
                                 <strong>{{ $message }}</strong>
                             </span>
                         @enderror
-                      {{-- <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password"> --}}
                     </div>
                     <div class="form-group">
                         <div class="col-md-6 offset-md-4">
@@ -83,9 +81,6 @@
                   <div class="text-center">
                     <a class="small" href="forgot-password.html">Forgot Password?</a>
                   </div>
-                  {{-- <div class="text-center">
-                    <a class="small" href="register.html">Create an Account!</a>
-                  </div> --}}
                 </div>
               </div>
             </div>
