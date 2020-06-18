@@ -296,28 +296,22 @@
                 if(Laravel.userId) {
                 window.Echo.private(`App.User.${Laravel.userId}`)
                 .notification((notification) => {
-                if(notification['type'] === 'App\\Notifications\\designerNotifications')
-                {
-                   // alert("notification");
-                   count= $('#count').val();
+                    count= $('#count').val();
                    count=parseInt(count)+1;
                    $('#Notification-count').html(count);
                    $('#count').val(count);
                     $('#Notification-count').removeClass("hideNotification");
+                if(notification['type'] === 'App\\Notifications\\designerNotifications')
+                {
+                   
                    $('#notificationList').append(`
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" href="/design/${notification['design']['id']}" >
                                               ${notification['company']} has bought your ${notification['design']['title']} design
                                             </a>
                     `);
                 }
                 else if(notification['type'] === 'App\\Notifications\\UserNotifications')
                     {
-                        count= $('#count').val();
-                        console.log(count);
-                   count=parseInt(count)+1;
-                   $('#Notification-count').html(count);
-                   $('#count').val(count);
-                    $('#Notification-count').removeClass("hideNotification");
 
                         $('#notificationList').append(`
                         <a class="dropdown-item" href="#">

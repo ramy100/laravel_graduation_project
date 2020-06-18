@@ -152,14 +152,13 @@
 @endsection
 @push('scripts')
 	<script src="{{ asset('js/vote.js') }}"></script>
-	<script src="{{ asset('js/comments.js') }}"></script>
+	
 	<script type="text/javascript">
 		formId='';
 		function CommentReply(id){
 			formId=id;
 			console.log('#'+id);
-				$('#'+id).toggleClass('displayForm');
-			// let form=$('#'+formId).children('form')[0];
+			$('#'+id).toggleClass('displayForm');
 			return false;
 		}
 		function ReplyComment()
@@ -206,4 +205,5 @@
 					
 		
 	</script>
+	<script src="{{ asset('js/comments.js') }}"></script>
 @endpush

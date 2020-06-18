@@ -77,7 +77,7 @@
 	<div class="col-md-12">
 		<div class="widget-area no-padding blank">
 			<div class="status-upload">
-				<form method="POST" action="#" id="addCommentForm">
+				<form  action="#" id="addCommentForm">
 					{{ csrf_field() }}
 					<input type="hidden" name="designId" id="designId" value="{{$design->id}}">
 					<textarea placeholder="Leave a comment.." id="body"></textarea>
