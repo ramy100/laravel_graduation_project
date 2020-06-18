@@ -7,11 +7,8 @@ use App\Design;
 use App\Order;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\Auth\RegisterController;
-use Illuminate\Http\Response;
-use Illuminate\Auth\Events\Registered;
 use App\Charts\LikesChart;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -45,6 +42,16 @@ class AdminController extends Controller
         ->where('is_verified','=',$state)
         ->select('users.id','name','email','website','image')->paginate(5);
         return view('dashboard.verify_users',compact('pending_users','role','state'));
+    }
+
+    /**
+     * Display a listing of the Users.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function mark_as_read()
+    {
+        Auth::guard('admin')->user()->unreadNotifications->markAsRead();
     }
 
     /**

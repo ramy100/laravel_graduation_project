@@ -104,9 +104,9 @@ Route::resource('user','ProfileController')->only([
             Route::get('design/{state}','AdminController@list_designs')->where(['state'=>'accepted|rejected|pending'])->name('list_designs');
             Route::post('design/{state}','AdminController@change_design_verification')->where(['state'=>'accepted|rejected|pending']);
             Route::post('{role}/{state}','AdminController@change_user_verification')->where(['role'=>'designer|company','state'=>'accepted|rejected|pending']);
+            Route::get('notification/markasread','AdminController@mark_as_read');
             Route::get('user/document/{user}','AdminController@view_user_document')->name('admin.view_user_document');
             Route::get('design/{design}/document','AdminController@view_design_document')->name('admin.view_design_document');
-            Route::get('charts/paymentdata','AdminController@get_payment_chart_data')->name('admin.get_payment_chart_data');
             Route::get('charts/payment','AdminController@view_payment_chart')->name('admin.view_payment_chart');
     });
 });
