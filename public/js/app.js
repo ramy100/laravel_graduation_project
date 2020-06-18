@@ -43320,8 +43320,8 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "f6281f4e9f8d2a800dd2",
-  cluster: "eu",
+  key: "",
+  cluster: "mt1",
   forceTLS: true
 });
 
@@ -43345,8 +43345,8 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\wamp64\www\Graduation Project\laravel_graduation_project\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\wamp64\www\Graduation Project\laravel_graduation_project\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/mahmoudezz/graduation/laravel_graduation_project/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/mahmoudezz/graduation/laravel_graduation_project/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
