@@ -24,9 +24,6 @@ class UserNotifications extends Notification implements ShouldQueue
     {
         $this->design=$design;
         $this->designer=$designer;
-
-        $this->design=$design;
-        $this->designer=$designer;
     }
 
     /**

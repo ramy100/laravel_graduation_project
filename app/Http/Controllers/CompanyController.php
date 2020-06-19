@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\CompanyDesign;
 use App\Design;
 use App\User;
+use App\DesignVote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Response;
+use App\Notifications\CompanyUserNotifications;
+
 
 
 class CompanyController extends Controller
@@ -52,6 +55,12 @@ class CompanyController extends Controller
         $user=Auth::user();
         $this->design_validator($request->all())->validate();
         event(new Registered($design = $this->create_new_design($request->all())));
+        $company = $design->company->name;
+        $design_likers = DesignVote::where('design_id',$design)->get();
+        foreach($design_likers as $design_liker)
+        {
+            $design_liker->notify(new CompanyUserNotifications($design,$company));
+        }     
         return $request->wantsJson()
                     ? new Response('', 201)
                     : redirect()->route('company.shop',$user);

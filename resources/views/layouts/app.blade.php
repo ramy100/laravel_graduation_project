@@ -112,6 +112,7 @@
                                             @endforeach 
                                             @elseif(Auth::user()->role == "user")
                                             @foreach (Auth::user()->unreadNotifications as $notification)
+                                            <h3>{{$notification}}</h3>
                                             <a class="dropdown-item" href="{{ route('design.show',['id'=>$notification->data['design_id']]) }}">
                                               {{$notification->data['designer_name']}} has added a new design
                                             </a>
@@ -314,20 +315,38 @@
                     `);
                 }
                 else if(notification['type'] === 'App\\Notifications\\UserNotifications')
-                    {
-                        count= $('#count').val();
-                        console.log(count);
-                   count=parseInt(count)+1;
-                   $('#Notification-count').html(count);
-                   $('#count').val(count);
+                {
+                    count= $('#count').val();
+                    console.log(count);
+                    count=parseInt(count)+1;
+                    $('#Notification-count').html(count);
+                    $('#count').val(count);
                     $('#Notification-count').removeClass("hideNotification");
-
+                    
                         $('#notificationList').append(`
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="#"
+                        ">
                         ${notification['designer_name']} has just added a new design
                         </a>
                         `);
+                }else if(notification['type'] === 'App\\Notifications\\CompanyUserNotifications')
+                    {
+                        count= $('#count').val();
+                        console.log(count);
+                        count=parseInt(count)+1;
+                        $('#Notification-count').html(count);
+                        $('#count').val(count);
+                        $('#Notification-count').removeClass("hideNotification");
+                        $('#notificationList').append(`
+                        <a class="dropdown-item" href="window.location.href="#"
+                        ">
+                        ${notification['company']} has just made a new design ${notification['design']['title']}
+                        </a>
+                        `);
                     }
+            
+                   console.log(notification['type']);
+                });
             
                    console.log(notification['type']);
                 });
