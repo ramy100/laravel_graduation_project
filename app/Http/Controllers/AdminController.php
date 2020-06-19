@@ -6,6 +6,8 @@ use App\Charts\PaymentChart;
 use App\Design;
 use App\Order;
 use App\User;
+use App\DesignerRate;
+use App\DesignVote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Auth\RegisterController;
@@ -16,6 +18,43 @@ use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
+    public function listDesigners(){
+        $designers = User::where('role', '=', 'designer')->get();
+        return view('dashboard.designers.index', compact('designers'));
+
+    }
+    public function designerChart($id){
+        $designerR = DesignerRate::selectRaw("COUNT(*) designer_rates, DATE_FORMAT(created_at, '%Y %m %e') date")
+        ->where('designer_id', '=', $id)
+        ->groupBy('date')
+        ->pluck('designer_rates', 'date');
+        
+        $designerChart = new LikesChart;
+        $designerChart->labels($designerR->keys());
+        $designerChart->dataset('Designers likes', 'bar', $designerR->values())
+            ->backgroundColor('#89CFF0');
+        
+        return view('dashboard.designers.chart', compact('designerChart'));
+    }
+
+    public function listDesigns(){
+        $designs = Design::All();
+        return view('dashboard.designs.index', compact('designs'));
+
+    }
+    public function designChart($id){
+        $designR = DesignVote::selectRaw("COUNT(*) designer_rates, DATE_FORMAT(created_at, '%Y %m %e') date")
+        ->where('design_id', '=', $id)
+        ->groupBy('date')
+        ->pluck('designer_rates', 'date');
+        
+        $designChart = new LikesChart;
+        $designChart->labels($designR->keys());
+        $designChart->dataset('Designers likes', 'bar', $designR->values())
+            ->backgroundColor('#89CFF0');
+        
+        return view('dashboard.designs.chart', compact('designChart'));
+    }
     public function likesChart(){
         $designsR = Design::orderBy('title')->pluck('total_likes','title');
         $designersR = User::where('role', '=', 'designer')->orderBy('name')->pluck('likes','name');
@@ -30,7 +69,6 @@ class AdminController extends Controller
         $designersChart->labels($designersR->keys());
         $designersChart->dataset('Designers likes', 'bar', $designersR->values())
             ->backgroundColor('#b76e79');
-        // dd($designsChart);
         return view('dashboard.designChart', compact('designsChart','designersChart'));
     }
 
@@ -139,7 +177,8 @@ class AdminController extends Controller
         });
         $chart = new PaymentChart;
         $chart->labels($orders->keys());
-        $chart->dataset('daily Profit','line',$orders->values());
+        $chart->dataset('daily Profit','bar',$orders->values())
+            ->backgroundColor('#b76e79');
         return view('dashboard.payment_chart',compact('chart'));
     }
 
