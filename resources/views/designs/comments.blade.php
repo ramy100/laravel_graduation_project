@@ -1,21 +1,4 @@
-<style type="text/css">
-  .send-icon i{
-  font-size: 20px;
-  background: #f3f3f3;
-  padding: 6px 5px;
-  border-radius: 50%;
-  color: #74C2E1;
-  height: 35px;
-  width: 35px;
-}
-.displayForm{
-  display: none;
-}
 
-/*.ReplyForm{
-  display:block;
-}*/
-</style>
 <div class="panel-body row comments">
 	@forelse ($comments as $comment)
     <div class="col-md-12">
@@ -40,7 +23,6 @@
         </div>
 
         <!-- comment reply -->
-        <!-- <div class="status-upload col-md-8"> -->
       <div style="margin:10px 0;margin-left: 65px;" class="ReplyForm displayForm" id="{{$comment->id}}">
         @foreach ($comment->replies as $reply)
         <div class="media g-mb-30 media-comment mb-2 replies">
@@ -64,7 +46,6 @@
                     <div class="send-icon" style="display: inline;">
                       <button onclick="ReplyComment()" type="button"> <i class="reply fa fa-paper-plane" aria-hidden="true" style="color: #f51167;"></i></button>
                     </div>
-              <!-- </div> -->
                   </form>
                </div>   
         </div>

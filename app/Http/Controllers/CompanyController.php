@@ -24,7 +24,8 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        $companies=User::where('role','=','company')->get();
+        $companies=User::whereHas('profile', function($query) {
+            $query->where('is_verified','=','accepted');})->where('role','=','company')->get();
         return view('companies.index',compact('companies'));
     }
 

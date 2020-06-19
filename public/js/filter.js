@@ -113,8 +113,12 @@
 									${data.user_exist && data.user_role != "user" ?
 									 `<h6>&dollar;${element.price} </h6>`:''}
 									
-									<h5>${element.title} </h5>
-									<p>By ${element.designer.name}</p>
+									<a href="design/${element.id}"><h5>${element.title} </h5></a>
+									<div class="designer-name">
+									<i style="font-style: italic;">By</i> 
+									<a href="/designer/${element.designer.id}" class="designer">${element.designer.name}</a>
+									</div>
+					
 								</div>
 
 							</div>
