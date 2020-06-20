@@ -35,10 +35,6 @@
 							<div class="product-item">
 								<div class="pi-pic">
 								<img src="{{asset('storage/'.$design->image)}}" alt="" class="img-thumbnail" style="width: 300px; height:200px">
-									<!-- <div class="pi-links">
-										<a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-										<a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-									</div> -->
 								</div>
 								<div class="pi-text text-center">
 									<h5 class="mb-1 text-primary">{{$design->title}}</h5>
