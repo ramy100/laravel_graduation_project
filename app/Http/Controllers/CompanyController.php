@@ -57,20 +57,23 @@ class CompanyController extends Controller
         $this->design_validator($request->all())->validate();
         event(new Registered($design = $this->create_new_design($request->all())));
         $company = $design->company->name;
-        $design_likers = DesignVote::where('design_id',$design->id)->get();
+        $design_likers = DesignVote::where('design_id',$design->design_id)->get();
         $url = $request->link;
-        print($design);
-        print($design_likers);
-        print($design_likers->count());
+        // print("*****design****");
+        // print($design->design_id);
+        // print("*****design_likers******");
+        // print($design_likers);
+        // print("******count*********");
+        // print($design_likers->count());
         if($design_likers->count() > 0)
         {
             print("//////");
             foreach($design_likers as $design_liker)
-            {            print($design_liker);
+            {            
                 $design_liker->voter->notify(new CompanyUserNotifications($design,$company,$url));
             }     
         }
-        print("*********");
+        // print("*********");
         return $request->wantsJson()
                     ? new Response('', 201)
                     : redirect()->route('company.shop',$user);

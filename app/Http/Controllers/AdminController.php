@@ -10,7 +10,6 @@ use App\DesignerRate;
 use App\DesignVote;
 use Illuminate\Http\Request;
 use App\Charts\LikesChart;
-use App\DesignerRate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\UserNotifications;
@@ -166,7 +165,7 @@ class AdminController extends Controller
                     {
                         if($designer->id != $user->id)
                         {            
-                        $user->notify(new UserNotifications($design,$designer));
+                            $user->notify(new UserNotifications($design,$designer));
                         }                   
                     } 
                 }

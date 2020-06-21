@@ -115,8 +115,8 @@
                                             @elseif(Auth::user()->role == "user")
                                             @foreach (Auth::user()->unreadNotifications as $notification)
                                                 @if($notification->type === "App\\Notifications\\UserNotifications")
-                                                    <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['title']]) }}">
-                                                    {{$notification->data['designer']['name']}} has added a new design
+                                                    <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['id']]) }}">
+                                                    {{$notification->data['designer']['name']}} has added a new design {{$notification['design']['title']}}
                                                     </a>
                                                 @elseif($notification->type === "App\\Notifications\\CompanyUserNotifications")
                                                     <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['id']]) }}">

@@ -57,8 +57,7 @@ class CompanyUserNotifications extends Notification implements ShouldQueue
         return new BroadcastMessage([
             'design' => $this->design,
             'company' => $this->company, 
-            'product_link'=>$this->link,         
- 
+            'product_link'=>$this->link,          
             ]);
     }
     public function toArray($notifiable)
