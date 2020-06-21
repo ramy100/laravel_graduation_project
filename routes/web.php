@@ -97,7 +97,7 @@ Route::resource('user','ProfileController')->only([
         Route::post('do-login', 'AdminAuthController@adminLogin')->name('adminDologin');
         
         Route::group(['middleware' => 'admin'], function(){
-            Route::get('/', 'AdminAuthController@index')->name('dashboard');
+            Route::get('/', 'AdminController@index')->name('dashboard');
             Route::post('logout', 'AdminAuthController@logMeOut')->name('admin.logout');
             Route::resource('tag', 'TagController');
             Route::resource('material', 'MaterialController');
