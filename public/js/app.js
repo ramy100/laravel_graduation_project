@@ -43271,70 +43271,7 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   // key:process.env.MIX_PUSHER_APP_KEY,
   // cluster: process.env.MIX_PUSHER_APP_CLUSTER,
   encrypted: false
-}); // const NOTIFICATION_TYPES = {
-// <<<<<<< HEAD
-//     follow: 'App\\Notifications\\UserNotifications'
-// };
-// //...
-// $(document).ready(function() {
-//     // check if there's a logged in user
-//     if(Laravel.userId) {
-//         $.get('/notifications', function (data) {
-//             addNotifications(data, "#notifications");
-//         });
-//     }
-// });
-// function addNotifications(newNotifications, target) {
-//     notifications = _.concat(notifications, newNotifications);
-//     // show only last 5 notifications
-//     notifications.slice(0, 5);
-//     showNotifications(notifications, target);
-// }
-// //...
-// function showNotifications(notifications, target) {
-//     if(notifications.length) {
-//         var htmlElements = notifications.map(function (notification) {
-//             return makeNotification(notification);
-//         });
-//         $(target + 'Menu').html(htmlElements.join(''));
-//         $(target).addClass('has-notifications')
-//     } else {
-//         $(target + 'Menu').html('<li class="dropdown-header">No notifications</li>');
-//         $(target).removeClass('has-notifications');
-//     }
-// }
-// //...
-// // Make a single notification string
-// function makeNotification(notification) {
-//     var to = routeNotification(notification);
-//     var notificationText = makeNotificationText(notification);
-//     return '<li><a href="' + to + '">' + notificationText + '</a></li>';
-// }
-// // get the notification route based on it's type
-// function routeNotification(notification) {
-//     var to = '?read=' + notification.id;
-//     if(notification.type === NOTIFICATION_TYPES.follow) {
-//         to = 'users' + to;
-//     }
-//     return '/' + to;
-// }
-// // get the notification text based on it's type
-// function makeNotificationText(notification) {
-//     var text = '';
-//     if(notification.type === NOTIFICATION_TYPES.follow) {
-//         const name = notification.data.follower_name;
-//         text += '<strong>' + name + '</strong> followed you';
-//     }
-//     return text;
-// }
-// =======
-// var notifications = [];
-// $(document).ready(function(){
-//     window.Echo.private(`App.User.${Laravel.userId}`)
-//     .notification((notification) => {
-//        alert(notification);
-//     });
-// });
+});
 
 /***/ }),
 
@@ -43380,7 +43317,7 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: "934f94342496700052a5",
+  key: "f6281f4e9f8d2a800dd2",
   cluster: "eu",
   forceTLS: true
 });
@@ -43405,8 +43342,8 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\user\Desktop\New folder (3)\laravel_graduation_project\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\user\Desktop\New folder (3)\laravel_graduation_project\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/mahmoudezz/graduation/laravel_graduation_project/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/mahmoudezz/graduation/laravel_graduation_project/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

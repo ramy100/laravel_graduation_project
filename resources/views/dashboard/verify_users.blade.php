@@ -8,7 +8,7 @@
 @endif
 @csrf
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800">Verify{{ ucfirst(trans($role)) }} {{ ucfirst(trans($state)) }}</h1>
+<h1 class="h3 mb-2 text-gray-800">Verify {{ ucfirst(trans($state)) }} {{ ucfirst(trans($role)) }}</h1>
 <p class="mb-4">This is a list of designs which needs to be verified.</a>.</p>
 
 <!-- DataTales Example -->
