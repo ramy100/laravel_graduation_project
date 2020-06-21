@@ -73,6 +73,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(Profile::class,'user_id');
     }
+    public function balance()
+    {
+        return $this->hasOne(DesignersBalance::class,'designer_id');
+    }
     
     public function my_votes()
     {

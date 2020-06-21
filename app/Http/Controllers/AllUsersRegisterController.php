@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Admin;
+use App\DesignersBalance;
 use App\Events\RegisterationEvent;
 use App\User;
 use Illuminate\Http\Request;
@@ -94,6 +95,9 @@ class AllUsersRegisterController extends RegisterController
                 'role' => $role,
                 'password' => Hash::make($data['password']),
             ]);
+            if($role === 'designer'){
+                $user->balance()->create();
+            }
             // create profile if role is company
             if($role === 'company' || $role==='designer'){
                 Profile::create([

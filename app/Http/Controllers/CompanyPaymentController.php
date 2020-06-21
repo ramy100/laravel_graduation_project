@@ -26,7 +26,7 @@ class CompanyPaymentController extends Controller
         $total_amount = $items->sum('price');
         $items_ids = $items->keys();
         $total_amount_in_cents=$total_amount*100;
-
+        $designer_share=($total_amount*80)/100;
         // try changing in database record first
         try {
             $this->change_company_ids_for_designs($items_ids,$user->id,$total_amount_in_cents);
@@ -44,6 +44,7 @@ class CompanyPaymentController extends Controller
             foreach ($designs as $design) {
                 $designer=$design->designer;
                 $company_name=$design->company->name;
+                $designer->balance()->increment('balance', $designer_share);
                 $designer->notify(new designerNotifications($company_name,$design));
             }
         } catch (\Throwable $th) {
