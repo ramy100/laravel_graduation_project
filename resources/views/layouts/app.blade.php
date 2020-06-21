@@ -190,7 +190,7 @@
                 <ul class="main-menu">
                     <li><a href="/">Home</a></li>
                     <li><a href="{{ route('designer.index')}}">Designers</a></li>
-                    <li><a href="{{ route('design.index')}}">Designs</a></li>
+                    <li><a href="{{ route('design.designs')}}">Designs</a></li>
                     <li><a href="{{route('company.index')}}">Companies</a></li>
                     <li><a href="#">Categories</a>
                         <ul class="sub-menu">
@@ -305,7 +305,7 @@
                 {
                    
                    $('#notificationList').append(`
-                    <a class="dropdown-item" href="/design/${notification['design']['id']}" >
+                    <a class="dropdown-item" href="/design/${notification['design']['id']}" style="background-color:lightgray">
                                               ${notification['company']} has bought your ${notification['design']['title']} design
                                             </a>
                     `);
@@ -314,7 +314,7 @@
                     {
 
                         $('#notificationList').append(`
-                        <a class="dropdown-item" href="#">
+                        <a class="dropdown-item" href="#" style="background-color:lightgray">
                         ${notification['designer_name']} has just added a new design
                         </a>
                         `);

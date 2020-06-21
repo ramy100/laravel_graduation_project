@@ -103,7 +103,7 @@
 						<!-- Reviews -->
 						<div class="panel">
 							<div class="panel-header" id="headingTwo">
-								<button class="panel-link" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">Reviews </button>
+								<button class="panel-link" data-toggle="collapse" data-target="#collapse2" aria-expanded="false" aria-controls="collapse2">Comments </button>
 							</div>
 							<div id="collapse2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
 								

@@ -102,8 +102,8 @@
 									<label for="imgeFile">Design Images  (can attach more than one) </label>
 									<input type="file" id="imgeFile" name="images[]" class="form-control" multiple autofocus {{ $errors->first('images') ? 'is-invalid':''}}>
 								</div>
-								@if($errors->first('images'))
-								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('images') }}</span>
+								@if($errors->first('images.*'))
+								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('images.*') }}</span>
 								@endif
 
 							</div>

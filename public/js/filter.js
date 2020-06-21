@@ -54,28 +54,31 @@
 				let tag=tagSelected[0];
 				let material=materialSelected[0];
 				let filterType=filters;
-				// let tag=
-				console.log(tag);
-				console.log(category);
-				console.log(min);
-				console.log(tag);
+				let url='http://localhost:8000/designs/?min='+min+'&max='+max;
+				if(category)
+				{
+					url+='&category='+category;
+				}
+				if(tag)
+				{
+					url+='&tag='+tag;
+				}
+				if(material)
+				{
+					url+='&material='+material;
+				}
+				if(filterType)
+				{
+					url+='&filterType='+filterType;
+				}
 				$.ajaxSetup({
 			        headers: {
 			          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
 			        }
 			      });
 				$.ajax({
-		        type: 'POST',
-		        url: 'http://localhost:8000/design/filterBy',
-		        data: {
-		            'category':category,
-		            'minPrice':min,
-		            'maxPrice':max,
-		            'filterType':filterType,
-		            'tag':tag,
-		            'material':material
-
-		        },
+		        type: 'GET',
+		        url: url,
 		        success: function (data) {
 		            console.log(data);
 		            console.log(data.user_exist);

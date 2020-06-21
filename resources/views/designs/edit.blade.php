@@ -101,8 +101,8 @@
 										<label for="imgeFile">Add other Design Images  (can attach more than one) </label>
 										<input type="file" id="imgeFile" name="images[]" class="form-control" multiple autofocus>
 								</div>
-								@if($errors->first('images'))
-								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('images') }}</span>
+								@if($errors->first('images.*'))
+								<span class="invalid-feedback  d-block" role="alert">{{$errors->first('images.*') }}</span>
 								@endif
 								<!-- <div class="row">
 									@foreach($designImages as $Image)

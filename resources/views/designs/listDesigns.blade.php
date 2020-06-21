@@ -36,6 +36,6 @@
 						@endforelse
 					</div>
 
-					<div class="row">
+					{{-- <div class="row">
 							 {!! $desings->links() !!}  
-					</div>
+					</div>	--}}

@@ -31,7 +31,7 @@ class StoreDesignsRequest extends FormRequest
             'category' => 'required',
             'sourceFile'  => 'required|mimes:pdf|max:10000',
             'images' => 'required',
-            'images.*' => 'mimes:jpg,jpeg,png',
+            'images.*' => 'image|mimes:jpg,jpeg,png',
             'tag_id' => 'required',
             'Material' => 'required'
             //
