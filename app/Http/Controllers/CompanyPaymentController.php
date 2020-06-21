@@ -26,7 +26,7 @@ class CompanyPaymentController extends Controller
         $total_amount = $items->sum('price');
         $items_ids = $items->keys();
         $total_amount_in_cents=$total_amount*100;
-
+        $designer_share=($total_amount*80)/100;
         // try changing in database record first
         try {
             $this->change_company_ids_for_designs($items_ids,$user->id,$total_amount_in_cents);
@@ -38,20 +38,20 @@ class CompanyPaymentController extends Controller
         }
 
         // try charging user
-        // try {
+        try {
             $user->charge($total_amount_in_cents, $payment_method);
             $designs=Design::find($items_ids);
             foreach ($designs as $design) {
                 $designer=$design->designer;
                 $company_name=$design->company->name;
+                $designer->balance()->increment('balance', $designer_share);
                 $designer->notify(new designerNotifications($company_name,$design));
             }
-            // var_dump($items_ids );
-        // } catch (\Throwable $th) {
-        //     // if payment fails rollback and return fail message
-        //     DB::rollBack();
-        //     return $this->create_order_record_with_message($user->id,$total_amount,'fail in paying','payment failed','danger');
-        // }
+        } catch (\Throwable $th) {
+            // if payment fails rollback and return fail message
+            DB::rollBack();
+            return $this->create_order_record_with_message($user->id,$total_amount,'fail in paying','payment failed','danger');
+        }
 
 
         // if payment succeed -> commit database changes and clear cart and return success message

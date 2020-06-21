@@ -10,13 +10,47 @@ use App\DesignerRate;
 use App\DesignVote;
 use Illuminate\Http\Request;
 use App\Charts\LikesChart;
+use App\Charts\PieChart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\UserNotifications;
-
-
 class AdminController extends Controller
 {
+    public function index(){
+        $yearTotal = Order::whereYear('created_at', '=', now()->year)
+              ->pluck('total');
+        $monthTotal = Order::whereMonth('created_at', '=', now()->month)
+            ->pluck('total');
+        // dd(($monthTotal->sum()) * 0.2);  
+        $yearAvg = ($yearTotal->sum()) * 0.2;
+        $monthAvg = ($monthTotal->sum()) * 0.2;
+
+        $usersCount = User::all()->count();
+
+        $designerCount = User::where('role', '=', 'designer')->count();
+        $companyCount = User::where('role', '=', 'company')->count();
+        $userCount = User::where('role', '=', 'user')->count();
+
+
+        $orders = Order::select('created_at','total')
+        ->get()
+        ->groupBy(function($item){ return $item->created_at->format('d/M/Y'); })->map(function ($row) {
+            return $row->sum('total');
+        });
+
+        $chart = new PaymentChart;
+        $chart->labels($orders->keys());
+        $chart->dataset('daily Profit','line',$orders->values())
+            ->backgroundColor('#e74a3b');
+        
+        $pieChart = new PieChart;
+        $pieChart->labels(['Users', 'Companies', 'Designers']);
+        $pieChart->dataset('system users','bar', [$userCount, $companyCount, $designerCount])
+        ->backgroundColor(collect(['#4e73df','#1cc88a', '#36b9cc']));
+        
+        return view('dashboard.index',compact('monthAvg', 'yearAvg', 'usersCount', 'chart', 'pieChart'));
+    }
+
     public function listDesigners(){
         $designers = User::where('role', '=', 'designer')->get();
         return view('dashboard.designers.index', compact('designers'));
