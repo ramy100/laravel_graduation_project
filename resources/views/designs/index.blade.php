@@ -85,7 +85,7 @@
 							</div>
 						</div>
 <!-- filter end -->
-					<div class="col-lg-12 mb-2 row designs">
+					<!-- <div class="col-lg-12 mb-2 row designs">
 						@forelse($desings as $design)
 						<div class="col-lg-4 col-sm-6">
 							<div class="product-item">
@@ -125,8 +125,8 @@
 						@empty
 							<div class="alert alert-danger">No Designs Yet!</div>
 						@endforelse
-					</div>
-
+					</div> -->
+					@include('designs.listDesigns')
 				</div>
 				
 			</div>

@@ -210,7 +210,7 @@
                 <ul class="main-menu">
                     <li><a href="/">Home</a></li>
                     <li><a href="{{ route('designer.index')}}">Designers</a></li>
-                    <li><a href="{{ route('design.index')}}">Designs</a></li>
+                    <li><a href="{{ route('design.designs')}}">Designs</a></li>
                     <li><a href="{{route('company.index')}}">Companies</a></li>
                     <li><a href="#">Categories</a>
                         <ul class="sub-menu">
@@ -321,18 +321,20 @@
                     $('#Notification-count').html(count);
                     $('#count').val(count);
                     $('#Notification-count').removeClass("hideNotification");
-                    if(notification['type'] === 'App\\Notifications\\designerNotifications')
-                    {
-                    $('#notificationList').append(`
-                        <a class="dropdown-item" href="/design/${notification['design']['id']}" >
-                                                ${notification['company']} has bought your ${notification['design']['title']} design
-                                                </a>
-                        `);
-                    }
+
+                if(notification['type'] === 'App\\Notifications\\designerNotifications')
+                {
+                   
+                   $('#notificationList').append(`
+                    <a class="dropdown-item" href="/design/${notification['design']['id']}" style="background-color:lightgray">
+                                              ${notification['company']} has bought your ${notification['design']['title']} design
+                                            </a>
+                    `);
+                }
                     else if(notification['type'] === 'App\\Notifications\\UserNotifications')
                     {
                             $('#notificationList').append(`
-                            <a class="dropdown-item" href="/design/${notification['design_id']}">
+                            <a class="dropdown-item" href="/design/${notification['design_id']}" style="background-color:lightgray">
                             ${notification['designer']['name']} has just added a new design ${notification['design']['title']}
                             </a>
                             `);

@@ -41,6 +41,7 @@
         </div>
         @endforeach      
               <!-- Reply Form -->
+              @if (Auth::check())
                   <form  action="#" >
                     {{ csrf_field() }}
                     <input type="hidden" name="commentId" id="commentId" value="{{$comment->id}}">
@@ -51,6 +52,7 @@
                       <button onclick="ReplyComment()" type="button"> <i class="reply fa fa-paper-plane" aria-hidden="true" style="color: #f51167;"></i></button>
                     </div>
                   </form>
+              @endif
                </div>   
         </div>
 	@empty
