@@ -78,7 +78,7 @@
 								    Filter By
 								  </a> -->
 								 <select class="btn filter2 filter" role="menu" aria-labelledby="dropdownMenuLink">
-								 	<option selected disabled> Filter</option>
+								 	<option selected disabled> Sort</option>
 								  	<option> <a class="dropdown-item " href="#" >Top Rated</a></option>
 								  	<option> <a class="dropdown-item " href="#" >Latest</a></option>
 								 </select>

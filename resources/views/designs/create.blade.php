@@ -112,6 +112,8 @@
 						<button class="site-btn submit-order-btn">Add Design</button>
 					</form>
 				</div>
+				<!-- <div class="col-lg-6 order-2 order-lg-1 ">
+				</div> -->
 			</div>
 		</div>
 	</section>

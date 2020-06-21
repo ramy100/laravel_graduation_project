@@ -56,7 +56,7 @@ class AdminNotifications extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'type'=>"pending.company",
+            'type'=>"pending ". $this->role,
             'message'=>'New Pending '.$this->role,
             'route'=>route('list_users',[$this->role,'pending'])
         ];

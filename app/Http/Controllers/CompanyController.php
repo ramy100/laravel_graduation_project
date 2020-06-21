@@ -117,7 +117,9 @@ class CompanyController extends Controller
     public function show(User $company)
     {
         $company=User::find($company->id);
-        return view('companies.show',compact('company'));
+        $boughtDesigns=Design::where('company_id','=',$company->id)->where('state','=','sold')->paginate(9, ['*'], 'bought');
+        $shopDesigns=CompanyDesign::where('company_id','=',$company->id)->paginate(9, ['*'], 'shop');
+        return view('companies.show',compact('company','boughtDesigns','shopDesigns'));
     }
 
     public function shop(User $user)

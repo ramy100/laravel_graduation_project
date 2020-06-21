@@ -110,5 +110,10 @@ Route::resource('user','ProfileController')->only([
             Route::get('user/document/{user}','AdminController@view_user_document')->name('admin.view_user_document');
             Route::get('design/{design}/document','AdminController@view_design_document')->name('admin.view_design_document');
             Route::get('charts/payment','AdminController@view_payment_chart')->name('admin.view_payment_chart');
+            Route::get('designers', 'AdminController@listDesigners')->name('designers.list');
+            Route::get('designers/chart/{id}', 'AdminController@designerChart')->name('designer.chart');
+            Route::get('designs', 'AdminController@listDesigns')->name('designs.list');
+            Route::get('designs/chart/{id}', 'AdminController@designChart')->name('design.chart');
+
     });
 });

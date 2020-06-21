@@ -11,7 +11,11 @@
               </div>
               <p>{{ $comment->body }}</p>
               <ul class="list-inline d-sm-flex my-0">
+                <li class="list-inline-item ml-2">
+                  <p>{{$comment->replies->count() }} Replies</p>
+                </li>
                 <li class="list-inline-item ml-auto">
+
                   <a class="u-link-v5 g-color-gray-dark-v4 g-color-primary--hover" href="#" onclick="return CommentReply({{$comment->id}})">
                     <i class="fa fa-reply g-pos-rel g-top-1 g-mr-3"></i>
                     Reply
