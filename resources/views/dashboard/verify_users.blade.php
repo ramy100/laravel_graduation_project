@@ -7,23 +7,33 @@
     </div>
 @endif
 @csrf
-<div class="container">
-<table class="table text-center table-striped table-dark inline-table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Name</th>
-        <th scope="col">Email</th>
-        <th scope="col">Website</th>
-        <th scope="col">Logo</th>
-        <th scope="col">Document</th>
-        @if($state === 'rejected' || $state === 'pending')
-        <th scope="col">Accept</th>
-        @endif
-        @if($state === 'accepted' || $state === 'pending')
-        <th scope="col">Reject</th>
-        @endif
-      </tr>
+<!-- Page Heading -->
+<h1 class="h3 mb-2 text-gray-800">Verify{{ ucfirst(trans($role)) }} {{ ucfirst(trans($state)) }}</h1>
+<p class="mb-4">This is a list of designs which needs to be verified.</a>.</p>
+
+<!-- DataTales Example -->
+<div class="card shadow mb-4">
+  <div class="card-header py-3">
+    <h6 class="m-0 font-weight-bold text-primary">Designs Table</h6>
+  </div>
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Website</th>
+            <th scope="col">Logo</th>
+            <th scope="col">Document</th>
+            @if($state === 'rejected' || $state === 'pending')
+            <th scope="col">Accept</th>
+            @endif
+            @if($state === 'accepted' || $state === 'pending')
+            <th scope="col">Reject</th>
+            @endif
+        </tr>
     </thead>
     <tbody>
         @forelse ($pending_users as $user)
