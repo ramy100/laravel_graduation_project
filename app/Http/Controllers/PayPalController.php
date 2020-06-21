@@ -35,6 +35,7 @@ class PayPalController extends Controller
             return [
                 'name'=> $item['name'],
                 'price'=> $item['price'],
+                'desc'  => 'Description for product',
                 'quantity' => $item['quantity']
             ];
         }, Cart::session(auth()->id())->getContent()->toarray());

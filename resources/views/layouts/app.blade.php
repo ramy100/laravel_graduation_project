@@ -36,9 +36,9 @@
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
-            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+            {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> --}}
     <style type="text/css">
         #Notifications::after {
             content: none;
@@ -106,16 +106,23 @@
                                            
                                             @if( Auth::user()->role == "designer") 
                                                 @foreach (Auth::user()->unreadNotifications as $notification)
-                                                <a class="dropdown-item" href="{{ route('design.show',['id'=>$notification->data['design']['id']]) }}">
+                                                @if($notification->type === "App\\Notifications\\designerNotifications")
+                                                <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['id']]) }}">
                                                   {{$notification->data['company']}} has bought your {{ $notification->data['design']['title'] }} design
                                                 </a>
+                                                @endif
                                             @endforeach 
                                             @elseif(Auth::user()->role == "user")
                                             @foreach (Auth::user()->unreadNotifications as $notification)
-                                            <h3>{{$notification}}</h3>
-                                            <a class="dropdown-item" href="{{ route('design.show',['id'=>$notification->data['design_id']]) }}">
-                                              {{$notification->data['designer_name']}} has added a new design
-                                            </a>
+                                                @if($notification->type === "App\\Notifications\\UserNotifications")
+                                                    <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['title']]) }}">
+                                                    {{$notification->data['designer']['name']}} has added a new design
+                                                    </a>
+                                                @elseif($notification->type === "App\\Notifications\\CompanyUserNotifications")
+                                                    <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['id']]) }}">
+                                                    {{$notification->data['company']}} has made your beloved design
+                                                    </a>
+                                                @endif
                                             @endforeach
                                             @endif
                                         </div>
@@ -294,62 +301,46 @@
                 }
             }
 
-        $(document).ready(function(){
+        $(document).ready(function()
+        {
             console.log(Laravel.userId);
-                if(Laravel.userId) {
+            if(Laravel.userId) 
+            {
                 window.Echo.private(`App.User.${Laravel.userId}`)
                 .notification((notification) => {
-                if(notification['type'] === 'App\\Notifications\\designerNotifications')
-                {
-                   // alert("notification");
-                   count= $('#count').val();
-                   count=parseInt(count)+1;
-                   $('#Notification-count').html(count);
-                   $('#count').val(count);
-                    $('#Notification-count').removeClass("hideNotification");
-                
-                    $('#notificationList').append(`
-                    <a class="dropdown-item" href="#">
-                                              ${notification['company']} has bought your ${notification['design']['title']} design
-                                            </a>
-                    `);
-                }
-                else if(notification['type'] === 'App\\Notifications\\UserNotifications')
-                {
                     count= $('#count').val();
-                    console.log(count);
                     count=parseInt(count)+1;
                     $('#Notification-count').html(count);
                     $('#count').val(count);
                     $('#Notification-count').removeClass("hideNotification");
-                    
-                        $('#notificationList').append(`
-                        <a class="dropdown-item" href="#"
-                        ">
-                        ${notification['designer_name']} has just added a new design
-                        </a>
-                        `);
-                }else if(notification['type'] === 'App\\Notifications\\CompanyUserNotifications')
+                    if(notification['type'] === 'App\\Notifications\\designerNotifications')
                     {
-                        count= $('#count').val();
-                        console.log(count);
-                        count=parseInt(count)+1;
-                        $('#Notification-count').html(count);
-                        $('#count').val(count);
-                        $('#Notification-count').removeClass("hideNotification");
-                        $('#notificationList').append(`
-                        <a class="dropdown-item" href="window.location.href="#"
-                        ">
-                        ${notification['company']} has just made a new design ${notification['design']['title']}
-                        </a>
+                    $('#notificationList').append(`
+                        <a class="dropdown-item" href="/design/${notification['design']['id']}" >
+                                                ${notification['company']} has bought your ${notification['design']['title']} design
+                                                </a>
                         `);
                     }
-            
-                   console.log(notification['type']);
+                    else if(notification['type'] === 'App\\Notifications\\UserNotifications')
+                    {
+                            $('#notificationList').append(`
+                            <a class="dropdown-item" href="/design/${notification['design_id']}">
+                            ${notification['designer']['name']} has just added a new design ${notification['design']['title']}
+                            </a>
+                            `);
+                    }
+                    else if(notification['type'] === 'App\\Notifications\\CompanyUserNotifications')
+                    {
+                            $('#notificationList').append(`
+                            <a class="dropdown-item" href="${notification['product_link']}">
+                            ${notification['company']} converted your lovely design into an amazing product ${notification['design']['title']}
+                            </a>
+                            `);
+                    }
+                
+                    console.log(notification['type']);
                 });
-            
-                   console.log(notification['type']);
-                });
+                
             }
             $(document).on('click', '.add-card', function(){
                 var design_id = $(this).data('id');

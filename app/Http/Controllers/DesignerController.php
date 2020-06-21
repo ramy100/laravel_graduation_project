@@ -51,7 +51,8 @@ class DesignerController extends Controller
         // // ->take(10)//limit the images to Top 10 favorite images.
         // // ->get();
         // ->paginate(10);
-        $designers = User::where('role','designer')->orderBy('likes', 'DESC')->paginate(10);
+        $designers = User::whereHas('profile', function($query) {
+            $query->where('is_verified','=','accepted');})->where('role','designer')->orderBy('likes', 'DESC')->paginate(10);
         // var_dump($designers);
         return view('designer.designerslist',['designers'=>$designers]);
     }

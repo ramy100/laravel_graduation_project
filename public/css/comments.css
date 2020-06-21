@@ -140,3 +140,16 @@ margin-right: 7px;
 .media-comment {
     margin-top:20px
 }
+
+ .send-icon i{
+  font-size: 20px;
+  background: #f3f3f3;
+  padding: 6px 5px;
+  border-radius: 50%;
+  color: #74C2E1;
+  height: 35px;
+  width: 35px;
+}
+.displayForm{
+  display: none;
+}

@@ -7,12 +7,12 @@ use App\Design;
 use App\Order;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use App\Http\Controllers\Auth\RegisterController;
-use Illuminate\Http\Response;
-use Illuminate\Auth\Events\Registered;
 use App\Charts\LikesChart;
+use App\DesignerRate;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\UserNotifications;
+
 
 class AdminController extends Controller
 {
@@ -45,6 +45,16 @@ class AdminController extends Controller
         ->where('is_verified','=',$state)
         ->select('users.id','name','email','website','image')->paginate(5);
         return view('dashboard.verify_users',compact('pending_users','role','state'));
+    }
+
+    /**
+     * Display a listing of the Users.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function mark_as_read()
+    {
+        Auth::guard('admin')->user()->unreadNotifications->markAsRead();
     }
 
     /**
@@ -107,6 +117,20 @@ class AdminController extends Controller
     {
         try {
             Design::where('id','=',$request->design_id)->update(['is_verified'=>$request->status]);
+            $design = Design::find($request->design_id);
+            $designer=$design->designer;
+                $designrates = DesignerRate::where('designer_id',$designer->id)->get();
+                foreach($designrates as $designrate)
+                {
+                    $user = User::find($designrate->liker_id);
+                    if($user->count() > 0)
+                    {
+                        if($designer->id != $user->id)
+                        {            
+                        $user->notify(new UserNotifications($design,$designer));
+                        }                   
+                    } 
+                }
         } catch (\Throwable $th) {
             return response('failed to change status',500);
         }

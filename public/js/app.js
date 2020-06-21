@@ -43260,13 +43260,16 @@ window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jqu
 var notifications = [];
 var NOTIFICATION_TYPES = {
   Payment: 'App\\Notifications\\designerNotifications',
-  User: "App\\Notifications\\UserNotifications"
+  User: "App\\Notifications\\UserNotifications",
+  CompanyUser: 'App\\Notifications\\CompanyUserNotifications'
 };
 
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
   key: '934f94342496700052a5',
   cluster: 'eu',
+  // key:process.env.MIX_PUSHER_APP_KEY,
+  // cluster: process.env.MIX_PUSHER_APP_CLUSTER,
   encrypted: false
 }); // const NOTIFICATION_TYPES = {
 // <<<<<<< HEAD

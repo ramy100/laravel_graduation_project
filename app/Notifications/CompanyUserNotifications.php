@@ -11,7 +11,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 class CompanyUserNotifications extends Notification implements ShouldQueue
 {
     use Queueable;
-    public $design,$company ;
+    public $design,$company,$link ;
 
     /**
      * Create a new notification instance.
@@ -19,10 +19,11 @@ class CompanyUserNotifications extends Notification implements ShouldQueue
      * @return void
      */
 
-    public function __construct($design,$company)
+    public function __construct($design,$company,$url)
     {
         $this->design=$design;
         $this->company=$company;
+        $this->link = $url;
     }
 
     /**
@@ -47,14 +48,17 @@ class CompanyUserNotifications extends Notification implements ShouldQueue
         
         return [
             'design' => $this->design,
-            'company' => $this->company,           
+            'company' => $this->company,  
+            'product_link'=>$this->link,         
         ];
     }
     public function toBroadcast($notifiable)
     {  
         return new BroadcastMessage([
             'design' => $this->design,
-            'company' => $this->company,  
+            'company' => $this->company, 
+            'product_link'=>$this->link,         
+ 
             ]);
     }
     public function toArray($notifiable)

@@ -61,17 +61,15 @@ class UserNotifications extends Notification implements ShouldQueue
     {   
         
         return [
-            'design_id' => $this->design->id,
-            'designer_name' => $this->designer->name,
-
-            
+            'design' => $this->design,
+            'designer' => $this->designer,            
         ];
     }
     public function toBroadcast($notifiable)
     {  
         return new BroadcastMessage([
-            'design_id' => $this->design->id,
-            'designer_name' => $this->designer->name,  
+            'design' => $this->design,
+            'designer' => $this->designer,  
             ]);
     }
 

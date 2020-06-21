@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Admin;
+use App\Events\RegisterationEvent;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Notifications\AdminNotifications;
 use App\Profile;
 use Illuminate\Http\Response;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Notification;
 
 class AllUsersRegisterController extends RegisterController
 {
@@ -71,7 +75,7 @@ class AllUsersRegisterController extends RegisterController
 
     protected function create_new_user(array $data,$role)
     {
-        // try {
+        try {
             DB::beginTransaction();
             if(array_key_exists("image",$data))
                 $image_path = $data['image']->store('uploads', 'public');
@@ -100,12 +104,14 @@ class AllUsersRegisterController extends RegisterController
                     'is_verified'=>'pending',
                 ]);
                 $user->createAsStripeCustomer();
+                $admins=Admin::all();
+                Notification::send($admins, new AdminNotifications($role));
+                event(new RegisterationEvent('New Pending '.$role,route('list_users',[$role,'pending']),$user->created_at));
             }
-        // } catch (\Throwable $th) {
-        //     // delete user if an error arises and return server error
-        //     DB::rollBack();
-        //     return abort(500);
-        // }
+        } catch (\Throwable $th) {
+            // delete user if an error arises and return server error
+            DB::rollBack();
+            return abort(500);}
         // commit changes if every thing goes ok
         Db::commit();
         return $user;
