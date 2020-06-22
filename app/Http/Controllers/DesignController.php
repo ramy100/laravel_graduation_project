@@ -237,19 +237,6 @@ class DesignController extends Controller
                         'image' => $filename
                     ]);
             }
-            // send Notifications to user
-            $designer=$design->designer;
-            $followers = DesignerRate::where('designer_id',$designer->id)->get();
-                foreach($followers as $follower)
-                {
-                    $user = User::find($follower->liker_id); 
-                    if($designer->id != $user->id)
-                    {
-                        $user->notify(new UserNotifications($design,$designer));
-                    }
-                
-                    
-                }
             return redirect("design/".$design->id)->with('success','Design added successfuly');
             
         }

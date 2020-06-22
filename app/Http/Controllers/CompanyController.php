@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\CompanyDesign;
 use App\Design;
 use App\User;
+use App\DesignVote;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Response;
+use App\Notifications\CompanyUserNotifications;
+
 
 
 class CompanyController extends Controller
@@ -53,6 +56,24 @@ class CompanyController extends Controller
         $user=Auth::user();
         $this->design_validator($request->all())->validate();
         event(new Registered($design = $this->create_new_design($request->all())));
+        $company = $design->company->name;
+        $design_likers = DesignVote::where('design_id',$design->design_id)->get();
+        $url = $request->link;
+        // print("*****design****");
+        // print($design->design_id);
+        // print("*****design_likers******");
+        // print($design_likers);
+        // print("******count*********");
+        // print($design_likers->count());
+        if($design_likers->count() > 0)
+        {
+            print("//////");
+            foreach($design_likers as $design_liker)
+            {            
+                $design_liker->voter->notify(new CompanyUserNotifications($design,$company,$url));
+            }     
+        }
+        // print("*********");
         return $request->wantsJson()
                     ? new Response('', 201)
                     : redirect()->route('company.shop',$user);
@@ -84,7 +105,7 @@ class CompanyController extends Controller
                 'image' => $image_path,
             ]);
         }else{
-            return abort(403,'u dont own this design');
+            return abort(403,"you don't own this design");
         }
         
         

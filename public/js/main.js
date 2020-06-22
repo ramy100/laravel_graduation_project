@@ -253,6 +253,76 @@ $(window).on('load', function() {
 			}
 		});
 	});
+	$(".featured").on("click", function (event){
+		event.preventDefault();
+		let design_id = event.target.id;
+		console.log(design_id);
+		$.ajaxSetup({
+			headers: {
+			  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		  });
 
+		$.ajax({
+			method : 'POST',
+			url : '/featuredesign',
+			data : {id: design_id},
+			success:function(data){
+				console.log("success");
+				console.log(data.design_image);	
+				console.log(event.target);
+				$('#'+design_id).hide();
+				console.log(design_id);
+				$('#featuresection').append(`<div class="col-lg-3 col-sm-6">
+				<div class="product-item" >
+				$(this).wrap("<a href='" + this.src + "'/>");
+				<img style="width:250px;height:300px;" src="/storage/${data.design_image.image}" alt="">
+				</div>
+				<a href="#">
+							<span class="glyphicon glyphicon-trash"></span>
+						  </a>
+				</div>	
+			 	`)
+
+			},
+			error:function(data){
+				console.log("error");
+				console.log(data);
+			}
+		});
+	});
+
+	$(".glyphicon-trash").on("click", function (event){
+		event.preventDefault();
+		let design_id = event.target.id;
+		console.log(":::::::::::");
+		console.log(design_id);
+		
+		$.ajaxSetup({
+			headers: {
+			  'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+			}
+		  });
+		$.ajax({
+			method : 'POST',
+			url : '/deletefeaturedesign',
+			data : {id: design_id},
+			success:function(data){
+				console.log("success");
+				console.log(data);	
+				console.log(event.target);
+				$('.glyphicon-trash#'+design_id ).hide();
+				console.log(design_id);
+			},
+			error:function(data){
+				console.log("error");
+				console.log(data);
+				console.log(event.target);
+
+
+			}
+		});
+	});
+		
 
 })(jQuery);

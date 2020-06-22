@@ -12,14 +12,6 @@ class AdminAuthController extends Controller
 {
     use AuthenticatesUsers;
 
-
-    public function index(){
-        // dd(Auth::guard('admin')->user()->name);
-        return view('dashboard.index');
-    }
-
-
-
     public function logMeOut(Request $request)
     {
         auth()->guard('admin')->logout();

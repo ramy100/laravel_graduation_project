@@ -8,10 +8,12 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 
-class UserNotifications extends Notification
+
+class UserNotifications extends Notification implements ShouldQueue
 {
     use Queueable;
     public $design,$designer;
+
 
     /**
      * Create a new notification instance.
@@ -22,8 +24,6 @@ class UserNotifications extends Notification
     {
         $this->design=$design;
         $this->designer=$designer;
-
-        //
     }
 
     /**
@@ -34,7 +34,7 @@ class UserNotifications extends Notification
      */
     public function via($notifiable)
     {
-       return ['database','broadcast'];
+        return ['database','broadcast'];
     }
 
     // /**
@@ -58,21 +58,18 @@ class UserNotifications extends Notification
      * @return array
      */
     public function toDatabase($notifiable)
-    {   print("////////********************////////////////***************************");
-        // var_dump($this->designer);
+    {   
+        
         return [
-            'design_id' => $this->design->id,
-            'designer_name' => $this->designer->name,
-
-            
+            'design' => $this->design,
+            'designer' => $this->designer,            
         ];
     }
     public function toBroadcast($notifiable)
-    {   print("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
-        // var_dump($this->designer);
+    {  
         return new BroadcastMessage([
-            'design_id' => $this->design->id,
-            'designer_name' => $this->designer->name,  
+            'design' => $this->design,
+            'designer' => $this->designer,  
             ]);
     }
 
@@ -82,10 +79,10 @@ class UserNotifications extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toArray($notifiable)
-    {
-        return [
-            //
-        ];
-    }
+    // public function toArray($notifiable)
+    // {
+    //     return [
+    //         //
+    //     ];
+    // }
 }

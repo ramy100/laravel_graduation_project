@@ -65,7 +65,9 @@ Route::resource('company', 'CompanyController')->except([
 Route::resource('user','AllUsersUpdateController')->only([
     'update','edit'
 ]);
-Route::get('/featuredesign/{design}','DesignerController@featuredesign')->name('featuredesign');
+Route::post('/featuredesign','DesignerController@featuredesign')->name('featuredesign');
+Route::post('/deletefeaturedesign','DesignerController@featuredesign')->name('deletefeaturedesign');
+// Route::get('/featuredesign/{design}','DesignerController@featuredesign')->name('featuredesign');
 Route::post('savelikes', 'DesignerController@savelikes')->name('savelikes');
 Route::resource('designer', 'DesignerController')->except([
     'create','store'
@@ -96,7 +98,7 @@ Route::resource('user','ProfileController')->only([
         Route::post('do-login', 'AdminAuthController@adminLogin')->name('adminDologin');
         
         Route::group(['middleware' => 'admin'], function(){
-            Route::get('/', 'AdminAuthController@index')->name('dashboard');
+            Route::get('/', 'AdminController@index')->name('dashboard');
             Route::post('logout', 'AdminAuthController@logMeOut')->name('admin.logout');
             Route::resource('tag', 'TagController');
             Route::resource('material', 'MaterialController');

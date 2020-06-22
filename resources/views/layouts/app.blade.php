@@ -36,6 +36,9 @@
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
+            {{-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script> --}}
     <style type="text/css">
         #Notifications::after {
             content: none;
@@ -51,12 +54,15 @@
         ]); ?>
 
     </script>
-     @if(!auth()->guest())
-        <script>
-            window.Laravel.userId = <?php echo auth()->user()->id; ?>
-        </script>
+    @if(!auth()->guest())
+
+    <script>
+        window.Laravel.userId = <?php echo auth()->user()->id; ?>
+    </script>
+
     @endif
     @yield('styles')
+     
 
 
 </head>
@@ -66,6 +72,11 @@
             @if (Auth::user()->email_verified_at === null)
             <div class="alert alert-success" role="alert">
                 <strong>Your email is not verified yet please check your email</strong>
+            </div>
+            @endif
+            @if (Auth::user()->profile->is_verified != 'accepted')
+            <div class="alert alert-success" role="alert">
+            <strong>Your profile is not accepted yet !</strong>
             </div>
             @endif
         @endauth
@@ -96,27 +107,37 @@
 
                                         <span id="Notification-count" class="{{ (Auth::user()->unreadNotifications->count()  <= 0) ? ' hideNotification': '' }} ">{{ Auth::user()->unreadNotifications->count() }}</span>
 
-                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Notifications" id="notificationList">
+                                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="Notifications" id="notificationList">                                           
+                                           
                                             @if( Auth::user()->role == "designer") 
                                                 @foreach (Auth::user()->unreadNotifications as $notification)
+                                                @if($notification->type === "App\\Notifications\\designerNotifications")
                                                 <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['id']]) }}">
                                                   {{$notification->data['company']}} has bought your {{ $notification->data['design']['title'] }} design
                                                 </a>
-                    
-                                                @endforeach
-                                            @elseif( Auth::user()->role == "user")
-                                                @foreach (Auth::user()->unreadNotifications as $notification)
-                                                <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design_id']]) }}">
-                                                  {{$notification->data['designer_name']}} has added a new design
-                                                </a>
-                                                @endforeach
+                                                @endif
+                                            @endforeach 
+                                            @elseif(Auth::user()->role == "user")
+                                            @foreach (Auth::user()->unreadNotifications as $notification)
+                                                @if($notification->type === "App\\Notifications\\UserNotifications")
+                                                    <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['id']]) }}">
+                                                    {{$notification->data['designer']['name']}} has added a new design {{$notification['design']['title']}}
+                                                    </a>
+                                                @elseif($notification->type === "App\\Notifications\\CompanyUserNotifications")
+                                                    <a class="dropdown-item" href="{{ route('design.show',['design'=>$notification->data['design']['id']]) }}">
+                                                    {{$notification->data['company']}} has made your beloved design
+                                                    </a>
+                                                @endif
+                                            @endforeach
                                             @endif
-
                                         </div>
                                 </div>
                                 @if( $user->role == "designer")
                                 <div style="display: inline;margin-right: 20px;"> 
                                 <a href="{{ route('designer.show',['designer'=>$user->id]) }}" style="color: black;"> Profile</a>
+                                <button type="button" class="badge badge-dark p-2 mb-5">
+                                    Balance <span class="badge badge-light">{{Auth::user()->balance->balance}}</span>
+                                </button>
                                 </div>
                                 @elseif($user->role == "company")
                                 <div style="display: inline;margin-right: 20px;"> 
@@ -126,7 +147,6 @@
                                 <div style="display: inline;margin-right: 20px;"> 
                                     <a href="{{ route('user.show',['user'=>$user->id]) }}" style="color: black;"> Profile</a>
                                 </div>
-                                
                                 @endif
                             @endauth
                             @guest
@@ -269,9 +289,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
         integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
-        crossorigin="anonymous"></script>
-    
-
+        crossorigin="anonymous"></script>  
 
     <script>
         function MarkAsRead()
@@ -291,16 +309,19 @@
                 }
             }
 
-        $(document).ready(function(){
+        $(document).ready(function()
+        {
             console.log(Laravel.userId);
-                if(Laravel.userId) {
+            if(Laravel.userId) 
+            {
                 window.Echo.private(`App.User.${Laravel.userId}`)
                 .notification((notification) => {
                     count= $('#count').val();
-                   count=parseInt(count)+1;
-                   $('#Notification-count').html(count);
-                   $('#count').val(count);
+                    count=parseInt(count)+1;
+                    $('#Notification-count').html(count);
+                    $('#count').val(count);
                     $('#Notification-count').removeClass("hideNotification");
+
                 if(notification['type'] === 'App\\Notifications\\designerNotifications')
                 {
                    
@@ -310,17 +331,26 @@
                                             </a>
                     `);
                 }
-                else if(notification['type'] === 'App\\Notifications\\UserNotifications')
+                    else if(notification['type'] === 'App\\Notifications\\UserNotifications')
                     {
-
-                        $('#notificationList').append(`
-                        <a class="dropdown-item" href="#" style="background-color:lightgray">
-                        ${notification['designer_name']} has just added a new design
-                        </a>
-                        `);
+                            $('#notificationList').append(`
+                            <a class="dropdown-item" href="/design/${notification['design_id']}" style="background-color:lightgray">
+                            ${notification['designer']['name']} has just added a new design ${notification['design']['title']}
+                            </a>
+                            `);
                     }
-                   console.log(notification['type']);
+                    else if(notification['type'] === 'App\\Notifications\\CompanyUserNotifications')
+                    {
+                            $('#notificationList').append(`
+                            <a class="dropdown-item" href="${notification['product_link']}">
+                            ${notification['company']} converted your lovely design into an amazing product ${notification['design']['title']}
+                            </a>
+                            `);
+                    }
+                
+                    console.log(notification['type']);
                 });
+                
             }
             $(document).on('click', '.add-card', function(){
                 var design_id = $(this).data('id');
@@ -341,8 +371,64 @@
 
         });
     </script>
+     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+     <script src="//js.pusher.com/3.1/pusher.min.js"></script>
+     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+ 
+     <script type="text/javascript">
+       var notificationsWrapper   = $('.dropdown-notifications');
+       var notificationsToggle    = notificationsWrapper.find('a[data-toggle]');
+       var notificationsCountElem = notificationsToggle.find('i[data-count]');
+       var notificationsCount     = parseInt(notificationsCountElem.data('count'));
+       var notifications          = notificationsWrapper.find('ul.dropdown-menu');
+ 
+       if (notificationsCount <= 0) {
+         notificationsWrapper.hide();
+       }
+ 
+       // Enable pusher logging - don't include this in production
+       // Pusher.logToConsole = true;
+ 
+       var pusher = new Pusher('API_KEY_HERE', {
+         encrypted: true
+       });
+ 
+       // Subscribe to the channel we specified in our Laravel Event
+       var channel = pusher.subscribe('status-liked');
+ 
+       // Bind a function to a Event (the full Laravel class)
+       channel.bind('App\\Events\\StatusNotifin', function(data) {
+         var existingNotifications = notifications.html();
+         var avatar = Math.floor(Math.random() * (71 - 20 + 1)) + 20;
+         var newNotificationHtml = `
+           <li class="notification active">
+               <div class="media">
+                 <div class="media-left">
+                   <div class="media-object">
+                     <img src="https://api.adorable.io/avatars/71/`+avatar+`.png" class="img-circle" alt="50x50" style="width: 50px; height: 50px;">
+                   </div>
+                 </div>
+                 <div class="media-body">
+                   <strong class="notification-title">`+data.message+`</strong>
+                   <!--p class="notification-desc">Extra description can go here</p-->
+                   <div class="notification-meta">
+                     <small class="timestamp">about a minute ago</small>
+                   </div>
+                 </div>
+               </div>
+           </li>
+         `;
+         notifications.html(newNotificationHtml + existingNotifications);
+ 
+         notificationsCount += 1;
+         notificationsCountElem.attr('data-count', notificationsCount);
+         notificationsWrapper.find('.notif-count').text(notificationsCount);
+         notificationsWrapper.show();
+       });
+     </script>
 
      @stack('scripts')
+
 
 </body>
 </html>
