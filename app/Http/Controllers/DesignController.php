@@ -322,6 +322,7 @@ class DesignController extends Controller
         ]);
         $design=Design::find($design->id);
         $design->update($request->all());
+        $design->is_verified="pending";
         if ( $request->hasFile('sourceFile') ) 
         {
             $file=$request->file('sourceFile');

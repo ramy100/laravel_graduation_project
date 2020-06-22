@@ -47,8 +47,34 @@
                 @endif
                 @if($state === 'accepted' || $state === 'pending')
                     <td class="align-middle">
-                        <button type="button" class="btn btn-danger" onclick="change_verification(this,{{$design->id}},'rejected')">Reject</button>
+                        <button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#RejectionModal" id="rejectBtn">Reject</button>
                     </td>
+                    <!-- Modal -->
+                    <div class="modal fade" id="RejectionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Design Confirmation </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                        <div class="modal-body">
+                            <!-- <form id="RejectionForm" method="POST" action="#"> -->
+                                    <!-- @csrf -->
+                                <input type="text" placeholder="To" name="To" value="{{ $design->designer->email }}" class="form-control  reciever" autofocus>
+                                <input type="text" placeholder="Subject" name="Subject"  class="form-control mt-2 Subject" autofocus>
+                                <input type="hidden" value="{{$design->id}}" id="design_id">
+                                <textarea  name="Message" placeholder="Message" class="form-control mb-2 mt-2 Message" rows="4" cols="50" autofocus></textarea>
+                              
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" type="submit" onclick="change_verification($('#rejectBtn')[0],{{$design->id}},'rejected')" >Send</button>
+                              </div>
+                            <!-- </form> -->
+                        </div>
+                        </div>
+                      </div>
+                    </div>
                 @endif
             </tr>
             @empty
@@ -70,6 +96,19 @@
 @push('scripts')
     <script>
         function change_verification(btn,design_id,status) {
+            let reciever=$('.reciever').val();
+            if(status == 'rejected')
+            {
+                Subject=$('.Subject').val();
+                Message=$('.Message').val();
+            }
+            else if(status == 'accepted')
+            {
+                Subject= "Add Design confirmation";
+                Message="Your design has been accepted ."
+            }
+            console.log(btn);
+            console.log(Message);
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -81,10 +120,15 @@
                     type:'POST',
                     data:{
                         design_id,
-                        status
+                        status,
+                        reciever,
+                        Subject,
+                        Message
                     },success:function (data) {
+                        console.log(data);
+                        $('#RejectionModal').modal('hide');
                         $(btn).parents('tr').hide('1000');
-                        alert(data);
+                        // alert(data);
                     },error:function (responseJSON){
                         alert(responseJSON.responseText);
                     }

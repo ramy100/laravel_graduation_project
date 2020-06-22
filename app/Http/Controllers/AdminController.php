@@ -151,8 +151,15 @@ class AdminController extends Controller
      */
     public function change_Design_verification(Request $request)
     {
+        // var_dump($request->reciever);
+        $email=$request->reciever;
+        $subject=$request->Subject;
+        $message=$request->Message;
+        $id=$request->design_id;
+        $design=Design::find($id);
         try {
             Design::where('id','=',$request->design_id)->update(['is_verified'=>$request->status]);
+            \Mail::to($email)->send(new \App\Mail\designConfirmation(['message' => $message,'subject' =>$subject,'design' => $design,'status' =>$request->status]));
         } catch (\Throwable $th) {
             return response('failed to change status',500);
         }
