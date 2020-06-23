@@ -47,7 +47,7 @@
 	    // 	// getValues();
 	    // 	console.log(tag);
 	    // });
-		function getValues(){
+		function getValues(page){
 				let category = domselected[0];
 				let min=$('#minamount').val();
 				let max=$('#maxamount').val();
@@ -78,56 +78,10 @@
 			      });
 				$.ajax({
 		        type: 'GET',
-		        url: url,
+		        url: url+'&filtered=' + page,
 		        success: function (data) {
 		            console.log(data);
-		            console.log(data.user_exist);
-		            console.log(data.user_role);
-		            console.log(data.tag);
-		            let designs=data.designs;
-		            let product="";
-		            $('.designs').html("");
-		            designs.forEach((element) => {
-		            	$('.designs').append(`
-		            	<div class="col-lg-4 col-sm-6">
-							<div class="product-item">
-								<div class="pi-pic">
-									${ element.state != "sketch" ? '<div class="tag-sale">Sold</div>' : ''}
-									<a href="design/${element.id}">
-										<img src="/storage/${element.image}" alt="Design Image" id="designImage">
-									</a>
-									
-									<div class="pi-links">
-										${data.user_exist && data.user_role == "company" && element.state == "sketch" ? 
-										`<div class="pi-links">
-											<a href="javascript:void(0)" data-id="${element.id}" class="add-card">
-											<i class="flaticon-bag"></i><span>ADD TO CART</span>
-											</a>
-										</div>`
-										:''}
-										${data.user_exist && data.user_role == "user" && element.state == "sketch" ?
-										 `<a href="design/${element.id}" class="wishlist-btn">
-										 <i class="flaticon-heart"></i>
-										 </a>`
-										 :''}
-									</div>
-								</div>
-								<div class="pi-text">
-									${data.user_exist && data.user_role != "user" ?
-									 `<h6>&dollar;${element.price} </h6>`:''}
-									
-									<a href="design/${element.id}"><h5>${element.title} </h5></a>
-									<div class="designer-name">
-									<i style="font-style: italic;">By</i> 
-									<a href="/designer/${element.designer.id}" class="designer">${element.designer.name}</a>
-									</div>
-					
-								</div>
-
-							</div>
-						</div>
-		            		`);
-		            });
+		            $('.designs').html(data);
 		        },
 		        error: function (XMLHttpRequest) {
 		        }
@@ -151,4 +105,17 @@
 			$("#materials li").click(function() {
 			  $(this).addClass("selected");
 			});
+
+	        $(document).on('click', '.pagination a', function(e) {
+	        	if($(this).attr('href').split('filtered=')[1])
+	        	{
+	        		console.log($(this).attr('href').split('filtered=')[1]);
+		        	let page=$(this).attr('href').split('filtered=')[1];
+		        	getValues(page);
+		            e.preventDefault();
+	        	}
+
+	        	
+	        });
+
 		});

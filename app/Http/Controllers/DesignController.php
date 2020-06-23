@@ -25,27 +25,20 @@ class DesignController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function designs(Request $request)
+    public function index(Request $request)
     {
-        // $desings=Design::paginate(6);
-        // $desings=Design::all()->where('is_verified','=','accepted');
-        $desings=Design::all();
+        $desings=Design::where('is_verified','=','accepted')->paginate(6, ['*'], 'designs');
         $maxPrice=Design::all()->max('price');
         $minPrice=Design::all()->min('price');
         $tags=Tag::all();
         $materials=Material::all();
         $categoryFiltered=False;
         $categoryType="";
-         if ($request->ajax()) 
-        {
-            return $this->filteration($request);
-            // return view('designs.listDesigns', ['desings' => $newArray])->render();
-        }
         return view('designs.index',compact('categoryType','categoryFiltered','materials','tags','desings','maxPrice','minPrice'));
         //
     }
 
-    public function filteration($request)
+    public function designs(Request $request)
     {
             $minPrice=$request->min;
             $minarr=explode('$', $minPrice);
@@ -57,10 +50,7 @@ class DesignController extends Controller
             $filterType=$request->filterType;
             $tag=$request->tag;
             $material=$request->material;
-            $newArray=[];
-            $userRole="";
-            $userExist=Auth::check();
-            $filteredDesigns=Design::whereBetween('price',[$min,$max]);
+            $filteredDesigns=Design::where('is_verified','=','accepted')->whereBetween('price',[$min,$max]);
             if($category)
             {
                 $filteredDesigns->where('category','=',$category);
@@ -84,22 +74,10 @@ class DesignController extends Controller
                      $filteredDesigns->orderBy('created_at', 'desc');
                 }
             }
-            foreach($filteredDesigns->get() as $design){ 
-            $design->{'image'}=$design->images()->first()->image;
-            $design->{'designer'}=$design->designer->name;
-            array_push($newArray,$design);
-            }
-            if($userExist)
-            {
-                $userRole=Auth::user()->role;
-                
-            }
-           return response()->json([
-            'designs' => $newArray,
-            'user_role'=>$userRole,
-            'user_exist'=>$userExist,
-        ]);
+            $desings=$filteredDesigns->paginate(6, ['*'], 'filtered');
+            return view('designs.listDesigns',compact('desings'));
     }
+
     public function search(Request $request)
     {
         $SearchWord=$request->word;

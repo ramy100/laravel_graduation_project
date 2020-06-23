@@ -40,7 +40,7 @@ Route::get('/search', 'DesignController@search')->name('search');
 Route::get('design/category/{type?}', 'DesignController@category')->name('category');
 Route::post('design/comment', 'DesignController@comment');
 Route::post('/design/vote', 'DesignController@vote')->middleware('check-role:user');
-Route::get('/designs/{min?}/{max?}/{category?}/{tag?}/{material?}/{filterType?}', 'DesignController@designs')->name('design.designs');
+Route::get('/designs/{min?}/{max?}/{category?}/{tag?}/{material?}/{filterType?}/{filtered?}', 'DesignController@designs')->name('design.designs');
 // Route::post('design/filterBy', 'DesignController@filterBy');
 Route::resource('design', 'DesignController');
 

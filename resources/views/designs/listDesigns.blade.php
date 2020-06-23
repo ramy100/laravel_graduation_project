@@ -1,4 +1,5 @@
-				<div class="col-lg-12 mb-2 row designs">
+			<div class="designs">
+				<div class="col-lg-12 mb-2 row ">
 						@forelse($desings as $design)
 						<div class="col-lg-4 col-sm-6">
 							<div class="product-item">
@@ -39,6 +40,7 @@
 						@endforelse
 					</div>
 
-					{{-- <div class="row">
+					<div class="row">
 							 {!! $desings->links() !!}  
-					</div>	--}}
+					</div>	
+			</div>

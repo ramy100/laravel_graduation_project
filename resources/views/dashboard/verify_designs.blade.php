@@ -57,7 +57,7 @@
                 @endif
                 @if($state === 'accepted' || $state === 'pending')
                     <td class="align-middle">
-                        <button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#RejectionModal" id="rejectBtn">Reject</button>
+                        <button type="button" class="btn btn-danger"  data-toggle="modal" data-target="#RejectionModal" id="{{ $design->id }}">Reject</button>
                     </td>
                 @endif
             </tr>
@@ -95,7 +95,7 @@
                         <textarea  name="Message" placeholder="Message" class="form-control mb-2 mt-2 Message" rows="4" cols="50" autofocus></textarea>
                                       
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary" type="submit" onclick="change_verification($('#rejectBtn')[0],{{$design->id}},'rejected')" >Send</button>
+                            <button type="button" class="btn btn-primary" type="submit" onclick="change_verification($('#'+{{ $design->id }}),{{$design->id}},'rejected')" >Send</button>
                         </div>
                      </form>
                 </div>

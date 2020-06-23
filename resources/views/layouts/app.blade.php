@@ -209,7 +209,7 @@
                 <ul class="main-menu">
                     <li><a href="/">Home</a></li>
                     <li><a href="{{ route('designer.index')}}">Designers</a></li>
-                    <li><a href="{{ route('design.designs')}}">Designs</a></li>
+                    <li><a href="{{ route('design.index')}}">Designs</a></li>
                     <li><a href="{{route('company.index')}}">Companies</a></li>
                     <li><a href="#">Categories</a>
                         <ul class="sub-menu">
