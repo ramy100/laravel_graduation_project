@@ -187,7 +187,16 @@ class AdminController extends Controller
      */
     public function change_Design_verification(Request $request)
     {
-        // var_dump($request->reciever);
+        $validator = \Validator::make($request->all(), [
+            'reciever' => 'required',
+            'Subject' => 'required',
+            'Message' => 'required',
+        ]);
+        
+        if ($validator->fails())
+        {
+            return response()->json(['errors'=>$validator->errors()->all()]);
+        }
         $email=$request->reciever;
         $subject=$request->Subject;
         $message=$request->Message;

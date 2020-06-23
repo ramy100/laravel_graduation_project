@@ -29,6 +29,6 @@ class designConfirmation extends Mailable
      */
     public function build()
     {
-       return $this->from('mydesignteam4@gmail.com')->subject($this->subject)->view('emails.designConfirmation');
+       return $this->from('mydesignteam4@gmail.com')->subject($this->mailInfo['subject'])->view('emails.designConfirmation');
     }
 }
