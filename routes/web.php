@@ -117,3 +117,4 @@ Route::resource('user','ProfileController')->only([
 
     });
 });
+

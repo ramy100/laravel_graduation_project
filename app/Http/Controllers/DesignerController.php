@@ -54,7 +54,8 @@ class DesignerController extends Controller
         $designers = User::whereHas('profile', function($query) {
             $query->where('is_verified','=','accepted');})->where('role','designer')->orderBy('likes', 'DESC')->paginate(10);
         // var_dump($designers);
-        return view('designer.designerslist',['designers'=>$designers]);
+        return view('designer.index', compact('designers'));
+        // return view('designer.designerslist',['designers'=>$designers]);
     }
 
     /**
