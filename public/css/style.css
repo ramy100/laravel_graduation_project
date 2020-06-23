@@ -20,9 +20,13 @@ body {
 	.filter+.ui-selectmenu-button{  
    background: rgb(12,27,37);     
    color: white;
-   width: 130px;
+   width:130px !important;
    margin-right: 30px;
    float: right;
+}
+.filter+.ui-selectmenu-button:hover{  
+   background: rgb(12,27,37);     
+   color: white;
 }
 .designer-name{
 	    color: hsl(0, 0%, 60%);
