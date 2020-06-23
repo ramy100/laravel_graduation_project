@@ -90,7 +90,10 @@ class MaterialController extends Controller
      */
     public function destroy(Material $material)
     {
+        if(count($material->designs)){
+            return redirect('admin/material')->with('deleted',"Can't delete this because it has been added to a design");
+        }
         $material->delete();
-        return redirect('admin/material')->with('deleted','material has been deleted successfully :(');
+        return redirect('admin/material')->with('deleted','Material has been deleted successfully ');
     }
 }
