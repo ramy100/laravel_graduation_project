@@ -129,21 +129,30 @@
 				<div class="section-title">
 					<h2>RELATED Designs</h2>
 				</div>
-				<div class="product-slider owl-carousel">
-					@foreach($RelatedDesigns as $design)
-					<div class="product-item">
-						<div class="pi-pic">
-							<a href="{{route('design.show', ['design' => $design->id])}}"><img id="designImage" src="{{asset ('storage/'.$design->images->first()->image) }}" alt=""></a>
-						</div>
-						<div class="pi-text ">
-							@if((Auth::user())&&(Auth::user()->role != "user"))
-							<h6>&dollar;{{ $design->price }}</h6>
-							@endif
-							<p>{{ $design->title }} </p>
-						</div>
+				@if(count($RelatedDesigns) == 1)
+					<div class="product-item" style="text-align: center;">
+							<div class="pi-pic">
+								<a href="{{route('design.show', ['design' => $RelatedDesigns->first()->id])}}"><img style="height:300px;width:250px;"src="{{asset ('storage/'.$RelatedDesigns->first()->images->first()->image) }}" alt=""></a>
+							</div>
+							</br>
 					</div>
-					@endforeach
-				</div>
+				@else
+					<div class="product-slider owl-carousel">
+						@foreach($RelatedDesigns as $design)
+						<div class="product-item">
+							<div class="pi-pic">
+								<a href="{{route('design.show', ['design' => $design->id])}}"><img id="designImage" src="{{asset ('storage/'.$design->images->first()->image) }}" alt=""></a>
+							</div>
+							<div class="pi-text ">
+								@if((Auth::user())&&(Auth::user()->role != "user"))
+								<h6>&dollar;{{ $design->price }}</h6>
+								@endif
+								<p>{{ $design->title }} </p>
+							</div>
+						</div>
+						@endforeach
+					</div>
+				@endif
 			</div>
 		</section>
 	@endif
