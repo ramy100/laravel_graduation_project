@@ -14,7 +14,7 @@
                             @if (Auth::guest())
                                 <a href="{{ route('login')}}" class="site-btn sb-white">VOTE NOW</a>
                             @else
-                                <a href="{{ route('design.designs')}}" class="site-btn sb-white">VOTE NOW</a>
+                                <a href="{{ route('design.index')}}" class="site-btn sb-white">VOTE NOW</a>
                             @endif
                         </div>
                     </div>

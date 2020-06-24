@@ -96,7 +96,7 @@ class DesignController extends Controller
         // $desings=Design::paginate(9);
         if($type != null)
         {
-            $desings=Design::all()->where('category','=',$type);
+            $desings=Design::where('category','=',$type)->where('is_verified','=','accepted')->paginate(6, ['*'], 'filtered');
             $maxPrice=Design::all()->max('price');
             $minPrice=Design::all()->min('price');
             $tags=Tag::all();
