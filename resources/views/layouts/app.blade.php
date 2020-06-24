@@ -72,11 +72,14 @@
                 <strong>Your email is not verified yet please check your email</strong>
             </div>
             @endif
-            @if (Auth::user()->profile->is_verified != 'accepted')
-            <div class="alert alert-success" role="alert">
-            <strong>Your profile is not accepted yet !</strong>
-            </div>
+            @if (Auth::user()->profile)
+                @if (Auth::user()->profile->is_verified != 'accepted')
+                <div class="alert alert-success" role="alert">
+                <strong>Your profile is not accepted yet !</strong>
+                </div>
+                @endif
             @endif
+
         @endauth
         <!-- Header section -->
     <header class="header-section">

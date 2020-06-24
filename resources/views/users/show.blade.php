@@ -18,7 +18,7 @@
 					</div>
 				</div>
 				<div class="col-lg-6 product-details">
-					<h2 class="p-title ">{{$user->name}}</h2>
+					<h2 class="mb-3">{{$user->name}}</h2>
 					<a name="" id="" class="btn btn-primary" href="{{ route('user.edit',$user) }}" role="button">Edit Profile</a>
 
 					<div id="accordion" class="accordion-area">

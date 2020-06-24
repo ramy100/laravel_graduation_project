@@ -57,6 +57,7 @@
             @endforeach
         </tbody>
     </table>
+    {{ $materials->links() }}
 </div>
 
 @endsection
