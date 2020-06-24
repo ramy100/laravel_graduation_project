@@ -28,6 +28,13 @@ body {
    background: rgb(12,27,37);     
    color: white;
 }
+.badge-light{
+	size: 200px;
+    font-size: 15px;
+    color: gray;
+    font-weight: 400;
+    font-family: monospace;
+}
 .designer-name{
 	    color: hsl(0, 0%, 60%);
     height: 18px;

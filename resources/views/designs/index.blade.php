@@ -65,8 +65,12 @@
 
 				<div class="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0">
 					<div class="row">
-						<div class="col-lg-12 mb-2">
-							<div class="dropdown show">
+						<div class="col-lg-12 mb-2 row">
+							
+							<div class="col-lg-6 filterTags">						  
+								
+							</div>
+							<div class="dropdown show col-lg-6">
 								 <select class="btn filter2 filter" role="menu" aria-labelledby="dropdownMenuLink">
 								 	<option selected disabled> Sort</option>
 								  	<option> <a class="dropdown-item " href="#" >Top Rated</a></option>

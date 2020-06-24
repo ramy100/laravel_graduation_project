@@ -11,16 +11,58 @@
                         return $(this).text();
 
                     });
-					console.log(tagSelected[0]);
+					if($('.filterTags').children('.tags')[0])
+					{
+						$('.filterTags').children('.tags').html(`${tagSelected[0]}<i class="close fa fa-times"></i>`);
+					}
+					else
+					{
+						$('.filterTags').append(`<span class="badge badge-pill badge-light tags" style="size: 200px" onclick="deleteFilters('tags',this)">
+						${tagSelected[0]}<i class="close fa fa-times" ></i>
+						</span>`);
+					}
 					getValues();
 			      }	    
 		});
+		function deleteFilters(filter,sp)
+		{
+			if(filter == 'tags')
+			{
+				console.log(filter);	
+				console.log($('#tags .ui-selected'));
+				$('#tags .ui-selected').removeClass('ui-selected');
+				tagSelected="";
+			}
+			else if(filter == 'materials')
+			{
+				$('#materials .ui-selected').removeClass('ui-selected');
+				materialSelected="";
+			}
+			else if(filter == 'categories')
+			{
+				$('#selectable .ui-selected').removeClass('ui-selected');
+				domselected="";
+			}
+			sp.remove();
+			getValues();
+		}
+
 		$( "#materials" ).selectable({
 		    	 stop: function() {
 			        materialSelected = $("#materials .ui-selected").map(function() {
                         return $(this).text();
                     });
 					console.log(materialSelected[0]);
+					if($('.filterTags').children('.materials')[0])
+					{
+						$('.filterTags').children('.materials').html(`${materialSelected[0]}<i class="close fa fa-times"></i>`);
+					}
+					else
+					{
+						$('.filterTags').append(`<span class="badge badge-pill badge-light materials" style="size: 200px" onclick="deleteFilters('materials',this)">
+						${materialSelected[0]}<i class="close fa fa-times" ></i>
+						</span>`);
+					}
 					getValues();
 			      }	    
 		});
@@ -32,12 +74,23 @@
 
                     });
 					console.log(domselected[0]);
+					if($('.filterTags').children('.categories')[0])
+					{
+						$('.filterTags').children('.categories').html(`${domselected[0]}<i class="close fa fa-times"></i>`);
+					}
+					else
+					{
+						$('.filterTags').append(`<span class="badge badge-pill badge-light categories" style="size: 200px" onclick="deleteFilters('categories',this)">
+						${domselected[0]}<i class="close fa fa-times" ></i>
+						</span>`);
+					}
 					getValues();
 			      }	    
 		});
 		$( ".filter" ).selectmenu({
 	      change: function( event, data ) {
 	      filters=data.item.value;
+	      
 	      getValues();
 	       console.log(data.item.value);
 	      }
@@ -80,7 +133,7 @@
 		        type: 'GET',
 		        url: url+'&filtered=' + page,
 		        success: function (data) {
-		            console.log(data);
+		            // console.log(data);
 		            $('.designs').html(data);
 		        },
 		        error: function (XMLHttpRequest) {
