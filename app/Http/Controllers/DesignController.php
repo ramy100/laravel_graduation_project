@@ -96,7 +96,7 @@ class DesignController extends Controller
         // $desings=Design::paginate(9);
         if($type != null)
         {
-            $desings=Design::all()->where('category','=',$type);
+            $desings=Design::where('category','=',$type)->where('is_verified','=','accepted')->paginate(6, ['*'], 'filtered');
             $maxPrice=Design::all()->max('price');
             $minPrice=Design::all()->min('price');
             $tags=Tag::all();
@@ -234,7 +234,7 @@ class DesignController extends Controller
         $tag=$design->tag->name;
         $voted="False";
         $designImages=DesignImage::all()->where('design_id','=',$id);
-        $RelatedDesigns=Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->where('id','!=',$design->id)->get();
+        $RelatedDesigns=Design::whereHas('tag', function($query) use ($tag) {$query->where('name','=',$tag);})->where('is_verified','=','accepted')->where('id','!=',$design->id)->get();
         $votes=$design->votes;
         foreach ($votes as $vote) {
             if($vote->user_id == Auth::id())

@@ -14,7 +14,7 @@
                             @if (Auth::guest())
                                 <a href="{{ route('login')}}" class="site-btn sb-white">VOTE NOW</a>
                             @elseif($role == 'user')
-                                <a href="{{ route('design.designs')}}" class="site-btn sb-white">VOTE NOW</a>
+                                <a href="{{ route('design.index')}}" class="site-btn sb-white">VOTE NOW</a>
                             @endif
                         </div>
                     </div>
@@ -182,7 +182,7 @@
                 @endforeach
             </div>
             <div class="text-center pt-5">
-                <a href="{{ route('design.designs')}}" class="site-btn sb-line sb-dark">SEE MORE</a>
+                <a href="{{ route('design.index')}}" class="site-btn sb-line sb-dark">SEE MORE</a>
             </div>
         </div>
     </section>
@@ -200,7 +200,7 @@
                         <div class="pi-pic">
                             <a href="{{route('company.show', $company)}}" >
                                 {{-- <img src="{{ asset('images/product/1.jpg') }}" alt=""> --}}
-                                <img src="{{asset('storage/'.$company->image)}}" alt="">
+                                <img src="{{asset('storage/'.$company->image)}}" alt="" style="height:200px;width:200px;border-radius: 50%">
                             </a>
                             <div class="pi-links">
                                 <a href="{{route('company.show', $company)}}" class="btn btn-info">KNOW MORE</a>
