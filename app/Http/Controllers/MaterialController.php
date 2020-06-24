@@ -15,7 +15,7 @@ class MaterialController extends Controller
      */
     public function index()
     {
-        $materials = Material::all();
+        $materials = Material::paginate(10);
         return view('materials.index',compact('materials'));
     }
 

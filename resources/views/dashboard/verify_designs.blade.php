@@ -4,7 +4,7 @@
 
 @csrf
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800">Verify {{$state}} Designs</h1>
+<h1 class="h3 mb-2 text-gray-800">Verify {{$state}} designs</h1>
 <p class="mb-4">This is a list of designs which needs to be verified.</a>.</p>
 
 <!-- DataTales Example -->

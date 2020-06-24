@@ -8,8 +8,8 @@
 @endif
 @csrf
 <!-- Page Heading -->
-<h1 class="h3 mb-2 text-gray-800">Verify {{ ucfirst(trans($state)) }} {{ ucfirst(trans($role)) }}</h1>
-<p class="mb-4">This is a list of designs which needs to be verified.</a>.</p>
+<h1 class="h3 mb-2 text-gray-800">Verify {{ trans($state) }} {{ trans($role) }}</h1>
+<p class="mb-4">This is a list of {{ trans($role) }}s which needs to be verified.</a>.</p>
 
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
