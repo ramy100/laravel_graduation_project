@@ -72,10 +72,12 @@
                 <strong>Your email is not verified yet please check your email</strong>
             </div>
             @endif
-            @if (Auth::user()->profile->is_verified != 'accepted')
-            <div class="alert alert-success" role="alert">
-            <strong>Your profile is not accepted yet !</strong>
-            </div>
+            @if(Auth::user()->role != 'user')
+                @if (Auth::user()->profile->is_verified != 'accepted')
+                <div class="alert alert-success" role="alert">
+                <strong>Your profile is not accepted yet !</strong>
+                </div>
+                @endif
             @endif
         @endauth
         <!-- Header section -->
@@ -134,9 +136,9 @@
                                 <div style="display: inline;margin-right: 20px;"> 
                                 <a href="{{ route('designer.show',['designer'=>$user->id]) }}" style="color: black;"> Profile</a>
 
-                               {{-- <button type="button" class="badge badge-dark p-2 mb-5">
+                                <a type="button" class="badge badge-success p-1 " href="{{ route('balance',$user) }}">
                                     Balance <span class="badge badge-light">{{Auth::user()->balance->balance}}</span>
-                                </button> --}}
+                                </a>
                                 </div>
                                 @elseif($user->role == "company")
                                 <div style="display: inline;margin-right: 20px;"> 

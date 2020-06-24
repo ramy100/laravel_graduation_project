@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', 'IndexController@index')->name('website.index');
-
+// balance
+Route::get('/designer/{user}/balance','BalanceController@show')->name('balance');
+Route::post('/designer/{user}/balance','BalanceController@request')->name('balance.request');
 // payement
 Route::get('/checkout', 'CheckoutController@checkout')->name('checkoutPage');
 Route::post('/checkout/credit', 'CompanyPaymentController@credit_card_checkout')->name('pay.credit.card');
