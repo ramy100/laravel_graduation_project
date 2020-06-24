@@ -14,6 +14,8 @@ use App\Charts\PieChart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\UserNotifications;
+use App\WithdrawRequest;
+
 class AdminController extends Controller
 {
     public function index(){
@@ -255,15 +257,11 @@ class AdminController extends Controller
         return view('dashboard.payment_chart',compact('chart'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    
+    public function listWithdrawRequests(Request $request,$state)
     {
-        //
+        $withdraw_requests=WithdrawRequest::where('state','=',$state)->paginate(5);
+        return view('dashboard.balance.index',compact('withdraw_requests','state'));
     }
 
     /**

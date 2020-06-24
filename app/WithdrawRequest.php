@@ -12,6 +12,11 @@ class WithdrawRequest extends Model
      * @var array
      */
     protected $fillable = [
-        'amount'
+        'amount','bank_name','bank_account_number','bank_owner_name','paypal_email','method'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'designer_id');
+    }
 }

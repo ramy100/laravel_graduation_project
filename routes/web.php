@@ -114,6 +114,7 @@ Route::resource('user','ProfileController')->only([
             Route::get('design/{design}/document','AdminController@view_design_document')->name('admin.view_design_document');
             Route::get('charts/payment','AdminController@view_payment_chart')->name('admin.view_payment_chart');
             Route::get('designers', 'AdminController@listDesigners')->name('designers.list');
+            Route::get('designers/{state}/withdraws', 'AdminController@listWithdrawRequests')->where(['state'=>'pending|processing|complete|incomplete'])->name('designers.withdraw.requests');
             Route::get('designers/chart/{id}', 'AdminController@designerChart')->name('designer.chart');
             Route::get('designs', 'AdminController@listDesigns')->name('designs.list');
             Route::get('designs/chart/{id}', 'AdminController@designChart')->name('design.chart');
