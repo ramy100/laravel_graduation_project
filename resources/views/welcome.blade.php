@@ -13,7 +13,7 @@
                             <p>Are you trying to find a suitable clothes matches your taste, we can help you with than just click the vote button to see our designs gallary and vote for your favourite ones to put it under radar for fashion copmanies to make a production line for it. </p>
                             @if (Auth::guest())
                                 <a href="{{ route('login')}}" class="site-btn sb-white">VOTE NOW</a>
-                            @else
+                            @elseif($role == 'user')
                                 <a href="{{ route('design.designs')}}" class="site-btn sb-white">VOTE NOW</a>
                             @endif
                         </div>

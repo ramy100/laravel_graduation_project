@@ -43266,10 +43266,10 @@ var NOTIFICATION_TYPES = {
 
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: '934f94342496700052a5',
-  cluster: 'eu',
-  // key:process.env.MIX_PUSHER_APP_KEY,
-  // cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+  // key:'934f94342496700052a5',
+  // cluster: 'eu',
+  key: "f6281f4e9f8d2a800dd2",
+  cluster: "eu",
   encrypted: false
 });
 
