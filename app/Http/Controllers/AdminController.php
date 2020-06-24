@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\UserNotifications;
 use App\WithdrawRequest;
+use Illuminate\Pagination\Paginator;
 
 class AdminController extends Controller
 {
@@ -258,12 +259,37 @@ class AdminController extends Controller
     }
 
     
-    public function listWithdrawRequests(Request $request,$state)
+    public function listWithdrawRequests(Request $request,$state='pending')
     {
+        if(array_key_exists('state',$request->input())){
+            $state=$request->input('state');
+        };
         $withdraw_requests=WithdrawRequest::where('state','=',$state)->paginate(5);
         return view('dashboard.balance.index',compact('withdraw_requests','state'));
     }
 
+
+    public function withdraws_filter(Request $request)
+    {
+        $currentPage = 1;
+        Paginator::currentPageResolver(function () use ($currentPage) {
+        return $currentPage;
+        });
+        $withdraw_requests=WithdrawRequest::where('state','=',$request->state)->paginate(5);
+        $state=$request->state;
+        return view('dashboard.balance.tables',compact('withdraw_requests','state'));
+    }
+
+    public function change_withdraw_state(Request $request)
+    {
+       $request_id = $request->withdraw_request_id;
+       $withdraw_request =WithdrawRequest::find($request_id);
+       $withdraw_request->update(['state'=>$request->state]);
+       if($withdraw_request->wasChanged()){
+           return response('updated',200);
+       }
+       return response('failed',500);
+    }
     /**
      * Display the specified resource.
      *

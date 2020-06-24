@@ -12,7 +12,7 @@ class WithdrawRequest extends Model
      * @var array
      */
     protected $fillable = [
-        'amount','bank_name','bank_account_number','bank_owner_name','paypal_email','method'
+        'amount','bank_name','bank_account_number','bank_owner_name','paypal_email','method','state'
     ];
 
     public function user()
