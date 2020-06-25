@@ -26,27 +26,27 @@
 							<div class="panel-header" id="headingOne">
 								<button class="panel-link active" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">Email</button>
 							</div>
-							<div id="collapse1" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+							<div id="collapse1" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
 								<div class="panel-body">
 									<p>{{$user->email}}</p>
 								</div>
 							</div>
 						</div>					
 						<div class="panel">
-							<div class="panel-header" id="headingOne">
-								<button class="panel-link active" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">Address</button>
+							<div class="panel-header" id="headingTwo">
+								<button class="panel-link active" data-toggle="collapse" data-target="#collapse2" aria-expanded="true" aria-controls="collapse1">Address</button>
 							</div>
-							<div id="collapse1" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+							<div id="collapse2" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
 								<div class="panel-body">
 									<p>{{$user->address}}</p>
 								</div>
 							</div>
 						</div>					
 						<div class="panel">
-							<div class="panel-header" id="headingOne">
-								<button class="panel-link active" data-toggle="collapse" data-target="#collapse1" aria-expanded="true" aria-controls="collapse1">Phone</button>
+							<div class="panel-header" id="headingThree">
+								<button class="panel-link active" data-toggle="collapse" data-target="#collapse3" aria-expanded="true" aria-controls="collapse1">Phone</button>
 							</div>
-							<div id="collapse1" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+							<div id="collapse3" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
 								<div class="panel-body">
 									<p>{{$user->phone}}</p>
 								</div>
