@@ -122,6 +122,12 @@
                                                     </a>
 
                                                     @endif
+                                                    @if($notification->type === "App\\Notifications\\UserWithdrawNotification")
+                                                    <a class="dropdown-item notify" href="{{ route('balance',Auth::user()->id) }}">
+                                                      Your withdraw Request is {{$notification->data['state']}} check your email for more information
+                                                    </a>
+
+                                                    @endif
                                                 @empty
                                                     <div class="alert alert-danger noNotification" style="width: 250px;height: 40px;">No unread notifications</div>
                                                 @endforelse
@@ -341,6 +347,18 @@
                             ${notification['company']} converted your lovely design into an amazing product ${notification['design']['title']}
                             </a>
                             `);
+                    }
+                    else if(notification['type'] === 'App\\Notifications\\UserWithdrawNotification')
+                    {
+                            $('#notificationList').prepend(`
+                            <a class="dropdown-item" href="{{ route('balance',Auth::user()->id) }}">
+                            Your withdraw Request is ${notification['state']} check your email for more information
+                            </a>
+                            `);
+                            if($('#notificationList .noNotification'))
+                            {
+                                $('#notificationList .noNotification').remove();
+                            }
                     }
                 
                     console.log(notification['type']);
