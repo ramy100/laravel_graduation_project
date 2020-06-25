@@ -43268,7 +43268,7 @@ window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
   // key:'934f94342496700052a5',
   // cluster: 'eu',
-  key: "f6281f4e9f8d2a800dd2",
+  key: "4dd12126b904cd817ef8",
   cluster: "eu",
   encrypted: false
 });

@@ -10,6 +10,7 @@ class CheckoutController extends Controller
     public function __construct(){
         $this->middleware('auth');
         $this->middleware('check-role:company');
+        $this->middleware('check-verification:accepted');
     }
     
     public function checkout(){

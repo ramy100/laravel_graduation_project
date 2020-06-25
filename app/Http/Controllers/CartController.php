@@ -14,7 +14,7 @@ class CartController extends Controller
     public function __construct(){
         $this->middleware('auth');
         $this->middleware('check-role:company');
-        // $this->middleware('check-verification:accepted');
+        $this->middleware('check-verification:accepted');
     }
     public function result(Request $request){
         
