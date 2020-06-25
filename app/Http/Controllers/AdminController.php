@@ -14,6 +14,7 @@ use App\Charts\PieChart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Notifications\UserNotifications;
+use App\Notifications\UserWithdrawNotification;
 use App\WithdrawRequest;
 use Illuminate\Pagination\Paginator;
 
@@ -290,6 +291,7 @@ class AdminController extends Controller
         if($request->state === 'Complete'){
             $withdraw_request->user->balance()->decrement('balance',$amount);
         }
+        $withdraw_request->user->notify(new UserWithdrawNotification($request->mail_body,$request->state));
         return response('updated',200);
        }
        return response('failed',500);

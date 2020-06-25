@@ -26,19 +26,57 @@
             }
         });
     })
-    function change_state(btn,withdraw_request_id,state) {
+    function ajax_request_to_change_state(btn,withdraw_request_id,state,mail_body) {
         $.ajax({
             type:'POST',
             url:'withdraws/changestate',
             data:{
                 withdraw_request_id,
-                state
+                state,
+                mail_body
             },success:function (data) {
                 $(btn).parents('tr').hide('1000');
             },error:function (responseJSON){
                 console.log(responseJSON.responseText);
             }
         })
+    }
+    function change_state(btn,withdraw_request_id,state) {
+        let mail_body=`Your withdraw request is ${state}`;
+        if (state === 'incomplete') {
+            bootbox.prompt({ 
+            title: "Send Rejection Email",
+            message: "reason of rejection ?",
+            centerVertical: true,
+            inputType: 'textarea',
+            buttons: {
+            confirm: {
+                label: 'Send Email',
+                className: 'btn-success'
+            },
+            cancel: {
+                label: 'Not Now',
+                className: 'btn-danger'
+            }
+            },
+            callback: function(result){ 
+                mail_body=result;
+                if(mail_body){
+                    if (mail_body.length > 10) {
+                        ajax_request_to_change_state(btn,withdraw_request_id,state,mail_body)
+                    }else{
+                        bootbox.alert({
+                            title:'Error Sending Mail!',
+                            message:'To short message!',centerVertical: true
+                        })
+                    }
+                }
+            }
+            });
+        }else{
+            ajax_request_to_change_state(btn,withdraw_request_id,state,mail_body)
+        }
+        
     }
     function filter_state(state) {
         $.ajax({
