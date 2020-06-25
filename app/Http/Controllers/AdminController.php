@@ -6,6 +6,7 @@ use App\Charts\PaymentChart;
 use App\Design;
 use App\Order;
 use App\User;
+use App\Admin;
 use App\DesignerRate;
 use App\DesignVote;
 use Illuminate\Http\Request;
@@ -19,7 +20,7 @@ use Illuminate\Pagination\Paginator;
 
 class AdminController extends Controller
 {
-    public function index(){
+    public function list(){
         $yearTotal = Order::whereYear('created_at', '=', now()->year)
               ->pluck('total');
         $monthTotal = Order::whereMonth('created_at', '=', now()->month)
@@ -229,15 +230,6 @@ class AdminController extends Controller
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Show the Payment Chart.
@@ -295,47 +287,54 @@ class AdminController extends Controller
        return response('failed',500);
     }
     /**
-     * Display the specified resource.
+     * Display a listing of the resource.
      *
-     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user)
+    public function index()
     {
-        //
+        $admins = Admin::all();
+        return view('dashboard.admins.index',compact('admins'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for creating a new resource.
      *
-     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function edit(User $user)
+    public function create()
     {
-        //
+        $admin = new Admin();
+        return view('dashboard.admins.create', compact('admin'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email|unique:admins',
+        ]);
+        $data['password'] = bcrypt($request->password);
+        $admin = Admin::create($data);
+            return redirect('admin/admin')->with('message','a new admin has been added ');
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\User  $user
+     * @param  \App\Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user)
+        
+    public function destroy(Admin $admin)
     {
-        //
+        $admin->delete();
+        return redirect('admin/admin')->with('deleted','admin has been deleted successfully ');
     }
 }
