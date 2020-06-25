@@ -36,7 +36,7 @@
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
-            
+    @stack('my_style')        
     <style type="text/css">
         #Notifications::after {
             content: none;
@@ -76,13 +76,13 @@
                 <strong>Your email is not verified yet please check your email</strong>
             </div>
             @endif
-
-            @if ((Auth::user()->profile) && (Auth::user()->profile->is_verified != 'accepted'))
-            <div class="alert alert-success" role="alert">
-            <strong>Your profile is not accepted yet !</strong>
-            </div>
+            @if(Auth::user()->role != 'user')
+                @if (Auth::user()->profile->is_verified != 'accepted')
+                <div class="alert alert-success" role="alert">
+                <strong>Your profile is not accepted yet !</strong>
+                </div>
+                @endif
             @endif
-
         @endauth
         <!-- Header section -->
     <header class="header-section sticky-top" style="background-color: white;">
@@ -144,10 +144,7 @@
                                 @if( $user->role == "designer")
                                 <div style="display: inline;margin-right: 20px;"> 
                                 <a href="{{ route('designer.show',['designer'=>$user->id]) }}" style="color: black;"> Profile</a>
-
-                               {{-- <button type="button" class="badge badge-dark p-2 mb-5">
-                                    Balance <span class="badge badge-light">{{Auth::user()->balance->balance}}</span>
-                                </button> --}}
+                                <a class="ml-3" href="{{ route('balance',$user) }}" style="color: black;">   Balance</a>
                                 </div>
                                 @elseif($user->role == "company")
                                 <div style="display: inline;margin-right: 20px;"> 

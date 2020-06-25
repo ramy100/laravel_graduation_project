@@ -78,6 +78,19 @@
         </div>
       </li>
 
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#balance" aria-expanded="true" aria-controls="balance">
+          <i class="fas fa-fw fa-chart-area"></i>
+          <span>Balance</span></a>
+        </a>
+        <div id="balance" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Balance</h6>
+            <a class="collapse-item" href="{{route('designers.withdraw.requests')}}">Withdraw Requests</a>
+          </div>
+        </div>
+      </li>
+
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">

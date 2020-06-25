@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', 'IndexController@index')->name('website.index');
-
+// balance
+Route::get('/designer/{user}/balance','BalanceController@show')->name('balance');
+Route::post('/designer/{user}/balance','BalanceController@request')->name('balance.request');
 // payement
 Route::get('/checkout', 'CheckoutController@checkout')->name('checkoutPage');
 Route::post('/checkout/credit', 'CompanyPaymentController@credit_card_checkout')->name('pay.credit.card');
@@ -112,6 +114,9 @@ Route::resource('user','ProfileController')->only([
             Route::get('design/{design}/document','AdminController@view_design_document')->name('admin.view_design_document');
             Route::get('charts/payment','AdminController@view_payment_chart')->name('admin.view_payment_chart');
             Route::get('designers', 'AdminController@listDesigners')->name('designers.list');
+            Route::get('designers/withdraws', 'AdminController@listWithdrawRequests')->name('designers.withdraw.requests');
+            Route::post('designers/withdraws', 'AdminController@withdraws_filter')->name('designers.withdraw.filter');
+            Route::post('designers/withdraws/changestate', 'AdminController@change_withdraw_state')->name('designers.withdraw.changestate');
             Route::get('designers/chart/{id}', 'AdminController@designerChart')->name('designer.chart');
             Route::get('designs', 'AdminController@listDesigns')->name('designs.list');
             Route::get('designs/chart/{id}', 'AdminController@designChart')->name('design.chart');
