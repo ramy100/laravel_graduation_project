@@ -17,6 +17,9 @@ class PayPalController extends Controller
     protected $provider;
 
     public function __construct(){
+        $this->middleware('auth');
+        $this->middleware('check-role:company');
+
         $this->provider = new ExpressCheckout;
     }
 
@@ -72,7 +75,7 @@ class PayPalController extends Controller
             $status = $payment_status['PAYMENTINFO_0_PAYMENTSTATUS'];
         }
         $check = $this->makeOrder($status);
-
+        $designer_share=($cart['total']*80)/100;
         //notfiy
         $cart = Cart::session(auth()->id())->getContent();
         $designs_ids = $cart->keys();
@@ -80,6 +83,7 @@ class PayPalController extends Controller
         foreach ($designs as $design) {
             $designer=$design->designer;
             $company_name=$design->company->name;
+            $designer->balance()->increment('balance', $designer_share);
             $designer->notify(new designerNotifications($company_name,$design));
         }
 

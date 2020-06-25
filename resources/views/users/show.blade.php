@@ -9,11 +9,11 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-6">
-					<div class="product-pic-zoom">
+					<div >
 						@if (is_null($user->provider))
-							<img class="product-big-img" src="{{asset ('storage/'.$user->image)}}" alt="">
+							<img class="img-responsive" src="{{asset ('storage/'.$user->image)}}" alt="" style="width: 350px; height: 450px;">
 						@else 
-							<img class="product-big-img" src="{{asset ($user->image)}}" alt="">
+							<img class="img-responsive" src="{{asset ($user->image)}}" alt="">
 						@endif
 					</div>
 				</div>
