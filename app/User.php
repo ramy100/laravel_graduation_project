@@ -78,11 +78,22 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(DesignersBalance::class,'designer_id');
     }
 
-    public function withdraw_request()
+    public function withdraw_requests()
     {
-        return $this->hasOne(WithdrawRequest::class,'designer_id');
+        return $this->hasMany(WithdrawRequest::class,'designer_id');
+    }
+
+    public function withdraw_requests_by_state($state)
+    {
+        return $this->withdraw_requests->where('state','=',$state);
+    }
+
+    public function last_withdraw_request()
+    {
+        return $this->withdraw_requests()->latest()->first();
     }
     
+
     public function my_votes()
     {
         return $this->hasMany(DesignVote::class,'user_id');

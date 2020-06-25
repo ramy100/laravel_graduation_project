@@ -1,4 +1,4 @@
-<h1 class="h3 mb-2 text-gray-800">Verify {{ ucfirst(trans($state)) }} Withdraw requests</h1>
+<h1 class="h3 mb-2 text-gray-800">{{ ucfirst(trans($state)) }} withdraw requests</h1>
 <p class="mb-4">This is a list of {{$state}} withdraw requests .</p>
 
 <!-- DataTales Example -->

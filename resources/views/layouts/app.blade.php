@@ -36,7 +36,7 @@
     <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/animate.css') }}"/>
     <link rel="stylesheet" href="{{ asset('css/style.css') }}"/>
-            
+    @stack('my_style')        
     <style type="text/css">
         #Notifications::after {
             content: none;
@@ -135,10 +135,7 @@
                                 @if( $user->role == "designer")
                                 <div style="display: inline;margin-right: 20px;"> 
                                 <a href="{{ route('designer.show',['designer'=>$user->id]) }}" style="color: black;"> Profile</a>
-
-                                <a type="button" class="badge badge-success p-1 " href="{{ route('balance',$user) }}">
-                                    Balance <span class="badge badge-light">{{Auth::user()->balance->balance}}</span>
-                                </a>
+                                <a class="ml-3" href="{{ route('balance',$user) }}" style="color: black;">   Balance</a>
                                 </div>
                                 @elseif($user->role == "company")
                                 <div style="display: inline;margin-right: 20px;"> 

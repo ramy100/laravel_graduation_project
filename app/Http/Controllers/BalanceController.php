@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Admin;
+use App\Events\AdminEvent;
+use App\Notifications\WithdrawNotification;
 use App\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Validation\Rule;
 
 class BalanceController extends Controller
@@ -18,7 +22,8 @@ class BalanceController extends Controller
      */
     public function show(User $user)
     {
-        return view('balance.show',compact('user'));
+        $last_request=$user->last_withdraw_request();
+        return view('balance.show',compact('user','last_request'));
     }
 
     /**
@@ -38,7 +43,10 @@ class BalanceController extends Controller
         // validate form data
         $this->balance_validator($data,$type,$user)->validate();
         // create new record
-        $this->create_new_withdraw_request($request->all(),$user,$type);
+        $withdraw_request = $this->create_new_withdraw_request($request->all(),$user,$type);
+        $admins=Admin::all();
+        Notification::send($admins, new WithdrawNotification());
+        event(new AdminEvent('New Pending Withdraw Request',route('designers.withdraw.requests'),$withdraw_request->created_at));
         return redirect(route('balance',$user))->with('message','Your ' .$type.' transfer request is pending now please wait!');
     }
 
@@ -94,7 +102,7 @@ class BalanceController extends Controller
     {
         // create record for bank form
         if ($type === 'bank') {
-            $user->withdraw_request()->create([
+            $withdraw_request=$user->withdraw_requests()->create([
                 'amount'=>$data['amount'],
                 'method'=>'bank',
                 'bank_name'=>$data['bank_name'],
@@ -104,12 +112,13 @@ class BalanceController extends Controller
 
         // create record for paypal form
         }elseif($type =='paypal') {
-            $user->withdraw_request()->create([
+            $withdraw_request=$user->withdraw_requests()->create([
                 'amount'=>$data['amount'],
                 'method'=>'paypal',
                 'paypal_email'=>$data['paypal']
                 ]);
         }
+        return $withdraw_request;
     }
 
     

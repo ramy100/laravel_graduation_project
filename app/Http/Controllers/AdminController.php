@@ -283,10 +283,14 @@ class AdminController extends Controller
     public function change_withdraw_state(Request $request)
     {
        $request_id = $request->withdraw_request_id;
-       $withdraw_request =WithdrawRequest::find($request_id);
+       $withdraw_request = WithdrawRequest::find($request_id);
+       $amount= floatval($withdraw_request->amount);
        $withdraw_request->update(['state'=>$request->state]);
        if($withdraw_request->wasChanged()){
-           return response('updated',200);
+        if($request->state === 'Complete'){
+            $withdraw_request->user->balance()->decrement('balance',$amount);
+        }
+        return response('updated',200);
        }
        return response('failed',500);
     }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Admin;
 use App\DesignersBalance;
-use App\Events\RegisterationEvent;
+use App\Events\AdminEvent;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -110,7 +110,7 @@ class AllUsersRegisterController extends RegisterController
                 $user->createAsStripeCustomer();
                 $admins=Admin::all();
                 Notification::send($admins, new AdminNotifications($role));
-                event(new RegisterationEvent('New Pending '.$role,route('list_users',[$role,'pending']),$user->created_at));
+                event(new AdminEvent('New Pending '.$role,route('list_users',[$role,'pending']),$user->created_at));
             }
         } catch (\Throwable $th) {
             // delete user if an error arises and return server error
