@@ -9,7 +9,7 @@
                     <div class="card-body">
                         <img src="http://www.ansonika.com/mavia/img/registration_bg.svg" style="width:30%">
                         <h2 class="py-3">{{ ucfirst(trans($role)) }} Profile Update</h2>
-                        <p>Tation argumentum et usu, dicit viderer evertitur te has. Eu dictas concludaturque usu, facete detracto patrioque an per, lucilius pertinacia eu vel.</p>
+                        {{-- <p>Tation argumentum et usu, dicit viderer evertitur te has. Eu dictas concludaturque usu, facete detracto patrioque an per, lucilius pertinacia eu vel.</p> --}}
                     </div>
                 </div>
             </div>
