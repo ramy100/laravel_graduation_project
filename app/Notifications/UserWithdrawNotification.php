@@ -77,6 +77,7 @@ class UserWithdrawNotification extends Notification
     {
          return new BroadcastMessage([
         'state' => $this->state,
+        'route'=> route('balance',$notifiable)
         ]);
         
     }

@@ -123,7 +123,7 @@
 
                                                     @endif
                                                     @if($notification->type === "App\\Notifications\\UserWithdrawNotification")
-                                                    <a class="dropdown-item notify" href="{{ route('balance',Auth::user()->id) }}">
+                                                    <a class="dropdown-item notify" href="{{$notification->data['route']}}">
                                                       Your withdraw Request is {{$notification->data['state']}} check your email for more information
                                                     </a>
 
