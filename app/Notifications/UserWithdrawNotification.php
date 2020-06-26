@@ -61,7 +61,8 @@ class UserWithdrawNotification extends Notification
         return [
             'type'=>"withdraw_request",
             'message'=>$this->body,
-            'state'=>$this->state
+            'state'=>$this->state,
+            'route'=>route('balance',$notifiable)
         ];
     }
 

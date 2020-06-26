@@ -351,7 +351,7 @@
                     else if(notification['type'] === 'App\\Notifications\\UserWithdrawNotification')
                     {
                             $('#notificationList').prepend(`
-                            <a class="dropdown-item" href="{{ route('balance',Auth::user()->id) }}">
+                            <a class="dropdown-item" href="${notification['route']}">
                             Your withdraw Request is ${notification['state']} check your email for more information
                             </a>
                             `);
